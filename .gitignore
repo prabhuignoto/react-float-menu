@@ -1,0 +1,6 @@
+.cache
+.parcel-cache
+node_modules
+log*
+dist
+build
