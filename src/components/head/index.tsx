@@ -20,6 +20,10 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   iconSize = "1rem",
   icons,
   startPosition = "top left",
+  theme = {
+    primary: "#318CE7",
+    secondary: "#FFFFFF",
+  },
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState(false);
@@ -27,11 +31,13 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     x: number;
     y: number;
   }>({ x: 0, y: 0 });
+  const [closeMenuImmediate, setCloseMenuImmediate] = useState(false);
 
   const { onInit } = usePosition<HTMLDivElement>({
     startPosition,
     onMouseDown: () => {
       setPressedState(true);
+      setCloseMenuImmediate(false);
     },
     onMouseUp: useCallback((rect?: DOMRect) => {
       setPressedState(false);
@@ -42,6 +48,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       setMenuOpen((prev) => !prev);
     }, []),
     onDragStart: () => {
+      setCloseMenuImmediate(true);
       setMenuOpen(false);
     },
     onDragEnd: (rect?: DOMRect) => {
@@ -53,6 +60,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     () =>
       ({
         "--dimension": `${dimension}px`,
+        "--rc-float-menu-theme-primary": theme.primary,
       } as CSSProperties),
     []
   );
@@ -69,10 +77,15 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     [pressedState]
   );
 
-  const handleMenuClose = useCallback(() => setMenuOpen(false), []);
+  const handleMenuClose = useCallback(() => {
+    setMenuOpen(false);
+    setCloseMenuImmediate(false);
+  }, []);
 
   return (
-    <MenuContext.Provider value={{ dimension, shape, items, iconSize, icons }}>
+    <MenuContext.Provider
+      value={{ dimension, shape, items, iconSize, icons, theme }}
+    >
       <div className={menuHeadClass} ref={onInit} style={style}>
         <span className={styles.icon_container}>{children}</span>
       </div>
@@ -82,6 +95,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
           items={items}
           open={openMenu}
           onClose={handleMenuClose}
+          disableAnimation={closeMenuImmediate}
         />
       </div>
     </MenuContext.Provider>

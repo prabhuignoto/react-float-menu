@@ -20,6 +20,7 @@ const Menu: FunctionComponent<MenuProps> = ({
   menuHeadPosition,
   open,
   onClose,
+  disableAnimation,
 }) => {
   const [_items] = useState<MenuItemProps[]>(() =>
     items.map((item) => ({ ...item, selected: false, id: nanoid() }))
@@ -28,12 +29,13 @@ const Menu: FunctionComponent<MenuProps> = ({
   const wrapperRef = useRef<HTMLUListElement>();
   const [height, setHeight] = useState(0);
 
-  const { iconSize, icons } = useContext(MenuContext);
+  const { iconSize, icons, theme } = useContext(MenuContext);
 
   const style = useMemo(
     () =>
       ({
         "--menu-height": `${height}px`,
+        "--rc-float-menu-theme-primary": theme?.primary,
         left: `${menuHeadPosition.x}px`,
         top: `${menuHeadPosition.y}px`,
       } as CSSProperties),
@@ -42,7 +44,14 @@ const Menu: FunctionComponent<MenuProps> = ({
 
   const wrapperClass = useMemo(
     () =>
-      classNames(styles.wrapper, open ? styles.menu_open : styles.menu_close),
+      classNames(
+        styles.wrapper,
+        open && !disableAnimation
+          ? styles.menu_open
+          : !disableAnimation
+          ? styles.menu_close
+          : styles.menu_close_no_animation
+      ),
     [open]
   );
 

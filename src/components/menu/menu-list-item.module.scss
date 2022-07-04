@@ -25,7 +25,7 @@
     border-bottom: 1px solid #e5e5e5;
   }
 
-  &.RTL {
+  &.rtl {
     direction: rtl;
   }
 }
@@ -42,6 +42,7 @@
   width: var(--rc-float-menu-icon-size, 1rem);
   height: var(--rc-float-menu-icon-size, 1rem);
   justify-self: center;
+  color: var(--rc-float-menu-theme-primary);
 
   svg {
     width: 100%;

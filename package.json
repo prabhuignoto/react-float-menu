@@ -13,7 +13,13 @@
     "build:vite": "tsc && vite build",
     "preview": "vite preview",
     "build": "webpack --config webpack.config.js --mode production",
-    "webpack:dev": "webpack --config webpack.config.js --mode development"
+    "webpack:dev": "webpack --config webpack.config.js --mode development",
+    "lint:js": "eslint src/**/*.tsx",
+    "lint:js-fix": "eslint src/**/*.tsx --fix",
+    "lint:css": "stylelint src/**/*.scss",
+    "lint:css-fix": "stylelint --fix src/**/*.scss",
+    "lint:all": "pnpm lint:js && pnpm lint:css",
+    "format": "prettier --write src/**/*.{tsx,scss}"
   },
   "browserslist": [
     "last 2 versions",
@@ -49,6 +55,8 @@
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss": "^8.4.14",
     "postcss-loader": "^7.0.0",

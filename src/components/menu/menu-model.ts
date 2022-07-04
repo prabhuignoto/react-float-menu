@@ -14,4 +14,5 @@ export type MenuProps = {
   };
   open?: boolean;
   onClose?: () => void;
+  disableAnimation?: boolean;
 };

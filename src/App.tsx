@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <Menu
-        shape="circle"
+        shape="square"
         items={[
           { name: "File" },
           { name: "Edit" },
