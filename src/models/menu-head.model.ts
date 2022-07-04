@@ -1,0 +1,19 @@
+import { ReactNode } from "react";
+import { MenuItemProps } from "../components/menu/menu-model";
+import { Position } from "./position";
+
+export interface Theme {
+  primary: string;
+  secondary: string;
+}
+
+export interface MenuHeadProps {
+  children?: ReactNode;
+  dimension?: number;
+  iconSize?: string;
+  icons?: ReactNode[];
+  items?: MenuItemProps[];
+  shape?: "circle" | "square";
+  startPosition?: Position;
+  theme?: Theme;
+}

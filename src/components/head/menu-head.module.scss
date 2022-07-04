@@ -1,0 +1,61 @@
+.menu_head {
+  align-items: center;
+  background: red;
+  display: flex;
+  height: var(--dimension);
+  justify-content: center;
+  width: var(--dimension);
+  cursor: pointer;
+  user-select: none;
+
+  &.circle {
+    border-radius: 50%;
+  }
+
+  &.square {
+    border-radius: 4px;
+  }
+}
+
+@keyframes pressed-animation {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.75);
+  }
+}
+
+@keyframes released-animation {
+  0% {
+    transform: scale(0.75);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pressed {
+  animation: pressed-animation 0.2s ease-in-out;
+  transform: scale(0.75);
+}
+
+.released {
+  animation: released-animation 0.2s ease-in-out;
+  transform: scale(1);
+}
+
+.menu_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.icon_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
