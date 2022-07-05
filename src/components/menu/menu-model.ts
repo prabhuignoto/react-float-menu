@@ -15,4 +15,6 @@ export type MenuProps = {
   open?: boolean;
   onClose?: () => void;
   disableAnimation?: boolean;
+  flip?: boolean;
+  onRender: (height: number, width: number) => void;
 };

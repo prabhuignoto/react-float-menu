@@ -1,4 +1,4 @@
-import classNames from "classNames";
+import classNames from "classnames";
 import { nanoid } from "nanoid";
 import {
   CSSProperties,
@@ -15,13 +15,17 @@ import { MenuItem } from "./menu-list-item";
 import { MenuItemProps, MenuProps } from "./menu-model";
 import styles from "./menu.module.scss";
 
-const Menu: FunctionComponent<MenuProps> = ({
-  items = [],
-  menuHeadPosition,
-  open,
-  onClose,
-  disableAnimation,
-}) => {
+const Menu: FunctionComponent<MenuProps> = (props) => {
+  const {
+    items = [],
+    menuHeadPosition,
+    open,
+    onClose,
+    disableAnimation,
+    flip,
+    onRender,
+  } = props;
+
   const [_items] = useState<MenuItemProps[]>(() =>
     items.map((item) => ({ ...item, selected: false, id: nanoid() }))
   );
@@ -36,8 +40,6 @@ const Menu: FunctionComponent<MenuProps> = ({
       ({
         "--menu-height": `${height}px`,
         "--rc-float-menu-theme-primary": theme?.primary,
-        left: `${menuHeadPosition.x}px`,
-        top: `${menuHeadPosition.y}px`,
       } as CSSProperties),
     [height, JSON.stringify(menuHeadPosition)]
   );
@@ -46,20 +48,23 @@ const Menu: FunctionComponent<MenuProps> = ({
     () =>
       classNames(
         styles.wrapper,
+        flip ? styles.flip : "",
         open && !disableAnimation
           ? styles.menu_open
           : !disableAnimation
           ? styles.menu_close
           : styles.menu_close_no_animation
       ),
-    [open]
+    [open, flip]
   );
 
   const onWrapperInit = useCallback((node: HTMLUListElement) => {
     if (node) {
       wrapperRef.current = node;
       setTimeout(() => {
-        setHeight(node.clientHeight + 40);
+        const height = node.clientHeight + 40;
+        setHeight(height);
+        onRender(height, node.clientWidth);
       }, 500);
     }
   }, []);

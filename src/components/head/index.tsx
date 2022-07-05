@@ -1,4 +1,4 @@
-import classNames from "classNames";
+import classNames from "classnames";
 import {
   CSSProperties,
   FunctionComponent,
@@ -27,11 +27,15 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState(false);
-  const [menuHeadPosition, setMenuHeadPosition] = useState<{
+  const [headPosition, setHeadPosition] = useState<{
     x: number;
     y: number;
   }>({ x: 0, y: 0 });
   const [closeMenuImmediate, setCloseMenuImmediate] = useState(false);
+  const [menuDimension, setMenuDimension] = useState<{
+    height: number;
+    width: number;
+  }>({ height: 0, width: 0 });
 
   const { onInit } = usePosition<HTMLDivElement>({
     startPosition,
@@ -41,7 +45,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     },
     onMouseUp: useCallback((rect?: DOMRect) => {
       setPressedState(false);
-      setMenuHeadPosition({
+      setHeadPosition({
         x: rect?.left || 0,
         y: (rect?.top || 0) + dimension,
       });
@@ -82,6 +86,30 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     setCloseMenuImmediate(false);
   }, []);
 
+  const shouldFlip = useMemo(() => {
+    return (
+      headPosition.y + dimension + menuDimension.height > window.innerHeight
+    );
+  }, [headPosition.x, headPosition.y, JSON.stringify(menuDimension), openMenu]);
+
+  const onMenuRender = useCallback((height: number, width: number) => {
+    setMenuDimension({ height, width });
+  }, []);
+
+  const menuContainerStyle = useMemo(
+    () => ({
+      left: `${Math.round(
+        headPosition.x - (Math.round(menuDimension.width / 2) - 15)
+      )}px`,
+      [shouldFlip ? "bottom" : "top"]: `${
+        !shouldFlip
+          ? headPosition.y + 10
+          : Math.abs(window.innerHeight - headPosition.y) + dimension + 10
+      }px`,
+    }),
+    [shouldFlip, headPosition.x, headPosition.y, menuDimension.width]
+  );
+
   return (
     <MenuContext.Provider
       value={{ dimension, shape, items, iconSize, icons, theme }}
@@ -89,13 +117,15 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       <div className={menuHeadClass} ref={onInit} style={style}>
         <span className={styles.icon_container}>{children}</span>
       </div>
-      <div className={styles.menu_container}>
+      <div className={styles.menu_container} style={menuContainerStyle}>
         <Menu
-          menuHeadPosition={menuHeadPosition}
+          menuHeadPosition={headPosition}
           items={items}
           open={openMenu}
           onClose={handleMenuClose}
           disableAnimation={closeMenuImmediate}
+          onRender={onMenuRender}
+          flip={shouldFlip}
         />
       </div>
     </MenuContext.Provider>
