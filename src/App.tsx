@@ -22,6 +22,7 @@ function App() {
         ]}
         iconSize={"1.25rem"}
         startPosition="top right"
+        dimension={40}
       />
     </div>
   );

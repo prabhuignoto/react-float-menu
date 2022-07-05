@@ -31,6 +31,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
   );
 
   const wrapperRef = useRef<HTMLUListElement>();
+
   const [height, setHeight] = useState(0);
 
   const { iconSize, icons, theme } = useContext(MenuContext);

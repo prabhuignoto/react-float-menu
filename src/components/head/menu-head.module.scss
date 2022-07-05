@@ -60,3 +60,37 @@
   align-items: center;
   justify-content: center;
 }
+
+.menu_arrow {
+  display: flex;
+  height: 10px;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  &.menu_open:not(.flip)::after {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+    top: -10px;
+  }
+
+  &.menu_open.flip::after {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+    bottom: -10px;
+  }
+}

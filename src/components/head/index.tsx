@@ -3,6 +3,7 @@ import {
   CSSProperties,
   FunctionComponent,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -36,26 +37,38 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     height: number;
     width: number;
   }>({ height: 0, width: 0 });
+  const [menuPosition, setMenuPosition] = useState<{
+    left: number;
+    top?: number;
+    bottom?: number;
+  }>({ left: 0, top: 0, bottom: 0 });
 
-  const { onInit } = usePosition<HTMLDivElement>({
+  const [menuHiddenTowards, setMenuHiddenTowards] = useState<
+    "left" | "right" | null
+  >();
+
+  const headHalfWidth = useMemo(() => Math.round(dimension / 2), [dimension]);
+
+  const { onInit, ref } = usePosition<HTMLDivElement>({
     startPosition,
+    dimension,
     onMouseDown: () => {
       setPressedState(true);
       setCloseMenuImmediate(false);
     },
     onMouseUp: useCallback((rect?: DOMRect) => {
       setPressedState(false);
-      setHeadPosition({
-        x: rect?.left || 0,
-        y: (rect?.top || 0) + dimension,
-      });
       setMenuOpen((prev) => !prev);
     }, []),
     onDragStart: () => {
       setCloseMenuImmediate(true);
       setMenuOpen(false);
     },
-    onDragEnd: (rect?: DOMRect) => {
+    onDragEnd: ({ left, top }) => {
+      setHeadPosition({
+        x: left || 0,
+        y: (top || 0) + dimension + 10,
+      });
       setPressedState(false);
     },
   });
@@ -92,22 +105,78 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     );
   }, [headPosition.x, headPosition.y, JSON.stringify(menuDimension), openMenu]);
 
-  const onMenuRender = useCallback((height: number, width: number) => {
-    setMenuDimension({ height, width });
-  }, []);
+  const onMenuRender = useCallback(
+    (height: number, width: number) => setMenuDimension({ height, width }),
+    []
+  );
 
-  const menuContainerStyle = useMemo(
-    () => ({
-      left: `${Math.round(
-        headPosition.x - (Math.round(menuDimension.width / 2) - 15)
-      )}px`,
+  useEffect(() => {
+    setMenuPosition({
+      left: Math.round(
+        headPosition.x - (Math.round(menuDimension.width / 2) - headHalfWidth)
+      ),
+      [shouldFlip ? "bottom" : "top"]: !shouldFlip
+        ? headPosition.y + 10
+        : Math.abs(window.innerHeight - headPosition.y) + dimension + 20,
+    });
+  }, [
+    shouldFlip,
+    headPosition.x,
+    headPosition.y,
+    menuDimension.width,
+    headHalfWidth,
+  ]);
+
+  useEffect(() => {
+    if (menuPosition.left < 0) {
+      setMenuHiddenTowards("left");
+    } else if (menuPosition.left + menuDimension.width > window.innerWidth) {
+      setMenuHiddenTowards("right");
+    } else {
+      setMenuHiddenTowards(null);
+    }
+  }, [menuPosition.left, menuDimension.width]);
+
+  useEffect(() => {
+    if (!openMenu) {
+      return;
+    }
+    if (menuHiddenTowards === "left") {
+      setMenuPosition({
+        left: 10,
+      });
+      ref.current!.style.cssText += `left: ${
+        Math.round(menuDimension.width / 2) - headHalfWidth + 10
+      }px;`;
+    } else if (menuHiddenTowards === "right") {
+      setMenuPosition({
+        left: window.innerWidth - menuDimension.width - 10,
+      });
+      ref.current!.style.cssText += `left: ${
+        Math.round(window.innerWidth - menuDimension.width / 2) -
+        headHalfWidth -
+        10
+      }px;`;
+    }
+  }, [menuHiddenTowards, openMenu, menuDimension.width, headHalfWidth]);
+
+  const menuContainerStyle = useMemo(() => {
+    return {
+      left: `${menuPosition.left}px`,
       [shouldFlip ? "bottom" : "top"]: `${
-        !shouldFlip
-          ? headPosition.y + 10
-          : Math.abs(window.innerHeight - headPosition.y) + dimension + 10
+        shouldFlip ? menuPosition.bottom : menuPosition.top
       }px`,
-    }),
-    [shouldFlip, headPosition.x, headPosition.y, menuDimension.width]
+    };
+  }, [JSON.stringify(menuPosition), shouldFlip]);
+
+  const arrowClass = useMemo(
+    () =>
+      classNames(
+        styles.menu_arrow,
+        openMenu ? styles.menu_open : "",
+        shouldFlip ? styles.flip : ""
+      ),
+    [openMenu, shouldFlip]
   );
 
   return (
@@ -118,6 +187,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         <span className={styles.icon_container}>{children}</span>
       </div>
       <div className={styles.menu_container} style={menuContainerStyle}>
+        <span className={arrowClass}></span>
         <Menu
           menuHeadPosition={headPosition}
           items={items}

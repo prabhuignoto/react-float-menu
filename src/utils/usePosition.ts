@@ -1,18 +1,20 @@
-import { useCallback, useEffect, useRef } from "react";
+import { RefObject, useCallback, useEffect, useRef } from "react";
 import { Position } from "../models/position";
 
 type positionParams = {
   onMouseDown: () => void;
-  onMouseUp: (d?: DOMRect) => void;
+  onMouseUp: () => void;
   onDragStart: () => void;
-  onDragEnd: () => void;
+  onDragEnd: (p: { left: number; top: number }) => void;
   startPosition: Position;
+  dimension?: number;
 };
 
 type usePositionType = <T extends HTMLElement>(
   p: positionParams
 ) => {
   onInit: (node: T) => void;
+  ref: RefObject<T>;
 };
 
 const getStartingPosition = (pos: Position) => {
@@ -37,11 +39,15 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   onDragStart,
   onDragEnd,
   startPosition,
+  dimension = 0,
 }: positionParams) {
-  const ref = useRef<T>();
+  const ref = useRef<T | null>(null);
   const isClicked = useRef<Boolean>(false);
-  const targetDimensions = useRef<DOMRect>();
   const isDragged = useRef<Boolean>(false);
+  const positionRef = useRef<{ left: number; top: number }>({
+    left: 0,
+    top: 0,
+  });
 
   const handleMouseDown = (e: MouseEvent) => {
     isClicked.current = true;
@@ -51,29 +57,35 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   const handleMouseUp = (e: MouseEvent) => {
     isClicked.current = false;
 
-    setTimeout(() => {
-      if (!isDragged.current) {
-        onMouseUp?.(ref.current?.getBoundingClientRect());
-      } else {
-        isDragged.current = false;
-        onDragEnd?.();
-      }
-    }, 100);
+    if (!isDragged.current) {
+      onMouseUp?.();
+    } else {
+      isDragged.current = false;
+      onDragEnd?.(positionRef.current);
+    }
   };
 
   const onMouseMove = (e: MouseEvent) => {
-    if (isClicked.current && ref.current && targetDimensions.current) {
-      const { width } = targetDimensions.current;
-      const halfWidth = Math.round(width / 2);
+    if (isClicked.current && ref.current) {
+      const halfWidth = Math.round(dimension / 2);
+
+      console.log(e);
 
       if (!isDragged.current) {
         isDragged.current = true;
         onDragStart?.();
       }
 
+      const position = {
+        left: e.clientX - halfWidth,
+        top: e.clientY - halfWidth,
+      };
+
+      positionRef.current = position;
+
       ref.current.style.cssText += `
-        left: ${e.clientX - halfWidth}px;
-        top: ${e.clientY - halfWidth}px;
+        left: ${position.left}px;
+        top: ${position.top}px;
       `;
     }
   };
@@ -83,7 +95,6 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
       ref.current = node;
       node.addEventListener("mousedown", handleMouseDown);
       node.addEventListener("mouseup", handleMouseUp);
-      targetDimensions.current = node.getBoundingClientRect();
       node.style.cssText += `position: absolute;z-index: 9999;${getStartingPosition(
         startPosition
       )}`;
@@ -101,6 +112,7 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
 
   return {
     onInit,
+    ref,
   };
 };
 
