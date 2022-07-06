@@ -12,7 +12,7 @@ import {
 } from "react";
 import { CloseIcon } from "../../icons";
 import { MenuContext } from "../context";
-import { MenuItem } from "./menu-list-item";
+import { MenuItem } from "../menu-list-item/menu-list-item";
 import { MenuItemProps, MenuProps } from "./menu-model";
 import styles from "./menu.module.scss";
 

@@ -11,7 +11,7 @@ import {
 import { MenuHeadProps } from "../../models/menu-head.model";
 import { usePosition } from "../../utils/usePosition";
 import { MenuContext } from "../context";
-import { MenuContainer } from "../menu/menu-container";
+import { MenuContainer } from "../menu-container/menu-container";
 import styles from "./menu-head.module.scss";
 
 const MenuHead: FunctionComponent<MenuHeadProps> = ({

@@ -6,9 +6,9 @@ import {
   useMemo,
   useRef,
 } from "react";
-import { Menu } from ".";
 import { MenuContext } from "../context";
-import styles from "./menu.module.scss";
+import { Menu } from "../menu";
+import styles from "./menu-container.module.scss";
 
 export type MenuContainerProps = {
   shouldFlip: boolean;

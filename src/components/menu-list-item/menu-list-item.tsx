@@ -9,12 +9,12 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Menu } from ".";
+import { Menu } from "../menu";
 import { ChevronRight } from "../../icons";
 import { MenuHeadProps } from "../../models/menu-head.model";
 import { MenuContext } from "../context";
 import styles from "./menu-list-item.module.scss";
-import { MenuItemProps } from "./menu-model";
+import { MenuItemProps } from "../menu/menu-model";
 
 export type MenuItemViewModel = MenuItemProps & {
   icon?: ReactNode;
