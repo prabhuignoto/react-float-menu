@@ -59,6 +59,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
+
+  svg {
+    width: 80%;
+    height: 80%;
+  }
 }
 
 .menu_arrow {

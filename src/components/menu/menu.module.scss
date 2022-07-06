@@ -82,6 +82,11 @@
   cursor: pointer;
   color: var(--rc-float-menu-theme-primary);
 
+  &:hover {
+    background: var(--rc-float-menu-theme-primary);
+    color: #fff;
+  }
+
   svg {
     width: 80%;
     height: 80%;

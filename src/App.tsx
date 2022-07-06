@@ -1,18 +1,19 @@
-import { CopyIcon, EditIcon, FileIcon, LogoutIcon, SaveIcon } from "./icons";
+import {
+  CopyIcon,
+  EditIcon,
+  FileIcon,
+  LogoutIcon,
+  PlusIcon,
+  SaveIcon,
+} from "./icons";
 import { Menu } from "./react-float-menu";
 
 function App() {
   return (
     <div className="App">
       <Menu
-        shape="square"
-        items={[
-          { name: "File" },
-          { name: "Edit" },
-          { name: "Copy" },
-          { name: "Save" },
-          { name: "Logout" },
-        ]}
+        dimension={40}
+        iconSize={"1.25rem"}
         icons={[
           <FileIcon key="file" />,
           <EditIcon key="edit" />,
@@ -20,10 +21,18 @@ function App() {
           <SaveIcon key="save" />,
           <LogoutIcon key="logout" />,
         ]}
-        iconSize={"1.25rem"}
+        items={[
+          { name: "File" },
+          { name: "Edit" },
+          { name: "Copy" },
+          { name: "Save" },
+          { name: "Logout" },
+        ]}
+        shape="square"
         startPosition="top right"
-        dimension={40}
-      />
+      >
+        <PlusIcon />
+      </Menu>
     </div>
   );
 }
