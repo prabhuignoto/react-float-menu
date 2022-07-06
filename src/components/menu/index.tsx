@@ -27,7 +27,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
   } = props;
 
   const [_items] = useState<MenuItemProps[]>(() =>
-    items.map((item) => ({ ...item, selected: false, id: nanoid() }))
+    items.map((item) => ({ ...item, id: nanoid(), selected: false }))
   );
 
   const wrapperRef = useRef<HTMLUListElement>();
@@ -77,7 +77,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
   return (
     <div className={wrapperClass} style={style}>
       <div className={styles.toolbar}>
-        <span role="button" className={styles.close_btn} onClick={handleClose}>
+        <span className={styles.close_btn} role="button" onClick={handleClose}>
           <CloseIcon />
         </span>
       </div>
@@ -85,9 +85,9 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
         {_items.map((item, index) => (
           <MenuItem
             {...item}
-            key={item.id}
-            iconSize={iconSize}
             icon={icons && icons[index]}
+            iconSize={iconSize}
+            key={item.id}
           />
         ))}
       </ul>

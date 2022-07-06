@@ -41,7 +41,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     left: number;
     top?: number;
     bottom?: number;
-  }>({ left: 0, top: 0, bottom: 0 });
+  }>({ bottom: 0, left: 0, top: 0 });
 
   const [menuHiddenTowards, setMenuHiddenTowards] = useState<
     "left" | "right" | null
@@ -50,8 +50,18 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   const headHalfWidth = useMemo(() => Math.round(dimension / 2), [dimension]);
 
   const { onInit, ref } = usePosition<HTMLDivElement>({
-    startPosition,
     dimension,
+    onDragEnd: ({ left, top }) => {
+      setHeadPosition({
+        x: left || 0,
+        y: (top || 0) + dimension + 10,
+      });
+      setPressedState(false);
+    },
+    onDragStart: () => {
+      setCloseMenuImmediate(true);
+      setMenuOpen(false);
+    },
     onMouseDown: () => {
       setPressedState(true);
       setCloseMenuImmediate(false);
@@ -60,17 +70,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       setPressedState(false);
       setMenuOpen((prev) => !prev);
     }, []),
-    onDragStart: () => {
-      setCloseMenuImmediate(true);
-      setMenuOpen(false);
-    },
-    onDragEnd: ({ left, top }) => {
-      setHeadPosition({
-        x: left || 0,
-        y: (top || 0) + dimension + 10,
-      });
-      setPressedState(false);
-    },
+    startPosition,
   });
 
   const style = useMemo(
@@ -181,7 +181,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
 
   return (
     <MenuContext.Provider
-      value={{ dimension, shape, items, iconSize, icons, theme }}
+      value={{ dimension, iconSize, icons, items, shape, theme }}
     >
       <div className={menuHeadClass} ref={onInit} style={style}>
         <span className={styles.icon_container}>{children}</span>
@@ -189,13 +189,13 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       <div className={styles.menu_container} style={menuContainerStyle}>
         <span className={arrowClass}></span>
         <Menu
-          menuHeadPosition={headPosition}
+          disableAnimation={closeMenuImmediate}
+          flip={shouldFlip}
           items={items}
+          menuHeadPosition={headPosition}
           open={openMenu}
           onClose={handleMenuClose}
-          disableAnimation={closeMenuImmediate}
           onRender={onMenuRender}
-          flip={shouldFlip}
         />
       </div>
     </MenuContext.Provider>
