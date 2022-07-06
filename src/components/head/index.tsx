@@ -5,12 +5,13 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { MenuHeadProps } from "../../models/menu-head.model";
 import { usePosition } from "../../utils/usePosition";
 import { MenuContext } from "../context";
-import { Menu } from "../menu";
+import { MenuContainer } from "../menu/menu-container";
 import styles from "./menu-head.module.scss";
 
 const MenuHead: FunctionComponent<MenuHeadProps> = ({
@@ -25,9 +26,11 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     primary: "#318CE7",
     secondary: "#FFFFFF",
   },
+  disableHeader = false,
+  width = 250,
 }) => {
   const [pressedState, setPressedState] = useState(false);
-  const [openMenu, setMenuOpen] = useState(false);
+  const [openMenu, setMenuOpen] = useState<boolean | null>(null);
   const [headPosition, setHeadPosition] = useState<{
     x: number;
     y: number;
@@ -49,6 +52,8 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
 
   const headHalfWidth = useMemo(() => Math.round(dimension / 2), [dimension]);
 
+  const isFirstRender = useRef(true);
+
   const { onInit, ref } = usePosition<HTMLDivElement>({
     dimension,
     onDragEnd: ({ left, top }) => {
@@ -58,9 +63,13 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       });
       setPressedState(false);
     },
-    onDragStart: () => {
+    onDragStart: ({ left, top }) => {
+      setHeadPosition({
+        x: left || 0,
+        y: (top || 0) + dimension + 10,
+      });
       setCloseMenuImmediate(true);
-      setMenuOpen(false);
+      // setMenuOpen(false);
     },
     onMouseDown: () => {
       setPressedState(true);
@@ -78,21 +87,24 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       ({
         "--dimension": `${dimension}px`,
         "--rc-float-menu-theme-primary": theme.primary,
+        "--rc-float-menu-width": `${width}px`,
       } as CSSProperties),
     []
   );
 
-  const menuHeadClass = useMemo(
-    () =>
-      classNames(
-        styles.menu_head,
-        pressedState ? styles.pressed : styles.released,
-        {
-          [styles[shape]]: true,
-        }
-      ),
-    [pressedState]
-  );
+  const menuHeadClass = useMemo(() => {
+    return classNames(
+      styles.menu_head,
+      !isFirstRender.current
+        ? pressedState
+          ? styles.pressed
+          : styles.released
+        : "",
+      {
+        [styles[shape]]: true,
+      }
+    );
+  }, [pressedState]);
 
   const handleMenuClose = useCallback(() => {
     setMenuOpen(false);
@@ -160,44 +172,37 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
   }, [menuHiddenTowards, openMenu, menuDimension.width, headHalfWidth]);
 
-  const menuContainerStyle = useMemo(() => {
-    return {
-      left: `${menuPosition.left}px`,
-      [shouldFlip ? "bottom" : "top"]: `${
-        shouldFlip ? menuPosition.bottom : menuPosition.top
-      }px`,
-    };
-  }, [JSON.stringify(menuPosition), shouldFlip]);
-
-  const arrowClass = useMemo(
-    () =>
-      classNames(
-        styles.menu_arrow,
-        openMenu ? styles.menu_open : "",
-        shouldFlip ? styles.flip : ""
-      ),
-    [openMenu, shouldFlip]
-  );
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    }
+  }, []);
 
   return (
     <MenuContext.Provider
-      value={{ dimension, iconSize, icons, items, shape, theme }}
+      value={{
+        dimension,
+        disableHeader,
+        iconSize,
+        icons,
+        items,
+        shape,
+        theme,
+        width,
+      }}
     >
       <div className={menuHeadClass} ref={onInit} style={style}>
         <span className={styles.icon_container}>{children}</span>
       </div>
-      <div className={styles.menu_container} style={menuContainerStyle}>
-        <span className={arrowClass}></span>
-        <Menu
-          disableAnimation={closeMenuImmediate}
-          flip={shouldFlip}
-          items={items}
-          menuHeadPosition={headPosition}
-          open={openMenu}
-          onClose={handleMenuClose}
-          onRender={onMenuRender}
-        />
-      </div>
+      <MenuContainer
+        disableAnimation={closeMenuImmediate}
+        headPosition={headPosition}
+        menuPosition={menuPosition}
+        open={openMenu}
+        shouldFlip={shouldFlip}
+        onClose={handleMenuClose}
+        onMenuRender={onMenuRender}
+      />
     </MenuContext.Provider>
   );
 };

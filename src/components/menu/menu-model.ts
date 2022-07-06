@@ -1,3 +1,5 @@
+import { MenuHeadProps } from "../../models/menu-head.model";
+
 export interface MenuItemProps {
   name: string;
   id?: string;
@@ -6,9 +8,8 @@ export interface MenuItemProps {
   selected?: boolean;
 }
 
-export type MenuProps = {
-  items: MenuItemProps[];
-  menuHeadPosition: {
+export type MenuProps = Pick<MenuHeadProps, "items" | "disableHeader"> & {
+  menuHeadPosition?: {
     x: number;
     y: number;
   };
@@ -16,5 +17,6 @@ export type MenuProps = {
   onClose?: () => void;
   disableAnimation?: boolean;
   flip?: boolean;
-  onRender: (height: number, width: number) => void;
+  onRender?: (height: number, width: number) => void;
+  isSubMenu?: boolean;
 };

@@ -16,4 +16,6 @@ export interface MenuHeadProps {
   shape?: "circle" | "square";
   startPosition?: Position;
   theme?: Theme;
+  disableHeader?: boolean;
+  width?: number;
 }

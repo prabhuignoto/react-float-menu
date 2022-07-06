@@ -4,7 +4,7 @@ import { Position } from "../models/position";
 type positionParams = {
   onMouseDown: () => void;
   onMouseUp: () => void;
-  onDragStart: () => void;
+  onDragStart: (p: { left: number; top: number }) => void;
   onDragEnd: (p: { left: number; top: number }) => void;
   startPosition: Position;
   dimension?: number;
@@ -68,18 +68,15 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   const onMouseMove = (e: MouseEvent) => {
     if (isClicked.current && ref.current) {
       const halfWidth = Math.round(dimension / 2);
-
-      console.log(e);
-
-      if (!isDragged.current) {
-        isDragged.current = true;
-        onDragStart?.();
-      }
-
       const position = {
         left: e.clientX - halfWidth,
         top: e.clientY - halfWidth,
       };
+
+      if (!isDragged.current) {
+        isDragged.current = true;
+        onDragStart?.(position);
+      }
 
       positionRef.current = position;
 

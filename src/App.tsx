@@ -23,13 +23,14 @@ function App() {
         ]}
         items={[
           { name: "File" },
-          { name: "Edit" },
+          { children: [{ name: "Cut" }, { name: "Select All" }], name: "Edit" },
           { name: "Copy" },
           { name: "Save" },
           { name: "Logout" },
         ]}
         shape="square"
         startPosition="top right"
+        width={250}
       >
         <PlusIcon />
       </Menu>

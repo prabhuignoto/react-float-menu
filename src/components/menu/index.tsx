@@ -5,6 +5,7 @@ import {
   FunctionComponent,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -24,6 +25,8 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     disableAnimation,
     flip,
     onRender,
+    disableHeader = false,
+    isSubMenu = false,
   } = props;
 
   const [_items] = useState<MenuItemProps[]>(() =>
@@ -35,6 +38,8 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
   const [height, setHeight] = useState(0);
 
   const { iconSize, icons, theme } = useContext(MenuContext);
+
+  const isFirstRender = useRef(true);
 
   const style = useMemo(
     () =>
@@ -50,9 +55,11 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
       classNames(
         styles.wrapper,
         flip ? styles.flip : "",
+        disableAnimation ? styles.no_animation : "",
+        isSubMenu ? styles.is_sub_menu : "",
         open && !disableAnimation
           ? styles.menu_open
-          : !disableAnimation
+          : !disableAnimation && open !== null
           ? styles.menu_close
           : styles.menu_close_no_animation
       ),
@@ -65,7 +72,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
       setTimeout(() => {
         const height = node.clientHeight + 40;
         setHeight(height);
-        onRender(height, node.clientWidth);
+        onRender?.(height, node.clientWidth);
       }, 500);
     }
   }, []);
@@ -74,13 +81,25 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     onClose?.();
   }, []);
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    }
+  }, []);
+
   return (
     <div className={wrapperClass} style={style}>
-      <div className={styles.toolbar}>
-        <span className={styles.close_btn} role="button" onClick={handleClose}>
-          <CloseIcon />
-        </span>
-      </div>
+      {!disableHeader && (
+        <div className={styles.toolbar}>
+          <span
+            className={styles.close_btn}
+            role="button"
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </span>
+        </div>
+      )}
       <ul className={styles.list} ref={onWrapperInit}>
         {_items.map((item, index) => (
           <MenuItem

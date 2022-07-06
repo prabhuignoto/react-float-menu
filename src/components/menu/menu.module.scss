@@ -6,8 +6,7 @@
   width: 100%;
   border-radius: 4px;
   background: #fff;
-  box-shadow: 0 0 20px 10px rgb(0 0 0 / 10%);
-  overflow: hidden;
+  box-shadow: 0 0 25px 8px rgb(0 0 0 / 10%);
   padding-bottom: 1rem;
   position: relative;
   z-index: 0;
@@ -32,7 +31,7 @@
 
   100% {
     opacity: 1;
-    height: var(--menu-height);
+    height: var(--menu-height, auto);
     visibility: visible;
   }
 }
@@ -40,7 +39,7 @@
 @keyframes menu-close-animation {
   0% {
     opacity: 1;
-    height: var(--menu-height);
+    height: var(--menu-height, auto);
     visibility: visible;
   }
 
@@ -52,18 +51,23 @@
 }
 
 .menu_open {
-  visibility: visible;
-  animation: menu-open-animation 0.5s ease-in-out;
-  height: var(--menu-height);
+  &:not(.no_animation) {
+    visibility: visible;
+    animation: menu-open-animation 0.5s ease-in-out;
+  }
+
+  height: var(--menu-height, auto);
 }
 
 .menu_close {
-  visibility: hidden;
-  animation: menu-close-animation 0.5s ease-in-out;
-  height: 0;
+  &:not(.no_animation) {
+    visibility: hidden;
+    animation: menu-close-animation 0.5s ease-in-out;
+    height: 0;
+  }
 }
 
-.menu_close_no_animation {
+.menu_close_no_animation:not(.no_animation) {
   visibility: hidden;
   height: 0;
 }
@@ -99,4 +103,47 @@
   justify-content: flex-end;
   margin: 0.5rem 0;
   width: 100%;
+}
+
+.menu_container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: absolute;
+  width: var(--rc-float-menu-width, 250px);
+  min-height: 900px;
+}
+
+.menu_arrow {
+  display: flex;
+  height: 10px;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  &.menu_open:not(.flip)::after {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+    top: -10px;
+  }
+
+  &.menu_open.flip::after {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+    bottom: -10px;
+  }
 }
