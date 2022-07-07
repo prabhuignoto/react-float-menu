@@ -29,6 +29,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   disableHeader = false,
   width = 250,
   onSelect,
+  startOffset = 10,
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -57,7 +58,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
 
   const isFirstRender = useRef(true);
 
-  const { onInit, ref } = usePosition<HTMLDivElement>({
+  const { setup, ref } = usePosition<HTMLDivElement>({
     dimension,
     onDragEnd: ({ left, top }) => {
       setHeadPosition({
@@ -72,8 +73,13 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         y: (top || 0) + dimension + 10,
       });
       setCloseMenuImmediate(true);
-      console.log("menu open", openMenu);
       setMenuOpen(false);
+    },
+    onInit: ({ left, top }) => {
+      setHeadPosition({
+        x: left || 0,
+        y: (top || 0) + dimension + 10,
+      });
     },
     onMouseDown: () => {
       setPressedState(true);
@@ -83,6 +89,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       setPressedState(false);
       setMenuOpen((prev) => !prev);
     }, []),
+    startOffset,
     startPosition,
   });
 
@@ -200,11 +207,12 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         width,
       }}
     >
-      <div className={menuHeadClass} ref={onInit} style={style}>
+      <div className={menuHeadClass} ref={setup} role="button" style={style}>
         <span className={styles.icon_container}>{children}</span>
       </div>
       <MenuContainer
         closeImmediate={closeMenuImmediate}
+        disableHeader={disableHeader}
         headPosition={headPosition}
         menuPosition={menuPosition}
         open={openMenu}

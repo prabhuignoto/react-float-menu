@@ -20,6 +20,7 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
   onMenuRender,
   closeImmediate,
   onSelect,
+  disableHeader,
 }) => {
   const { left, top, bottom } = menuPosition;
 
@@ -46,8 +47,7 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
   );
 
   const menuContainerClass = useMemo(
-    () =>
-      classNames(styles.menu_container, open ? styles.menu_open : styles.close),
+    () => classNames(styles.menu_container, open ? styles.open : styles.close),
     [open]
   );
 
@@ -62,6 +62,7 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
       <span className={arrowClass}></span>
       <Menu
         closeImmediate={closeImmediate}
+        disableHeader={disableHeader}
         flip={shouldFlip}
         items={items}
         menuHeadPosition={headPosition}

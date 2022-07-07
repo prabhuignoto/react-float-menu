@@ -9,7 +9,6 @@
   box-shadow: 0 0 25px 8px rgb(0 0 0 / 10%);
   padding-bottom: 1rem;
   position: relative;
-  z-index: 0;
 }
 
 .list {
@@ -71,7 +70,8 @@
 
 .hide {
   visibility: hidden;
-  height: 0;
+
+  // height: 0;
 }
 
 .close_btn {

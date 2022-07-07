@@ -71,7 +71,10 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     [open, flip]
   );
 
-  const listClass = useMemo(() => classNames(styles.list), []);
+  const listClass = useMemo(
+    () => classNames(styles.list, !open ? styles.close : ""),
+    [open]
+  );
 
   const onWrapperInit = useCallback((node: HTMLUListElement) => {
     if (node) {

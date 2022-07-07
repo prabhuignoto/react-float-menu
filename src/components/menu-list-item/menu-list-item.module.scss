@@ -34,6 +34,10 @@
 .list_item_name {
   display: flex;
   align-items: center;
+
+  &.no_icon {
+    padding-left: 1rem;
+  }
 }
 
 .list_item_icon {
@@ -56,7 +60,7 @@
   align-items: flex-start;
   justify-content: center;
   position: absolute;
-  left: 102%;
+  left: 101%;
   top: 0;
 }
 

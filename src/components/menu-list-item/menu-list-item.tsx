@@ -69,7 +69,12 @@ const MenuItem: FunctionComponent<MenuItemViewModel> = ({
   const handleClick = useCallback(
     (ev: MouseEvent | TouchEvent) => {
       ev.stopPropagation();
-      onSelect?.(name);
+
+      if (!children) {
+        onSelect?.(name);
+      } else {
+        toggleSubMenu(ev);
+      }
     },
     [toggleSubMenu]
   );
@@ -88,10 +93,26 @@ const MenuItem: FunctionComponent<MenuItemViewModel> = ({
       onMouseEnter={toggleSubMenu}
       onMouseLeave={handleMouseLeave}
     >
-      {icon && <span className={styles.list_item_icon}>{icon}</span>}
-      <span className={styles.list_item_name}>{name}</span>
+      {icon && (
+        <span className={styles.list_item_icon} role="img">
+          {icon}
+        </span>
+      )}
+      <span
+        aria-label={name}
+        className={classNames(
+          styles.list_item_name,
+          !icon ? styles.no_icon : ""
+        )}
+      >
+        {name}
+      </span>
       {children && (
-        <span className={styles.chevron_right}>
+        <span
+          aria-label="expand menu"
+          className={styles.chevron_right}
+          role="img"
+        >
           <ChevronRight />
         </span>
       )}

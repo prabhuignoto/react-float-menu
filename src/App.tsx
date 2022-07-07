@@ -12,6 +12,7 @@ function App() {
   return (
     <div className="App">
       <Menu
+        disableHeader
         dimension={40}
         iconSize={"1.25rem"}
         icons={[
@@ -41,7 +42,7 @@ function App() {
           { name: "Logout" },
         ]}
         shape="square"
-        startPosition="top right"
+        startPosition="top left"
         width={250}
         onSelect={(val) => console.log(val)}
       >

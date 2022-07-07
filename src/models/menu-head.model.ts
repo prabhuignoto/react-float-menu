@@ -19,4 +19,5 @@ export interface MenuHeadProps {
   disableHeader?: boolean;
   width?: number;
   onSelect?: (path: string) => void;
+  startOffset?: number;
 }
