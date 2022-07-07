@@ -52,6 +52,25 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     [height, JSON.stringify(menuHeadPosition)]
   );
 
+  const canOpen = useMemo(() => open && !closeImmediate && !disableAnimation, [
+    open,
+    closeImmediate,
+  ]);
+
+  const canClose = useMemo(() => !closeImmediate && open !== null, [open]);
+
+  const openClass = useMemo(() => {
+    if (canOpen) {
+      return styles.menu_open;
+    } else if (canClose) {
+      return styles.menu_close;
+    } else if (!isSubMenu) {
+      return styles.hide;
+    } else {
+      return "";
+    }
+  }, [canOpen, canClose]);
+
   const wrapperClass = useMemo(
     () =>
       classNames(
@@ -60,17 +79,10 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
         disableAnimation ? styles.no_animation : "",
         closeImmediate ? styles.no_animation : "",
         isSubMenu ? styles.is_sub_menu : "",
-        open && !closeImmediate && !disableAnimation
-          ? styles.menu_open
-          : !closeImmediate && open !== null
-          ? styles.menu_close
-          : !isSubMenu
-          ? styles.hide
-          : ""
+        openClass
       ),
-    [open, flip]
+    [canOpen, flip, canClose]
   );
-
   const listClass = useMemo(
     () => classNames(styles.list, !open ? styles.close : ""),
     [open]
@@ -80,9 +92,9 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     if (node) {
       wrapperRef.current = node;
       setTimeout(() => {
-        const height = node.clientHeight + 40;
-        setHeight(height);
-        onRender?.(height, node.clientWidth);
+        const wrapperHeight = node.clientHeight + 40;
+        setHeight(wrapperHeight);
+        onRender?.(wrapperHeight, node.clientWidth);
       }, 500);
     }
   }, []);

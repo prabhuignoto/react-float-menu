@@ -103,19 +103,18 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     []
   );
 
-  const menuHeadClass = useMemo(() => {
-    return classNames(
-      styles.menu_head,
-      !isFirstRender.current
-        ? pressedState
-          ? styles.pressed
-          : styles.released
-        : "",
-      {
-        [styles[shape]]: true,
-      }
-    );
+  const pressedClass = useMemo(() => {
+    if (isFirstRender.current) {
+      return "";
+    }
+    return pressedState ? styles.pressed : styles.released;
   }, [pressedState]);
+
+  const menuHeadClass = useMemo(() => {
+    return classNames(styles.menu_head, pressedClass, {
+      [styles[shape]]: true,
+    });
+  }, [pressedClass]);
 
   const handleMenuClose = useCallback(() => {
     setMenuOpen(false);
@@ -129,7 +128,8 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   }, [headPosition.x, headPosition.y, JSON.stringify(menuDimension), openMenu]);
 
   const onMenuRender = useCallback(
-    (height: number, width: number) => setMenuDimension({ height, width }),
+    (menuHeight: number, menuWidth: number) =>
+      setMenuDimension({ height: menuHeight, width: menuWidth }),
     []
   );
 

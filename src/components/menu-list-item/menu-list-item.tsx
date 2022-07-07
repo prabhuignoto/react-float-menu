@@ -53,18 +53,15 @@ const MenuItem: FunctionComponent<MenuItemViewModel> = ({
     showSubMenu,
   ]);
 
-  const toggleSubMenu = useCallback((ev: MouseEvent | TouchEvent) => {
+  const toggleSubMenu = useCallback(() => {
     setShowSubMenu((prev) => !prev);
   }, []);
 
-  const handleMouseLeave = useCallback(
-    (ev: MouseEvent) => {
-      if (showSubMenu) {
-        toggleSubMenu(ev);
-      }
-    },
-    [showSubMenu]
-  );
+  const handleMouseLeave = useCallback(() => {
+    if (showSubMenu) {
+      toggleSubMenu();
+    }
+  }, [showSubMenu]);
 
   const handleClick = useCallback(
     (ev: MouseEvent | TouchEvent) => {
@@ -73,7 +70,7 @@ const MenuItem: FunctionComponent<MenuItemViewModel> = ({
       if (!children) {
         onSelect?.(name);
       } else {
-        toggleSubMenu(ev);
+        toggleSubMenu();
       }
     },
     [toggleSubMenu]
