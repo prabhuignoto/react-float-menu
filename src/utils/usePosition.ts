@@ -4,21 +4,22 @@ import { Position } from "../models/position";
 type positionParams = {
   onMouseDown: () => void;
   onMouseUp: () => void;
-  onDragStart: () => void;
+  onDragStart: (p: { left: number; top: number }) => void;
   onDragEnd: (p: { left: number; top: number }) => void;
   startPosition: Position;
   dimension?: number;
+  startOffset?: number;
+  onInit: (p: { left: number; top: number }) => void;
 };
 
 type usePositionType = <T extends HTMLElement>(
   p: positionParams
 ) => {
-  onInit: (node: T) => void;
+  setup: (node: T) => void;
   ref: RefObject<T>;
 };
 
-const getStartingPosition = (pos: Position) => {
-  const offset = 10;
+const getStartingPosition = (pos: Position, offset: number = 10) => {
   switch (pos) {
     case "top left":
       return `left: ${offset}px;top: ${offset}px;`;
@@ -40,21 +41,23 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   onDragEnd,
   startPosition,
   dimension = 0,
+  startOffset,
+  onInit,
 }: positionParams) {
   const ref = useRef<T | null>(null);
-  const isClicked = useRef<Boolean>(false);
-  const isDragged = useRef<Boolean>(false);
+  const isClicked = useRef<boolean>(false);
+  const isDragged = useRef<boolean>(false);
   const positionRef = useRef<{ left: number; top: number }>({
     left: 0,
     top: 0,
   });
 
-  const handleMouseDown = (e: MouseEvent) => {
+  const handleMouseDown = () => {
     isClicked.current = true;
     onMouseDown?.();
   };
 
-  const handleMouseUp = (e: MouseEvent) => {
+  const handleMouseUp = () => {
     isClicked.current = false;
 
     if (!isDragged.current) {
@@ -68,36 +71,42 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   const onMouseMove = (e: MouseEvent) => {
     if (isClicked.current && ref.current) {
       const halfWidth = Math.round(dimension / 2);
-
-      console.log(e);
-
-      if (!isDragged.current) {
-        isDragged.current = true;
-        onDragStart?.();
-      }
-
       const position = {
         left: e.clientX - halfWidth,
         top: e.clientY - halfWidth,
       };
 
+      if (!isDragged.current) {
+        isDragged.current = true;
+        onDragStart?.(position);
+      }
+
       positionRef.current = position;
 
-      ref.current.style.cssText += `
-        left: ${position.left}px;
-        top: ${position.top}px;
-      `;
+      ref.current.style.cssText += `left: ${position.left}px;`;
+
+      if (position.top >= 0) {
+        ref.current.style.cssText += `top: ${
+          position.top < 0 ? 0 : position.top
+        }px`;
+      }
     }
   };
 
-  const onInit = useCallback((node: T) => {
+  const setup = useCallback((node: T) => {
     if (node) {
       ref.current = node;
       node.addEventListener("mousedown", handleMouseDown);
       node.addEventListener("mouseup", handleMouseUp);
       node.style.cssText += `position: absolute;z-index: 9999;${getStartingPosition(
-        startPosition
+        startPosition,
+        startOffset
       )}`;
+      const { left, top } = node.getBoundingClientRect();
+      onInit({
+        left,
+        top,
+      });
     }
   }, []);
 
@@ -111,8 +120,8 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   }, []);
 
   return {
-    onInit,
     ref,
+    setup,
   };
 };
 

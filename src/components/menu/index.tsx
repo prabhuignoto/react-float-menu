@@ -5,13 +5,14 @@ import {
   FunctionComponent,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { CloseIcon } from "../../icons";
 import { MenuContext } from "../context";
-import { MenuItem } from "./menu-list-item";
+import { MenuItem } from "../menu-list-item/menu-list-item";
 import { MenuItemProps, MenuProps } from "./menu-model";
 import styles from "./menu.module.scss";
 
@@ -21,9 +22,13 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     menuHeadPosition,
     open,
     onClose,
-    disableAnimation,
+    closeImmediate,
     flip,
     onRender,
+    disableHeader = false,
+    disableAnimation = false,
+    isSubMenu = false,
+    onSelect,
   } = props;
 
   const [_items] = useState<MenuItemProps[]>(() =>
@@ -36,6 +41,8 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
 
   const { iconSize, icons, theme } = useContext(MenuContext);
 
+  const isFirstRender = useRef(true);
+
   const style = useMemo(
     () =>
       ({
@@ -45,27 +52,49 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     [height, JSON.stringify(menuHeadPosition)]
   );
 
+  const canOpen = useMemo(() => open && !closeImmediate && !disableAnimation, [
+    open,
+    closeImmediate,
+  ]);
+
+  const canClose = useMemo(() => !closeImmediate && open !== null, [open]);
+
+  const openClass = useMemo(() => {
+    if (canOpen) {
+      return styles.menu_open;
+    } else if (canClose) {
+      return styles.menu_close;
+    } else if (!isSubMenu) {
+      return styles.hide;
+    } else {
+      return "";
+    }
+  }, [canOpen, canClose]);
+
   const wrapperClass = useMemo(
     () =>
       classNames(
         styles.wrapper,
         flip ? styles.flip : "",
-        open && !disableAnimation
-          ? styles.menu_open
-          : !disableAnimation
-          ? styles.menu_close
-          : styles.menu_close_no_animation
+        disableAnimation ? styles.no_animation : "",
+        closeImmediate ? styles.no_animation : "",
+        isSubMenu ? styles.is_sub_menu : "",
+        openClass
       ),
-    [open, flip]
+    [canOpen, flip, canClose]
+  );
+  const listClass = useMemo(
+    () => classNames(styles.list, !open ? styles.close : ""),
+    [open]
   );
 
   const onWrapperInit = useCallback((node: HTMLUListElement) => {
     if (node) {
       wrapperRef.current = node;
       setTimeout(() => {
-        const height = node.clientHeight + 40;
-        setHeight(height);
-        onRender(height, node.clientWidth);
+        const wrapperHeight = node.clientHeight + 40;
+        setHeight(wrapperHeight);
+        onRender?.(wrapperHeight, node.clientWidth);
       }, 500);
     }
   }, []);
@@ -74,20 +103,34 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     onClose?.();
   }, []);
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    }
+  }, []);
+
   return (
     <div className={wrapperClass} style={style}>
-      <div className={styles.toolbar}>
-        <span className={styles.close_btn} role="button" onClick={handleClose}>
-          <CloseIcon />
-        </span>
-      </div>
-      <ul className={styles.list} ref={onWrapperInit}>
+      {!disableHeader && (
+        <div className={styles.toolbar}>
+          <span
+            className={styles.close_btn}
+            role="button"
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </span>
+        </div>
+      )}
+      <ul className={listClass} ref={onWrapperInit}>
         {_items.map((item, index) => (
           <MenuItem
             {...item}
             icon={icons && icons[index]}
             iconSize={iconSize}
             key={item.id}
+            open={open}
+            onSelect={onSelect}
           />
         ))}
       </ul>

@@ -28,12 +28,8 @@ module.exports = {
         shorthandFirst: true,
       },
     ],
-    "sort-keys": [
-      "error",
-      "asc",
-      { caseSensitive: true, minKeys: 2, natural: false },
-    ],
-    "sort-keys-fix/sort-keys-fix": "warn",
+    "sort-keys": ["error", "asc", { caseSensitive: true, natural: true }],
+    "sort-keys-fix/sort-keys-fix": "error",
   },
   settings: {
     react: {

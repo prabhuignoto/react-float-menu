@@ -12,6 +12,7 @@ function App() {
   return (
     <div className="App">
       <Menu
+        disableHeader
         dimension={40}
         iconSize={"1.25rem"}
         icons={[
@@ -23,13 +24,27 @@ function App() {
         ]}
         items={[
           { name: "File" },
-          { name: "Edit" },
-          { name: "Copy" },
+          {
+            children: [
+              { children: [{ name: "Cut 1" }, { name: "Cut 2" }], name: "Cut" },
+              { name: "Select All" },
+            ],
+            name: "Edit",
+          },
+          {
+            children: [
+              { name: "Copy from clipboard" },
+              { name: "Copy selection" },
+            ],
+            name: "Copy",
+          },
           { name: "Save" },
           { name: "Logout" },
         ]}
         shape="square"
-        startPosition="top right"
+        startPosition="top left"
+        width={250}
+        onSelect={(val) => console.log(val)}
       >
         <PlusIcon />
       </Menu>
