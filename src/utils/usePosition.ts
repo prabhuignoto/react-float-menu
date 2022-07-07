@@ -45,19 +45,19 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   onInit,
 }: positionParams) {
   const ref = useRef<T | null>(null);
-  const isClicked = useRef<Boolean>(false);
-  const isDragged = useRef<Boolean>(false);
+  const isClicked = useRef<boolean>(false);
+  const isDragged = useRef<boolean>(false);
   const positionRef = useRef<{ left: number; top: number }>({
     left: 0,
     top: 0,
   });
 
-  const handleMouseDown = (e: MouseEvent) => {
+  const handleMouseDown = () => {
     isClicked.current = true;
     onMouseDown?.();
   };
 
-  const handleMouseUp = (e: MouseEvent) => {
+  const handleMouseUp = () => {
     isClicked.current = false;
 
     if (!isDragged.current) {
