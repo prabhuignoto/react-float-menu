@@ -1,4 +1,4 @@
-const SvgComponent = () => (
+const ChevronRight = () => (
   <svg
     className="feather feather-chevron-right"
     fill="none"
@@ -13,4 +13,4 @@ const SvgComponent = () => (
   </svg>
 );
 
-export default SvgComponent;
+export default ChevronRight;
