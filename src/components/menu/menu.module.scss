@@ -27,12 +27,14 @@
     opacity: 0;
     height: 0;
     visibility: hidden;
+    overflow: hidden;
   }
 
   100% {
     opacity: 1;
     height: var(--menu-height, auto);
     visibility: visible;
+    overflow: hidden;
   }
 }
 
@@ -41,12 +43,14 @@
     opacity: 1;
     height: var(--menu-height, auto);
     visibility: visible;
+    overflow: hidden;
   }
 
   100% {
     opacity: 0;
     height: 0;
     visibility: hidden;
+    overflow: hidden;
   }
 }
 
@@ -59,15 +63,13 @@
   height: var(--menu-height, auto);
 }
 
-.menu_close {
-  &:not(.no_animation) {
-    visibility: hidden;
-    animation: menu-close-animation 0.5s ease-in-out;
-    height: 0;
-  }
+.menu_close:not(.no_animation) {
+  visibility: hidden;
+  animation: menu-close-animation 0.5s ease-in-out;
+  height: 0;
 }
 
-.menu_close_no_animation:not(.no_animation) {
+.hide {
   visibility: hidden;
   height: 0;
 }

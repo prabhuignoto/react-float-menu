@@ -6,18 +6,21 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
-import { Menu } from "../menu";
 import { ChevronRight } from "../../icons";
 import { MenuHeadProps } from "../../models/menu-head.model";
 import { MenuContext } from "../context";
-import styles from "./menu-list-item.module.scss";
+import { Menu } from "../menu";
 import { MenuItemProps } from "../menu/menu-model";
+import styles from "./menu-list-item.module.scss";
 
 export type MenuItemViewModel = MenuItemProps & {
   icon?: ReactNode;
+  open?: boolean | null;
+  onSelect?: (path: string) => void;
 } & Pick<MenuHeadProps, "iconSize">;
 
 const MenuItem: FunctionComponent<MenuItemViewModel> = ({
@@ -25,6 +28,8 @@ const MenuItem: FunctionComponent<MenuItemViewModel> = ({
   icon,
   iconSize,
   children,
+  open,
+  onSelect,
 }) => {
   const iconStyle = useMemo(
     () =>
@@ -48,15 +53,41 @@ const MenuItem: FunctionComponent<MenuItemViewModel> = ({
     showSubMenu,
   ]);
 
-  const handleClick = useCallback(
+  const toggleSubMenu = useCallback((ev: MouseEvent | TouchEvent) => {
+    setShowSubMenu((prev) => !prev);
+  }, []);
+
+  const handleMouseLeave = useCallback(
     (ev: MouseEvent) => {
-      setShowSubMenu(!showSubMenu);
+      if (showSubMenu) {
+        toggleSubMenu(ev);
+      }
     },
     [showSubMenu]
   );
 
+  const handleClick = useCallback(
+    (ev: MouseEvent | TouchEvent) => {
+      ev.stopPropagation();
+      onSelect?.(name);
+    },
+    [toggleSubMenu]
+  );
+
+  useEffect(() => {
+    if (!open) {
+      setShowSubMenu(false);
+    }
+  }, [open]);
+
   return (
-    <li className={itemClass} style={iconStyle} onClick={handleClick}>
+    <li
+      className={itemClass}
+      style={iconStyle}
+      onMouseDown={handleClick}
+      onMouseEnter={toggleSubMenu}
+      onMouseLeave={handleMouseLeave}
+    >
       {icon && <span className={styles.list_item_icon}>{icon}</span>}
       <span className={styles.list_item_name}>{name}</span>
       {children && (
@@ -69,7 +100,14 @@ const MenuItem: FunctionComponent<MenuItemViewModel> = ({
         style={{ width: `${width}px` }}
       >
         {canShowSubMenu && (
-          <Menu disableAnimation disableHeader isSubMenu items={children} />
+          <Menu
+            disableAnimation
+            disableHeader
+            isSubMenu
+            items={children}
+            open={open}
+            onSelect={onSelect}
+          />
         )}
       </div>
     </li>

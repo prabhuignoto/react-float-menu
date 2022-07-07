@@ -8,24 +8,8 @@ import {
 } from "react";
 import { MenuContext } from "../context";
 import { Menu } from "../menu";
+import { MenuContainerProps } from "./menu-container.model";
 import styles from "./menu-container.module.scss";
-
-export type MenuContainerProps = {
-  shouldFlip: boolean;
-  menuPosition: {
-    left: number;
-    top?: number;
-    bottom?: number;
-  };
-  headPosition: {
-    x: number;
-    y: number;
-  };
-  open: boolean | null;
-  onClose: () => void;
-  onMenuRender: (h: number, w: number) => void;
-  disableAnimation?: boolean;
-};
 
 const MenuContainer: FunctionComponent<MenuContainerProps> = ({
   shouldFlip,
@@ -34,7 +18,8 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
   open,
   onClose,
   onMenuRender,
-  disableAnimation,
+  closeImmediate,
+  onSelect,
 }) => {
   const { left, top, bottom } = menuPosition;
 
@@ -48,7 +33,7 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
       [shouldFlip ? "bottom" : "top"]: `${shouldFlip ? bottom : top}px`,
       left: `${left}px`,
     };
-  }, [JSON.stringify(menuPosition), shouldFlip, width]);
+  }, [shouldFlip, width, left, top, bottom]);
 
   const arrowClass = useMemo(
     () =>
@@ -76,13 +61,14 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
     <div className={menuContainerClass} style={menuContainerStyle}>
       <span className={arrowClass}></span>
       <Menu
-        disableAnimation={disableAnimation}
+        closeImmediate={closeImmediate}
         flip={shouldFlip}
         items={items}
         menuHeadPosition={headPosition}
         open={open}
         onClose={onClose}
         onRender={onMenuRender}
+        onSelect={onSelect}
       />
     </div>
   );

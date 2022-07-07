@@ -18,4 +18,5 @@ export interface MenuHeadProps {
   theme?: Theme;
   disableHeader?: boolean;
   width?: number;
+  onSelect?: (path: string) => void;
 }

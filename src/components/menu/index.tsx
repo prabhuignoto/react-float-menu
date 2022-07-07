@@ -22,11 +22,13 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     menuHeadPosition,
     open,
     onClose,
-    disableAnimation,
+    closeImmediate,
     flip,
     onRender,
     disableHeader = false,
+    disableAnimation = false,
     isSubMenu = false,
+    onSelect,
   } = props;
 
   const [_items] = useState<MenuItemProps[]>(() =>
@@ -56,15 +58,20 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
         styles.wrapper,
         flip ? styles.flip : "",
         disableAnimation ? styles.no_animation : "",
+        closeImmediate ? styles.no_animation : "",
         isSubMenu ? styles.is_sub_menu : "",
-        open && !disableAnimation
+        open && !closeImmediate && !disableAnimation
           ? styles.menu_open
-          : !disableAnimation && open !== null
+          : !closeImmediate && open !== null
           ? styles.menu_close
-          : styles.menu_close_no_animation
+          : !isSubMenu
+          ? styles.hide
+          : ""
       ),
     [open, flip]
   );
+
+  const listClass = useMemo(() => classNames(styles.list), []);
 
   const onWrapperInit = useCallback((node: HTMLUListElement) => {
     if (node) {
@@ -100,13 +107,15 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
           </span>
         </div>
       )}
-      <ul className={styles.list} ref={onWrapperInit}>
+      <ul className={listClass} ref={onWrapperInit}>
         {_items.map((item, index) => (
           <MenuItem
             {...item}
             icon={icons && icons[index]}
             iconSize={iconSize}
             key={item.id}
+            open={open}
+            onSelect={onSelect}
           />
         ))}
       </ul>

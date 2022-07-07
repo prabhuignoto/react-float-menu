@@ -23,14 +23,27 @@ function App() {
         ]}
         items={[
           { name: "File" },
-          { children: [{ name: "Cut" }, { name: "Select All" }], name: "Edit" },
-          { name: "Copy" },
+          {
+            children: [
+              { children: [{ name: "Cut 1" }, { name: "Cut 2" }], name: "Cut" },
+              { name: "Select All" },
+            ],
+            name: "Edit",
+          },
+          {
+            children: [
+              { name: "Copy from clipboard" },
+              { name: "Copy selection" },
+            ],
+            name: "Copy",
+          },
           { name: "Save" },
           { name: "Logout" },
         ]}
         shape="square"
         startPosition="top right"
         width={250}
+        onSelect={(val) => console.log(val)}
       >
         <PlusIcon />
       </Menu>

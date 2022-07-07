@@ -28,6 +28,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   },
   disableHeader = false,
   width = 250,
+  onSelect,
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -36,10 +37,12 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     y: number;
   }>({ x: 0, y: 0 });
   const [closeMenuImmediate, setCloseMenuImmediate] = useState(false);
+
   const [menuDimension, setMenuDimension] = useState<{
     height: number;
     width: number;
   }>({ height: 0, width: 0 });
+
   const [menuPosition, setMenuPosition] = useState<{
     left: number;
     top?: number;
@@ -69,13 +72,14 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         y: (top || 0) + dimension + 10,
       });
       setCloseMenuImmediate(true);
-      // setMenuOpen(false);
+      console.log("menu open", openMenu);
+      setMenuOpen(false);
     },
     onMouseDown: () => {
       setPressedState(true);
       setCloseMenuImmediate(false);
     },
-    onMouseUp: useCallback((rect?: DOMRect) => {
+    onMouseUp: useCallback(() => {
       setPressedState(false);
       setMenuOpen((prev) => !prev);
     }, []),
@@ -178,6 +182,11 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
   }, []);
 
+  const handleSelection = useCallback((path: string) => {
+    onSelect?.(path);
+    handleMenuClose();
+  }, []);
+
   return (
     <MenuContext.Provider
       value={{
@@ -195,13 +204,14 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         <span className={styles.icon_container}>{children}</span>
       </div>
       <MenuContainer
-        disableAnimation={closeMenuImmediate}
+        closeImmediate={closeMenuImmediate}
         headPosition={headPosition}
         menuPosition={menuPosition}
         open={openMenu}
         shouldFlip={shouldFlip}
         onClose={handleMenuClose}
         onMenuRender={onMenuRender}
+        onSelect={handleSelection}
       />
     </MenuContext.Provider>
   );
