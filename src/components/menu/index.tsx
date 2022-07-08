@@ -44,7 +44,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
 
   const isFirstRender = useRef(true);
 
-  const activeIndex = useRef<number>(-1);
+  const activeIndex = useRef<number>(0);
 
   const style = useMemo(
     () =>
@@ -95,7 +95,6 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     (node: HTMLUListElement) => {
       if (node) {
         wrapperRef.current = node;
-        console.log("logged");
 
         setTimeout(() => {
           const wrapperHeight = node.clientHeight + 40;
@@ -108,6 +107,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
   );
 
   const handleClose = useCallback(() => {
+    activeIndex.current = -1;
     onClose?.();
   }, []);
 
@@ -123,30 +123,37 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     }
 
     wrapperRef.current?.addEventListener("keyup", (ev) => {
-      if (ev.key !== "ArrowDown" && ev.key !== "ArrowUp") {
+      if (
+        ev.key !== "ArrowDown" &&
+        ev.key !== "ArrowUp" &&
+        ev.key !== "Escape"
+      ) {
         return;
       }
+
       ev.stopPropagation();
 
-      let nextIndex = activeIndex.current + (ev.key === "ArrowDown" ? 1 : -1);
+      if (ev.key === "Escape") {
+        handleClose();
+      } else if (ev.key === "ArrowDown" || ev.key === "ArrowUp") {
+        let nextIndex = activeIndex.current + (ev.key === "ArrowDown" ? 1 : -1);
 
-      if (nextIndex < 0) {
-        nextIndex = _items.length - 1;
-      } else if (nextIndex > _items.length - 1) {
-        nextIndex = 0;
+        if (nextIndex < 0) {
+          nextIndex = _items.length - 1;
+        } else if (nextIndex > _items.length - 1) {
+          nextIndex = 0;
+        }
+
+        const elementToFocus = wrapperRef.current?.querySelectorAll(
+          `li:nth-of-type(${nextIndex + 1})`
+        )[0] as HTMLElement;
+
+        elementToFocus?.focus();
+
+        activeIndex.current = nextIndex;
       }
-
-      const elementToFocus = wrapperRef.current?.querySelectorAll(
-        `li:nth-of-type(${nextIndex + 1})`
-      )[0] as HTMLElement;
-
-      elementToFocus?.focus();
-
-      activeIndex.current = nextIndex;
     });
   }, [_items.length]);
-
-  console.log(activeIndex.current);
 
   return (
     <div className={wrapperClass} style={style}>
@@ -164,11 +171,12 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
         </div>
       )}
       <ul className={listClass} ref={onWrapperInit}>
-        {_items.map((item) => (
+        {_items.map((item, index) => (
           <MenuItem
             {...item}
             icon={item.icon}
             iconSize={iconSize}
+            index={index}
             key={item.id}
             open={open}
             onSelect={onSelect}

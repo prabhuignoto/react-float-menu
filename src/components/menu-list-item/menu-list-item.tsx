@@ -4,7 +4,6 @@ import {
   KeyboardEvent,
   memo,
   PointerEvent,
-  ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -12,21 +11,14 @@ import {
   useState,
 } from "react";
 import { ChevronRight } from "../../icons";
-import { MenuHeadProps } from "../../models/menu-head.model";
 import { MenuContext } from "../context";
 import { Menu } from "../menu";
-import { MenuItemProps } from "../menu/menu-model";
+import { MenuItemViewModel } from "./menu-list-item.model";
 import styles from "./menu-list-item.module.scss";
-
-export type MenuItemViewModel = MenuItemProps & {
-  icon?: ReactNode;
-  open?: boolean | null;
-  onSelect?: (path: string) => void;
-} & Pick<MenuHeadProps, "iconSize">;
 
 const MenuItem = memo(
   (props: MenuItemViewModel) => {
-    const { name, icon, iconSize, children, open, onSelect } = props;
+    const { name, icon, iconSize, children, open, onSelect, index } = props;
     const iconStyle = useMemo(
       () =>
         ({
@@ -64,7 +56,7 @@ const MenuItem = memo(
         ev.stopPropagation();
 
         if (!children) {
-          onSelect?.(name);
+          onSelect?.(name, index);
         } else {
           toggleSubMenu();
         }
@@ -81,7 +73,7 @@ const MenuItem = memo(
       if (children) {
         toggleSubMenu?.();
       } else {
-        onSelect?.(name);
+        onSelect?.(name, index);
       }
     }, []);
 

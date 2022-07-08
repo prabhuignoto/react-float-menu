@@ -20,6 +20,7 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   const ref = useRef<T | null>(null);
   const isClicked = useRef<boolean>(false);
   const isDragged = useRef<boolean>(false);
+  const keyPressed = useRef<boolean>(false);
 
   const positionRef = useRef<{ left: number; top: number }>({
     left: 0,
@@ -31,9 +32,14 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
     const ele = ev.target as HTMLElement;
 
     if (ev instanceof PointerEvent) {
+      keyPressed.current = false;
       ele.setPointerCapture(ev.pointerId);
-    } else if (ev.key !== "Enter") {
-      return;
+    } else if (ev instanceof KeyboardEvent) {
+      keyPressed.current = true;
+
+      if (ev.key !== "Enter") {
+        return;
+      }
     }
 
     onPointerDown?.();
@@ -46,7 +52,7 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
 
     if (ev instanceof PointerEvent) {
       ele.releasePointerCapture(ev.pointerId);
-    } else if (ev.key !== "Enter") {
+    } else if (ev instanceof KeyboardEvent && ev.key !== "Enter") {
       return;
     }
 
@@ -59,7 +65,7 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   };
 
   const onPointerMove = (e: PointerEvent) => {
-    if (isClicked.current && ref.current) {
+    if (isClicked.current && ref.current && !keyPressed.current) {
       const halfWidth = Math.round(dimension / 2);
       const x = e.clientX - halfWidth;
       const y = e.clientY - halfWidth;
