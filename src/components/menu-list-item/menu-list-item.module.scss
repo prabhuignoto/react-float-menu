@@ -4,6 +4,8 @@
   cursor: pointer;
   align-self: center;
   position: relative;
+  touch-action: none;
+  user-select: none;
 
   &.no_icon {
     display: flex;
@@ -28,6 +30,12 @@
 
   &.rtl {
     direction: rtl;
+  }
+
+  &:focus {
+    outline: 1px solid var(--rc-float-menu-theme-primary);
+    outline-offset: 2px;
+    outline-width: 2px;
   }
 }
 

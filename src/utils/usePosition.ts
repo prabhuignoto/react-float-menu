@@ -1,42 +1,15 @@
-import { RefObject, useCallback, useEffect, useRef } from "react";
-import { Position } from "../models/position";
-
-type positionParams = {
-  onMouseDown: () => void;
-  onMouseUp: () => void;
-  onDragStart: (p: { left: number; top: number }) => void;
-  onDragEnd: (p: { left: number; top: number }) => void;
-  startPosition: Position;
-  dimension?: number;
-  startOffset?: number;
-  onInit: (p: { left: number; top: number }) => void;
-};
-
-type usePositionType = <T extends HTMLElement>(
-  p: positionParams
-) => {
-  setup: (node: T) => void;
-  ref: RefObject<T>;
-};
-
-const getStartingPosition = (pos: Position, offset: number = 10) => {
-  switch (pos) {
-    case "top left":
-      return `left: ${offset}px;top: ${offset}px;`;
-    case "top right":
-      return `right: ${offset}px;top: ${offset}px;`;
-    case "bottom left":
-      return `left: ${offset}px;bottom: ${offset}px;`;
-    case "bottom right":
-      return `right: ${offset}px;bottom: ${offset}px;`;
-    default:
-      return `left: ${offset}px;top: ${offset}px;`;
-  }
-};
+import { useCallback, useEffect, useRef } from "react";
+import {
+  getLeft,
+  getStartingPosition,
+  getTop,
+  positionParams,
+  usePositionType,
+} from "./helpers";
 
 const usePosition: usePositionType = function <T extends HTMLElement>({
-  onMouseDown,
-  onMouseUp,
+  onPointerDown,
+  onPointerUp,
   onDragStart,
   onDragEnd,
   startPosition,
@@ -47,33 +20,53 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   const ref = useRef<T | null>(null);
   const isClicked = useRef<boolean>(false);
   const isDragged = useRef<boolean>(false);
+
   const positionRef = useRef<{ left: number; top: number }>({
     left: 0,
     top: 0,
   });
 
-  const handleMouseDown = () => {
+  const handlePointerDown = (ev: PointerEvent | KeyboardEvent) => {
     isClicked.current = true;
-    onMouseDown?.();
+    const ele = ev.target as HTMLElement;
+
+    if (ev instanceof PointerEvent) {
+      ele.setPointerCapture(ev.pointerId);
+    } else if (ev.key !== "Enter") {
+      return;
+    }
+
+    onPointerDown?.();
   };
 
-  const handleMouseUp = () => {
+  const handlePointerUp = (ev: PointerEvent | KeyboardEvent) => {
     isClicked.current = false;
 
+    const ele = ev.target as HTMLElement;
+
+    if (ev instanceof PointerEvent) {
+      ele.releasePointerCapture(ev.pointerId);
+    } else if (ev.key !== "Enter") {
+      return;
+    }
+
     if (!isDragged.current) {
-      onMouseUp?.();
+      onPointerUp?.();
     } else {
       isDragged.current = false;
       onDragEnd?.(positionRef.current);
     }
   };
 
-  const onMouseMove = (e: MouseEvent) => {
+  const onPointerMove = (e: PointerEvent) => {
     if (isClicked.current && ref.current) {
       const halfWidth = Math.round(dimension / 2);
+      const x = e.clientX - halfWidth;
+      const y = e.clientY - halfWidth;
+
       const position = {
-        left: e.clientX - halfWidth,
-        top: e.clientY - halfWidth,
+        left: getLeft(x, dimension),
+        top: getTop(y, dimension),
       };
 
       if (!isDragged.current) {
@@ -82,22 +75,18 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
       }
 
       positionRef.current = position;
-
-      ref.current.style.cssText += `left: ${position.left}px;`;
-
-      if (position.top >= 0) {
-        ref.current.style.cssText += `top: ${
-          position.top < 0 ? 0 : position.top
-        }px`;
-      }
+      ref.current.style.cssText += `top: ${position.top}px;left: ${position.left}px;`;
     }
   };
 
   const setup = useCallback((node: T) => {
     if (node) {
       ref.current = node;
-      node.addEventListener("mousedown", handleMouseDown);
-      node.addEventListener("mouseup", handleMouseUp);
+      node.addEventListener("pointerdown", handlePointerDown);
+      node.addEventListener("keydown", handlePointerDown);
+      node.addEventListener("pointerup", handlePointerUp);
+      node.addEventListener("keyup", handlePointerUp);
+      node.style.touchAction = "none";
       node.style.cssText += `position: absolute;z-index: 9999;${getStartingPosition(
         startPosition,
         startOffset
@@ -111,11 +100,11 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   }, []);
 
   useEffect(() => {
-    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("pointermove", onPointerMove);
 
     // cleanup
     return () => {
-      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("pointermove", onPointerMove);
     };
   }, []);
 

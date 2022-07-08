@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import {
   CSSProperties,
   FunctionComponent,
+  KeyboardEvent,
   useCallback,
   useContext,
   useEffect,
@@ -39,9 +40,11 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
 
   const [height, setHeight] = useState(0);
 
-  const { iconSize, icons, theme } = useContext(MenuContext);
+  const { iconSize, theme } = useContext(MenuContext);
 
   const isFirstRender = useRef(true);
+
+  const activeIndex = useRef<number>(-1);
 
   const style = useMemo(
     () =>
@@ -88,26 +91,62 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     [open]
   );
 
-  const onWrapperInit = useCallback((node: HTMLUListElement) => {
-    if (node) {
-      wrapperRef.current = node;
-      setTimeout(() => {
-        const wrapperHeight = node.clientHeight + 40;
-        setHeight(wrapperHeight);
-        onRender?.(wrapperHeight, node.clientWidth);
-      }, 500);
-    }
-  }, []);
+  const onWrapperInit = useCallback(
+    (node: HTMLUListElement) => {
+      if (node) {
+        wrapperRef.current = node;
+        console.log("logged");
+
+        setTimeout(() => {
+          const wrapperHeight = node.clientHeight + 40;
+          setHeight(wrapperHeight);
+          onRender?.(wrapperHeight, node.clientWidth);
+        }, 500);
+      }
+    },
+    [_items.length, activeIndex]
+  );
 
   const handleClose = useCallback(() => {
     onClose?.();
+  }, []);
+
+  const handleCloseViaKeyboard = useCallback((ev: KeyboardEvent) => {
+    if (ev.key === "Enter") {
+      onClose?.();
+    }
   }, []);
 
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
     }
-  }, []);
+
+    wrapperRef.current?.addEventListener("keyup", (ev) => {
+      if (ev.key !== "ArrowDown" && ev.key !== "ArrowUp") {
+        return;
+      }
+      ev.stopPropagation();
+
+      let nextIndex = activeIndex.current + (ev.key === "ArrowDown" ? 1 : -1);
+
+      if (nextIndex < 0) {
+        nextIndex = _items.length - 1;
+      } else if (nextIndex > _items.length - 1) {
+        nextIndex = 0;
+      }
+
+      const elementToFocus = wrapperRef.current?.querySelectorAll(
+        `li:nth-of-type(${nextIndex + 1})`
+      )[0] as HTMLElement;
+
+      elementToFocus?.focus();
+
+      activeIndex.current = nextIndex;
+    });
+  }, [_items.length]);
+
+  console.log(activeIndex.current);
 
   return (
     <div className={wrapperClass} style={style}>
@@ -116,17 +155,19 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
           <span
             className={styles.close_btn}
             role="button"
+            tabIndex={0}
             onClick={handleClose}
+            onKeyUp={handleCloseViaKeyboard}
           >
             <CloseIcon />
           </span>
         </div>
       )}
       <ul className={listClass} ref={onWrapperInit}>
-        {_items.map((item, index) => (
+        {_items.map((item) => (
           <MenuItem
             {...item}
-            icon={icons && icons[index]}
+            icon={item.icon}
             iconSize={iconSize}
             key={item.id}
             open={open}

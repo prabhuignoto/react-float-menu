@@ -15,6 +15,12 @@
   &.square {
     border-radius: 4px;
   }
+
+  &:focus {
+    outline: 1px solid var(--rc-float-menu-theme-primary);
+    outline-offset: 3px;
+    outline-width: 2px;
+  }
 }
 
 @keyframes pressed-animation {

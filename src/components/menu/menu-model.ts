@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { MenuHeadProps } from "../../models/menu-head.model";
 
 export interface MenuItemProps {
@@ -6,6 +7,7 @@ export interface MenuItemProps {
   onSelected?: (id: string, name: string) => void;
   children?: MenuItemProps[];
   selected?: boolean;
+  icon?: ReactNode;
 }
 
 export type MenuProps = Pick<MenuHeadProps, "items" | "disableHeader"> & {

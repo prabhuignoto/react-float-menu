@@ -12,34 +12,28 @@ function App() {
   return (
     <div className="App">
       <Menu
-        disableHeader
         dimension={40}
         iconSize={"1.25rem"}
-        icons={[
-          <FileIcon key="file" />,
-          <EditIcon key="edit" />,
-          <CopyIcon key="copy" />,
-          <SaveIcon key="save" />,
-          <LogoutIcon key="logout" />,
-        ]}
         items={[
-          { name: "File" },
+          { icon: <FileIcon />, name: "File" },
           {
             children: [
               { children: [{ name: "Cut 1" }, { name: "Cut 2" }], name: "Cut" },
               { name: "Select All" },
             ],
+            icon: <EditIcon />,
             name: "Edit",
           },
           {
             children: [
-              { name: "Copy from clipboard" },
-              { name: "Copy selection" },
+              { icon: <CopyIcon />, name: "Copy from clipboard" },
+              { icon: <CopyIcon />, name: "Copy selection" },
             ],
+            icon: <CopyIcon />,
             name: "Copy",
           },
-          { name: "Save" },
-          { name: "Logout" },
+          { icon: <SaveIcon />, name: "Save" },
+          { icon: <LogoutIcon />, name: "Logout" },
         ]}
         shape="square"
         startPosition="top left"
