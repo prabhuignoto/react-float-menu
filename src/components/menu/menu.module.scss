@@ -70,8 +70,6 @@
 
 .hide {
   visibility: hidden;
-
-  // height: 0;
 }
 
 .close_btn {
@@ -87,6 +85,11 @@
   margin-right: 4px;
   cursor: pointer;
   color: var(--rc-float-menu-theme-primary);
+
+  &:focus {
+    outline: 2px solid var(--rc-float-menu-theme-primary);
+    outline-offset: 1px;
+  }
 
   &:hover {
     background: var(--rc-float-menu-theme-primary);

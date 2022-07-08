@@ -81,11 +81,11 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         y: (top || 0) + dimension + 10,
       });
     },
-    onMouseDown: () => {
+    onPointerDown: () => {
       setPressedState(true);
       setCloseMenuImmediate(false);
     },
-    onMouseUp: useCallback(() => {
+    onPointerUp: useCallback(() => {
       setPressedState(false);
       setMenuOpen((prev) => !prev);
     }, []),
@@ -119,6 +119,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   const handleMenuClose = useCallback(() => {
     setMenuOpen(false);
     setCloseMenuImmediate(false);
+    ref.current?.focus();
   }, []);
 
   const shouldFlip = useMemo(() => {
@@ -151,9 +152,11 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   ]);
 
   useEffect(() => {
-    if (menuPosition.left < 0) {
+    const { left } = menuPosition;
+    const { width: menuWidth } = menuDimension;
+    if (left < 0) {
       setMenuHiddenTowards("left");
-    } else if (menuPosition.left + menuDimension.width > window.innerWidth) {
+    } else if (left + menuWidth > window.innerWidth) {
       setMenuHiddenTowards("right");
     } else {
       setMenuHiddenTowards(null);
@@ -169,11 +172,11 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         left: 10,
       });
       ref.current!.style.cssText += `left: ${
-        Math.round(menuDimension.width / 2) - headHalfWidth + 10
+        Math.round(menuDimension.width / 2) - headHalfWidth + startOffset
       }px;`;
     } else if (menuHiddenTowards === "right") {
       setMenuPosition({
-        left: window.innerWidth - menuDimension.width - 10,
+        left: window.innerWidth - menuDimension.width - startOffset,
       });
       ref.current!.style.cssText += `left: ${
         Math.round(window.innerWidth - menuDimension.width / 2) -
@@ -207,7 +210,13 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         width,
       }}
     >
-      <div className={menuHeadClass} ref={setup} role="button" style={style}>
+      <div
+        className={menuHeadClass}
+        ref={setup}
+        role="button"
+        style={style}
+        tabIndex={0}
+      >
         <span className={styles.icon_container}>{children}</span>
       </div>
       <MenuContainer
