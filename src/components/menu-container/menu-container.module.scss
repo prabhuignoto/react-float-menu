@@ -4,6 +4,15 @@
   justify-content: center;
   position: absolute;
   width: var(--rc-float-menu-width, 250px);
+  z-index: 99999;
+
+  &.open {
+    visibility: visible;
+  }
+
+  &.close {
+    visibility: hidden;
+  }
 }
 
 .menu_arrow {

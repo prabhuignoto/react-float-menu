@@ -65,6 +65,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         x: left || 0,
         y: (top || 0) + dimension + 10,
       });
+      setMenuOpen(false);
       setPressedState(false);
     },
     onDragStart: ({ left, top }) => {
@@ -189,6 +190,22 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+    }
+
+    const handleClosure = (ev: PointerEvent) => {
+      const isChild = ref.current?.contains(ev.target as Node);
+
+      if (!isChild) {
+        handleMenuClose();
+      }
+    };
+
+    if (ref.current) {
+      document.addEventListener("pointerdown", handleClosure);
+
+      return () => {
+        document.removeEventListener("pointerdown", handleClosure);
+      };
     }
   }, []);
 

@@ -45,15 +45,22 @@ const MenuItem = memo(
       setShowSubMenu((prev) => !prev);
     }, []);
 
-    const handleMouseLeave = useCallback(() => {
-      if (showSubMenu) {
-        toggleSubMenu();
+    const handleMouseEnter = useCallback((ev: PointerEvent) => {
+      if (ev.pointerType === "mouse") {
+        setShowSubMenu(true);
       }
-    }, [showSubMenu]);
+    }, []);
+
+    const handleMouseLeave = useCallback((ev: PointerEvent) => {
+      if (ev.pointerType === "mouse") {
+        setShowSubMenu(false);
+      }
+    }, []);
 
     const handleClick = useCallback(
       (ev: PointerEvent) => {
         ev.stopPropagation();
+        ev.preventDefault();
 
         if (!children) {
           onSelect?.(name, index);
@@ -90,7 +97,7 @@ const MenuItem = memo(
         tabIndex={0}
         onKeyUp={handleKeyUp}
         onPointerDown={handleClick}
-        onPointerEnter={toggleSubMenu}
+        onPointerEnter={handleMouseEnter}
         onPointerLeave={handleMouseLeave}
       >
         {icon && (

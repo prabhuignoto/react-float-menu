@@ -40,7 +40,7 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
     () =>
       classNames(
         styles.menu_arrow,
-        open ? styles.menu_open : "",
+        open ? styles.menu_open : styles.menu_close,
         shouldFlip ? styles.flip : ""
       ),
     [open, shouldFlip]
