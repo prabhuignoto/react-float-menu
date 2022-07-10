@@ -65,6 +65,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         x: left || 0,
         y: (top || 0) + dimension + 10,
       });
+      setMenuOpen(false);
       setPressedState(false);
     },
     onDragStart: ({ left, top }) => {
