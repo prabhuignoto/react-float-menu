@@ -190,6 +190,22 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     if (isFirstRender.current) {
       isFirstRender.current = false;
     }
+
+    const handleClosure = (ev: PointerEvent) => {
+      const isChild = ref.current?.contains(ev.target as Node);
+
+      if (!isChild) {
+        handleMenuClose();
+      }
+    };
+
+    if (ref.current) {
+      document.addEventListener("pointerdown", handleClosure);
+
+      return () => {
+        document.removeEventListener("pointerdown", handleClosure);
+      };
+    }
   }, []);
 
   const handleSelection = useCallback((path: string) => {

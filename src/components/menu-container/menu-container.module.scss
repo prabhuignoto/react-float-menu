@@ -4,6 +4,7 @@
   justify-content: center;
   position: absolute;
   width: var(--rc-float-menu-width, 250px);
+  z-index: 99999;
 }
 
 .menu_arrow {
