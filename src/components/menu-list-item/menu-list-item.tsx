@@ -6,9 +6,7 @@ import {
   PointerEvent,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
 } from "react";
 import { ChevronRight } from "../../icons";
 import { MenuContext } from "../context";
@@ -18,7 +16,20 @@ import styles from "./menu-list-item.module.scss";
 
 const MenuItem = memo(
   (props: MenuItemViewModel) => {
-    const { name, icon, iconSize, children, open, onSelect, index } = props;
+    const {
+      name,
+      icon,
+      iconSize,
+      children,
+      open,
+      onSelect,
+      index,
+      id,
+      onMouseEnter,
+      onMouseLeave,
+      onToggleSubMenu,
+      selected,
+    } = props;
     const iconStyle = useMemo(
       () =>
         ({
@@ -32,44 +43,35 @@ const MenuItem = memo(
       [icon]
     );
 
-    const [showSubMenu, setShowSubMenu] = useState(false);
-
     const { width = 250 } = useContext(MenuContext);
 
-    const canShowSubMenu = useMemo(() => children && showSubMenu, [
+    const canShowSubMenu = useMemo(() => children && selected, [
       children,
-      showSubMenu,
+      selected,
     ]);
-
-    const toggleSubMenu = useCallback(() => {
-      setShowSubMenu((prev) => !prev);
-    }, []);
 
     const handleMouseEnter = useCallback((ev: PointerEvent) => {
       if (ev.pointerType === "mouse") {
-        setShowSubMenu(true);
+        onMouseEnter(id);
       }
     }, []);
 
     const handleMouseLeave = useCallback((ev: PointerEvent) => {
       if (ev.pointerType === "mouse") {
-        setShowSubMenu(false);
+        onMouseLeave(id);
       }
     }, []);
 
-    const handleClick = useCallback(
-      (ev: PointerEvent) => {
-        ev.stopPropagation();
-        ev.preventDefault();
+    const handleClick = useCallback((ev: PointerEvent) => {
+      ev.stopPropagation();
+      ev.preventDefault();
 
-        if (!children) {
-          onSelect?.(name, index);
-        } else {
-          toggleSubMenu();
-        }
-      },
-      [toggleSubMenu]
-    );
+      if (!children) {
+        onSelect?.(name, index, id);
+      } else {
+        onToggleSubMenu(id);
+      }
+    }, []);
 
     const handleKeyUp = useCallback((ev: KeyboardEvent) => {
       if (ev.key !== "Enter") {
@@ -78,17 +80,11 @@ const MenuItem = memo(
       ev.stopPropagation();
 
       if (children) {
-        toggleSubMenu?.();
+        onToggleSubMenu?.(id);
       } else {
-        onSelect?.(name, index);
+        onSelect?.(name, index, id);
       }
     }, []);
-
-    useEffect(() => {
-      if (!open) {
-        setShowSubMenu(false);
-      }
-    }, [open]);
 
     return (
       <li

@@ -32,7 +32,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     onSelect,
   } = props;
 
-  const [_items] = useState<MenuItemProps[]>(() =>
+  const [_items, setItems] = useState<MenuItemProps[]>(() =>
     items.map((item) => ({ ...item, id: nanoid(), selected: false }))
   );
 
@@ -155,6 +155,46 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     });
   }, [_items.length]);
 
+  const handleSelection = useCallback(
+    (name: string, index: number, id?: string) => {
+      onSelect?.(name, index);
+      setItems((prev) =>
+        prev.map((item) => ({
+          ...item,
+          selected: item.id === id,
+        }))
+      );
+    },
+    []
+  );
+
+  const handleMouseEnter = (id?: string) => {
+    setItems((prev) =>
+      prev.map((item) => ({
+        ...item,
+        selected: item.id === id,
+      }))
+    );
+  };
+
+  const onToggleSubMenu = (id?: string) => {
+    setItems((prev) =>
+      prev.map((item) => ({
+        ...item,
+        selected: item.id === id ? !item.selected : false,
+      }))
+    );
+  };
+
+  const onCloseSubMenu = (id?: string) => {
+    setItems((prev) =>
+      prev.map((item) => ({
+        ...item,
+        selected: item.id === id ? false : item.selected,
+      }))
+    );
+  };
+
   return (
     <div className={wrapperClass} style={style}>
       {!disableHeader && (
@@ -179,7 +219,11 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
             index={index}
             key={item.id}
             open={open}
-            onSelect={onSelect}
+            onCloseSubMenu={onCloseSubMenu}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={onCloseSubMenu}
+            onSelect={handleSelection}
+            onToggleSubMenu={onToggleSubMenu}
           />
         ))}
       </ul>
