@@ -97,8 +97,8 @@ const config = {
       filename: pkg.name + ".css",
     }),
     new BundleAnalyzerPlugin({
-      analyzerMode: "static",
-      openAnalyzer: false,
+      analyzerMode: "server",
+      openAnalyzer: true,
     }),
     new CopyPlugin({
       patterns: [
