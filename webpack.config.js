@@ -17,7 +17,7 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 
 const config = {
   devtool: "source-map",
-  entry: "./src/react-float-menu.tsx",
+  entry: "./src/react-float-menu.ts",
   externals: [
     NodeExternals({
       allowlist: ["nanoid", "classnames"],
