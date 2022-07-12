@@ -24,6 +24,7 @@ function App() {
             icon: <EditIcon />,
             name: "Edit",
           },
+          { icon: <PlusIcon />, name: "Add" },
           {
             children: [
               { icon: <CopyIcon />, name: "Copy from clipboard" },

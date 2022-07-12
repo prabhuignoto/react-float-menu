@@ -1,5 +1,11 @@
 # react-float-menu
 
+![minzip](https://img.shields.io/bundlephobia/minzip/react-float-menu)
+![npm](https://img.shields.io/npm/v/react-float-menu)
+![NPM](https://img.shields.io/npm/l/react-float-menu)
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/prabhuignoto/react-float-menu)
+[![Depfu](https://badges.depfu.com/badges/f3de8a5fe036234eef1005ea21f8af17/overview.svg)](https://depfu.com/github/prabhuignoto/react-float-menu?project_id=36049)
+
 ## Table of Contents
 
 - [About](#about)
