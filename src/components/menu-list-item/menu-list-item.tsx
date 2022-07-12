@@ -52,13 +52,13 @@ const MenuItem = memo(
 
     const handleMouseEnter = useCallback((ev: PointerEvent) => {
       if (ev.pointerType === "mouse") {
-        onMouseEnter(id);
+        onMouseEnter?.(id);
       }
     }, []);
 
     const handleMouseLeave = useCallback((ev: PointerEvent) => {
       if (ev.pointerType === "mouse") {
-        onMouseLeave(id);
+        onMouseLeave?.(id);
       }
     }, []);
 
@@ -69,7 +69,7 @@ const MenuItem = memo(
       if (!children) {
         onSelect?.(name, index, id);
       } else {
-        onToggleSubMenu(id);
+        onToggleSubMenu?.(id);
       }
     }, []);
 

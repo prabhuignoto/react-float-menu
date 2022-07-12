@@ -4,6 +4,7 @@ import {
   CSSProperties,
   FunctionComponent,
   KeyboardEvent,
+  PointerEvent,
   useCallback,
   useContext,
   useEffect,
@@ -106,7 +107,8 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     [_items.length, activeIndex]
   );
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((ev?: PointerEvent) => {
+    ev?.stopPropagation();
     activeIndex.current = -1;
     onClose?.();
   }, []);
@@ -203,8 +205,8 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
             className={styles.close_btn}
             role="button"
             tabIndex={0}
-            onClick={handleClose}
             onKeyUp={handleCloseViaKeyboard}
+            onPointerDown={handleClose}
           >
             <CloseIcon />
           </span>
