@@ -41,7 +41,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
 
   const [height, setHeight] = useState(0);
 
-  const { iconSize, theme } = useContext(MenuContext);
+  const { theme } = useContext(MenuContext);
 
   const isFirstRender = useRef(true);
 
@@ -221,7 +221,6 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
           <MenuItem
             {...item}
             icon={item.icon}
-            iconSize={iconSize}
             index={index}
             key={item.id}
             open={open}

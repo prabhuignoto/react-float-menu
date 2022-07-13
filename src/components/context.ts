@@ -3,14 +3,7 @@ import { MenuHeadProps } from "../models/menu-head.model";
 
 type ContextModel = Pick<
   MenuHeadProps,
-  | "dimension"
-  | "iconSize"
-  | "items"
-  | "shape"
-  | "icons"
-  | "theme"
-  | "disableHeader"
-  | "width"
+  "dimension" | "items" | "shape" | "theme" | "disableHeader" | "width"
 >;
 
 export const MenuContext = React.createContext<ContextModel>({});

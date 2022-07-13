@@ -20,8 +20,6 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   children,
   shape = "circle",
   items = [],
-  iconSize = "1rem",
-  icons,
   startPosition = "top left",
   theme = {
     menuBackgroundColor: "#FFFFFF",
@@ -257,8 +255,6 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       value={{
         dimension,
         disableHeader,
-        iconSize,
-        icons,
         items,
         shape,
         theme: finalTheme,

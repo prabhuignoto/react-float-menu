@@ -17,8 +17,6 @@ export interface MenuHeadProps {
   closeOnClickOutside?: boolean;
   dimension?: number;
   disableHeader?: boolean;
-  iconSize?: string;
-  icons?: ReactNode[];
   items?: MenuItemProps[];
   onSelect?: (path: string) => void;
   shape?: "circle" | "square";
