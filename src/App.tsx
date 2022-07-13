@@ -13,7 +13,6 @@ function App() {
   return (
     <div className="App">
       <Menu
-        bringMenuToFocus={false}
         dimension={40}
         iconSize={"1.25rem"}
         items={[

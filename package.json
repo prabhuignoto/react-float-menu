@@ -28,7 +28,7 @@
     "dev": "vite",
     "build:vite": "tsc && vite build",
     "preview": "vite preview",
-    "build": "webpack --config webpack.config.js --mode production",
+    "build": "npx webpack --config webpack.config.js --mode production",
     "webpack:dev": "webpack --config webpack.config.js --mode development",
     "lint:js": "eslint src/**/*.tsx",
     "lint:js-fix": "eslint src/**/*.tsx --fix",
