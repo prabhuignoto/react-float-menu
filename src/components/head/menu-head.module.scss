@@ -1,6 +1,6 @@
 .menu_head {
   align-items: center;
-  background: var(--rc-float-menu-theme-primary);
+  background: var(--rc-fltmenu-primary);
   display: flex;
   height: var(--dimension);
   justify-content: center;
@@ -18,7 +18,7 @@
   }
 
   &:focus {
-    outline: 1px solid var(--rc-float-menu-theme-primary);
+    outline: 1px solid var(--rc-fltmenu-primary);
     outline-offset: 3px;
     outline-width: 2px;
   }

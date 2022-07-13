@@ -20,7 +20,8 @@
     "jsx": "react-jsx",
     "declaration": true,
     "declarationDir": "./dist",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "noUnusedLocals": false
   },
   "include": [
     "src/react-float-menu.ts",
