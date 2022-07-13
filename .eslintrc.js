@@ -7,7 +7,7 @@ module.exports = {
     "plugin:react/recommended",
     "standard",
     "prettier",
-    "plugin:react/jsx-runtime",
+    // "plugin:react/jsx-runtime",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -30,7 +30,7 @@ module.exports = {
     ],
     "react/react-in-jsx-scope": 0,
     "sort-keys": ["error", "asc", { caseSensitive: true, natural: true }],
-    "sort-keys-fix/sort-keys-fix": "error",
+    "sort-keys-fix/sort-keys-fix": "warn",
   },
   settings: {
     react: {

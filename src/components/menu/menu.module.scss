@@ -5,7 +5,7 @@
   justify-content: flex-start;
   width: 100%;
   border-radius: 4px;
-  background: #fff;
+  background: var(--rc-fltmenu-menu-bg-color, #fff);
   box-shadow: 0 0 25px 8px rgb(0 0 0 / 10%);
   padding-bottom: 1rem;
   position: relative;
@@ -84,15 +84,15 @@
   border-radius: 4px;
   margin-right: 4px;
   cursor: pointer;
-  color: var(--rc-float-menu-theme-primary);
+  color: var(--rc-fltmenu-primary);
 
   &:focus {
-    outline: 2px solid var(--rc-float-menu-theme-primary);
+    outline: 2px solid var(--rc-fltmenu-primary);
     outline-offset: 1px;
   }
 
   &:hover {
-    background: var(--rc-float-menu-theme-primary);
+    background: var(--rc-fltmenu-primary);
     color: #fff;
   }
 

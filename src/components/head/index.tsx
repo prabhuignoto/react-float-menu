@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { MenuHeadProps } from "../../models/menu-head.model";
+import { defaultTheme } from "../../utils/helpers";
 import { usePosition } from "../../utils/usePosition";
 import { MenuContext } from "../context";
 import { MenuContainer } from "../menu-container/menu-container";
@@ -23,6 +24,9 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   icons,
   startPosition = "top left",
   theme = {
+    menuBackgroundColor: "#FFFFFF",
+    menuItemHoverColor: "#318CE7",
+    menuItemHoverTextColor: "#fff",
     primary: "#318CE7",
     secondary: "#FFFFFF",
   },
@@ -30,6 +34,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   width = 250,
   onSelect,
   startOffset = 10,
+  closeOnClickOutside = true,
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -38,6 +43,8 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     y: number;
   }>({ x: 0, y: 0 });
   const [closeMenuImmediate, setCloseMenuImmediate] = useState(false);
+
+  const finalTheme = useMemo(() => ({ ...defaultTheme, ...theme }), []);
 
   const [menuDimension, setMenuDimension] = useState<{
     height: number;
@@ -98,10 +105,10 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     () =>
       ({
         "--dimension": `${dimension}px`,
-        "--rc-float-menu-theme-primary": theme.primary,
-        "--rc-float-menu-width": `${width}px`,
+        "--rc-fltmenu-primary": finalTheme.primary,
+        "--rc-fltmenu-width": `${width}px`,
       } as CSSProperties),
-    []
+    [finalTheme.primary]
   );
 
   const pressedClass = useMemo(() => {
@@ -192,6 +199,10 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       isFirstRender.current = false;
     }
 
+    if (!closeOnClickOutside) {
+      return;
+    }
+
     const handleClosure = (ev: PointerEvent) => {
       const isChild = ref.current?.contains(ev.target as Node);
 
@@ -223,7 +234,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         icons,
         items,
         shape,
-        theme,
+        theme: finalTheme,
         width,
       }}
     >

@@ -1,4 +1,5 @@
 import { RefObject } from "react";
+import { Theme } from "../models/menu-head.model";
 import { Position } from "../models/position";
 
 export const getStartingPosition = (pos: Position, offset: number = 10) => {
@@ -52,4 +53,10 @@ export type usePositionType = <T extends HTMLElement>(
 ) => {
   setup: (node: T) => void;
   ref: RefObject<T>;
+};
+
+export const defaultTheme: Theme = {
+  menuBackgroundColor: "#FFFFFF",
+  primary: "#318CE7",
+  secondary: "#cecece",
 };

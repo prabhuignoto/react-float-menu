@@ -24,17 +24,18 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
 }) => {
   const { left, top, bottom } = menuPosition;
 
-  const { items, width } = useContext(MenuContext);
+  const { items, width, theme } = useContext(MenuContext);
 
   const isFirstRender = useRef(true);
 
   const menuContainerStyle = useMemo(() => {
     return {
-      "--rc-float-menu-width": `${width}px`,
+      "--rc-fltmenu-menu-bg-color": theme?.menuBackgroundColor,
+      "--rc-fltmenu-width": `${width}px`,
       [shouldFlip ? "bottom" : "top"]: `${shouldFlip ? bottom : top}px`,
       left: `${left}px`,
     };
-  }, [shouldFlip, width, left, top, bottom]);
+  }, [shouldFlip, width, left, top, bottom, theme?.menuBackgroundColor]);
 
   const arrowClass = useMemo(
     () =>
