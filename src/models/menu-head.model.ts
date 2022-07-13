@@ -24,4 +24,5 @@ export interface MenuHeadProps {
   startPosition?: Position;
   theme?: Theme;
   width?: number;
+  iconSize?: string;
 }

@@ -35,6 +35,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   closeOnClickOutside = true,
   autoFlipMenu = true,
   bringMenuToFocus = true,
+  iconSize = "1rem",
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -255,6 +256,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       value={{
         dimension,
         disableHeader,
+        iconSize,
         items,
         shape,
         theme: finalTheme,

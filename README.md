@@ -67,6 +67,7 @@ yarn add react-float-menuṀ88amp
 | bringMenuToFocus    | Automatically moves the menu and brings it to focus when the menu is activated from the left or right edge of the screen. | true       |
 | closeOnClickOutside | closes the menu if you touch or click outside the menu.                                                                   | true       |
 | dimension           | Sets the height and width of the button                                                                                   | 30         |
+| iconSize            | Size of the menu item icons                                                                                               | "1rem"     |
 | disableHeader       | Disables the header section of the menu.                                                                                  | false      |
 | shape               | shape of the button. can be `square` or `circle`                                                                          | `circle`   |
 | width               | Width of the menu                                                                                                         | 30         |
