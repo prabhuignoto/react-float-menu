@@ -15,13 +15,21 @@
 
   &.icon {
     display: grid;
-    grid-template-columns: calc(var(--rc-float-menu-icon-size) * 2) auto;
+    grid-template-columns: calc(var(--rc-fltmenu-icon-size) * 2) auto;
     justify-items: flex-start;
     align-items: center;
   }
 
   &:hover {
-    background: #f5f5f5;
+    background: var(--rc-fltmenu-menu-item-hover, #f5f5f5);
+  }
+
+  & > span {
+    color: var(--rc-fltmenu-primary);
+  }
+
+  &:hover > span {
+    color: var(--rc-fltmenu-menu-item-hover-text, --rc-fltmenu-primary);
   }
 
   &:not(:last-child) {
@@ -33,7 +41,7 @@
   }
 
   &:focus {
-    outline: 1px solid var(--rc-float-menu-theme-primary);
+    outline: 1px solid var(--rc-fltmenu-primary);
     outline-offset: 2px;
     outline-width: 2px;
   }
@@ -52,10 +60,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--rc-float-menu-icon-size, 1rem);
-  height: var(--rc-float-menu-icon-size, 1rem);
+  width: var(--rc-fltmenu-icon-size, 1rem);
+  height: var(--rc-fltmenu-icon-size, 1rem);
   justify-self: center;
-  color: var(--rc-float-menu-theme-primary);
 
   svg {
     width: 100%;

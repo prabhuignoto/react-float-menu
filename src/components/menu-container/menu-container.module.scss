@@ -3,7 +3,7 @@
   align-items: flex-start;
   justify-content: center;
   position: absolute;
-  width: var(--rc-float-menu-width, 250px);
+  width: var(--rc-fltmenu-width, 250px);
   z-index: 99999;
 
   &.open {
@@ -35,7 +35,7 @@
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid #fff;
+    border-bottom: 10px solid var(--rc-fltmenu-menu-bg-color, #fff);
     top: -10px;
   }
 
@@ -44,7 +44,7 @@
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid #fff;
+    border-top: 10px solid var(--rc-fltmenu-menu-bg-color, #fff);
     bottom: -10px;
   }
 }

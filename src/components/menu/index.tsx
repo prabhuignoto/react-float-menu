@@ -51,7 +51,11 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     () =>
       ({
         "--menu-height": `${height}px`,
-        "--rc-float-menu-theme-primary": theme?.primary,
+        "--rc-fltmenu-menu-bg-color": theme?.menuBackgroundColor,
+        "--rc-fltmenu-menu-item-hover": theme?.menuItemHoverColor,
+        "--rc-fltmenu-menu-item-hover-text": theme?.menuItemHoverTextColor,
+        "--rc-fltmenu-primary": theme?.primary,
+        "--rc-fltmenu-secondary": theme?.secondary,
       } as CSSProperties),
     [height, JSON.stringify(menuHeadPosition)]
   );

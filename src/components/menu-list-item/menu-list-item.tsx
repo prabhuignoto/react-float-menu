@@ -33,7 +33,7 @@ const MenuItem = memo(
     const iconStyle = useMemo(
       () =>
         ({
-          "--rc-float-menu-icon-size": `${iconSize}`,
+          "--rc-fltmenu-icon-size": `${iconSize}`,
         } as CSSProperties),
       []
     );
