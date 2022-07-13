@@ -9,10 +9,10 @@
 ## Features
 
 - ⚡ Configurable and smart floating menu for react
-- 💪 Built with Typescript
+- ⚙️ Comes with a lot of options to customize the  behavior of the menu
 - 🎨 Customize colors with ease
 - 📱 Seamless support for mobile and desktop
-- ⚙️ Comes with a lot of options to customize the  behavior of the menu
+- 💪 Built with Typescript
 
 ## 📦 Installation
 
