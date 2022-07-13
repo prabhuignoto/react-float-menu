@@ -68,21 +68,6 @@ const config = {
       // Learn more about loaders from https://webpack.js.org/loaders/
     ],
   },
-  optimization: {
-    minimize: isProduction,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          compress: {
-            drop_console: true,
-          },
-          output: {
-            comments: false,
-          },
-        },
-      }),
-    ],
-  },
   output: {
     clean: true,
     filename: pkg.name + ".js",
@@ -115,9 +100,24 @@ const config = {
   },
 };
 
-module.exports = (env, argv) => {
+module.exports = (_, argv) => {
   if (argv.mode === "production") {
     config.mode = "production";
+    config.optimization = {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+            },
+            output: {
+              comments: false,
+            },
+          },
+        }),
+      ],
+    };
   } else if (argv.mode === "development") {
     config.mode = "development";
     config.plugins = config.plugins.concat([
