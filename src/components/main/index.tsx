@@ -13,7 +13,7 @@ import { defaultTheme } from "../../utils/helpers";
 import { usePosition } from "../../utils/usePosition";
 import { MenuContext } from "../context";
 import { MenuContainer } from "../menu-container/menu-container";
-import styles from "./menu-head.module.scss";
+import styles from "./main.module.scss";
 
 const MenuHead: FunctionComponent<MenuHeadProps> = ({
   dimension = 30,
@@ -35,6 +35,8 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   onSelect,
   startOffset = 10,
   closeOnClickOutside = true,
+  autoFlipMenu = true,
+  bringMenuToFocus = true,
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -43,6 +45,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     y: number;
   }>({ x: 0, y: 0 });
   const [closeMenuImmediate, setCloseMenuImmediate] = useState(false);
+  const [isDragged, setIsDragged] = useState(false);
 
   const finalTheme = useMemo(() => ({ ...defaultTheme, ...theme }), []);
 
@@ -74,6 +77,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       });
       setMenuOpen(false);
       setPressedState(false);
+      setIsDragged(false);
     },
     onDragStart: ({ left, top }) => {
       setHeadPosition({
@@ -82,6 +86,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       });
       setCloseMenuImmediate(true);
       setMenuOpen(false);
+      setIsDragged(true);
     },
     onInit: ({ left, top }) => {
       setHeadPosition({
@@ -119,10 +124,15 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   }, [pressedState]);
 
   const menuHeadClass = useMemo(() => {
-    return classNames(styles.menu_head, pressedClass, {
-      [styles[shape]]: true,
-    });
-  }, [pressedClass]);
+    return classNames(
+      styles.menu_head,
+      pressedClass,
+      isDragged ? styles.is_dragged : "",
+      {
+        [styles[shape]]: true,
+      }
+    );
+  }, [pressedClass, isDragged]);
 
   const handleMenuClose = useCallback(() => {
     setMenuOpen(false);
@@ -132,9 +142,16 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
 
   const shouldFlip = useMemo(() => {
     return (
+      autoFlipMenu &&
       headPosition.y + dimension + menuDimension.height > window.innerHeight
     );
-  }, [headPosition.x, headPosition.y, JSON.stringify(menuDimension), openMenu]);
+  }, [
+    headPosition.x,
+    headPosition.y,
+    JSON.stringify(menuDimension),
+    openMenu,
+    autoFlipMenu,
+  ]);
 
   const onMenuRender = useCallback(
     (menuHeight: number, menuWidth: number) =>
@@ -160,6 +177,10 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   ]);
 
   useEffect(() => {
+    if (!bringMenuToFocus) {
+      return;
+    }
+
     const { left } = menuPosition;
     const { width: menuWidth } = menuDimension;
     if (left < 0) {
@@ -169,10 +190,10 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     } else {
       setMenuHiddenTowards(null);
     }
-  }, [menuPosition.left, menuDimension.width]);
+  }, [menuPosition.left, menuDimension.width, bringMenuToFocus]);
 
   useEffect(() => {
-    if (!openMenu) {
+    if (!openMenu || !bringMenuToFocus) {
       return;
     }
     if (menuHiddenTowards === "left") {
@@ -192,7 +213,13 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         10
       }px;`;
     }
-  }, [menuHiddenTowards, openMenu, menuDimension.width, headHalfWidth]);
+  }, [
+    menuHiddenTowards,
+    openMenu,
+    menuDimension.width,
+    headHalfWidth,
+    bringMenuToFocus,
+  ]);
 
   useEffect(() => {
     if (isFirstRender.current) {
