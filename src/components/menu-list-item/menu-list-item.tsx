@@ -19,7 +19,6 @@ const MenuItem = memo(
     const {
       name,
       icon,
-      iconSize,
       children,
       open,
       onSelect,
@@ -29,7 +28,9 @@ const MenuItem = memo(
       onMouseLeave,
       onToggleSubMenu,
       selected,
+      iconSize,
     } = props;
+
     const iconStyle = useMemo(
       () =>
         ({

@@ -14,7 +14,6 @@ function App() {
     <div className="App">
       <Menu
         dimension={40}
-        iconSize={"1.25rem"}
         items={[
           { icon: <FileIcon />, name: "File" },
           {

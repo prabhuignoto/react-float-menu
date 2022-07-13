@@ -20,8 +20,6 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   children,
   shape = "circle",
   items = [],
-  iconSize = "1rem",
-  icons,
   startPosition = "top left",
   theme = {
     menuBackgroundColor: "#FFFFFF",
@@ -37,6 +35,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   closeOnClickOutside = true,
   autoFlipMenu = true,
   bringMenuToFocus = true,
+  iconSize = "1rem",
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -258,7 +257,6 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         dimension,
         disableHeader,
         iconSize,
-        icons,
         items,
         shape,
         theme: finalTheme,
