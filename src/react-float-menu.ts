@@ -1,3 +1,3 @@
-import { MenuHead } from "./components/head";
+import { MenuHead } from "./components/main";
 
 export { MenuHead as Menu };

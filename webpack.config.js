@@ -96,10 +96,6 @@ const config = {
     new MiniCssExtractPlugin({
       filename: pkg.name + ".css",
     }),
-    new BundleAnalyzerPlugin({
-      analyzerMode: "server",
-      openAnalyzer: true,
-    }),
     new CopyPlugin({
       patterns: [
         {
@@ -119,11 +115,17 @@ const config = {
   },
 };
 
-module.exports = () => {
-  if (isProduction) {
+module.exports = (env, argv) => {
+  if (argv.mode === "production") {
     config.mode = "production";
-  } else {
+  } else if (argv.mode === "development") {
     config.mode = "development";
+    config.plugins = config.plugins.concat([
+      new BundleAnalyzerPlugin({
+        analyzerMode: "server",
+        openAnalyzer: true,
+      }),
+    ]);
   }
   return config;
 };

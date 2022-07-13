@@ -9,6 +9,10 @@
   user-select: none;
   z-index: 99999;
 
+  &:not(.is_dragged) {
+    transition: left 0.1s ease, top 0.1s ease;
+  }
+
   &.circle {
     border-radius: 50%;
   }
