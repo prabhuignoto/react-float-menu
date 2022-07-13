@@ -34,7 +34,7 @@
     "lint:js-fix": "eslint src/**/*.tsx --fix",
     "lint:css": "stylelint src/**/*.scss",
     "lint:css-fix": "stylelint --fix src/**/*.scss",
-    "lint:all": "pnpm lint:js && pnpm lint:css",
+    "lint:all": "npm run lint:js && npm run lint:css",
     "format": "prettier --write src/**/*.{tsx,scss}",
     "snyk:monitor": "npx snyk monitor",
     "snyk:test": "npx snyk test",
