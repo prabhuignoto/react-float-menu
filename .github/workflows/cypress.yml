@@ -3,15 +3,23 @@ name: Cypress Tests
 on: [push, pull_request]
 
 jobs:
-  chrome:
-    runs-on: ubuntu-20.04
-    # let's make sure our tests pass on Chrome browser
-    name: E2E on Chrome
+  cypress-run:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: cypress-io/github-action@v4
+      - name: Set up pnpm
+      - uses: pnpm/action-setup@v2.2.2
         with:
-          start: npm run dev
+          version: 7.5.0
+
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          install: false
+          start: pnpm dev
           wait-on: 'http://localhost:5173'
           wait-on-timeout: 120
           browser: chrome
