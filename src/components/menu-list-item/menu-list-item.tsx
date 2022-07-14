@@ -1,6 +1,5 @@
 import classNames from "classnames";
-import {
-  CSSProperties,
+import React, {
   KeyboardEvent,
   memo,
   PointerEvent,
@@ -28,16 +27,7 @@ const MenuItem = memo(
       onMouseLeave,
       onToggleSubMenu,
       selected,
-      iconSize,
     } = props;
-
-    const iconStyle = useMemo(
-      () =>
-        ({
-          "--rc-fltmenu-icon-size": `${iconSize}`,
-        } as CSSProperties),
-      []
-    );
 
     const itemClass = useMemo(
       () => classNames(styles.list_item, icon ? styles.icon : styles.no_icon),
@@ -90,7 +80,7 @@ const MenuItem = memo(
     return (
       <li
         className={itemClass}
-        style={iconStyle}
+        data-cy="rc-fltmenu-list-item"
         tabIndex={0}
         onKeyUp={handleKeyUp}
         onPointerDown={handleClick}
@@ -122,6 +112,7 @@ const MenuItem = memo(
         )}
         <div
           className={styles.child_menu_wrapper}
+          data-cy="rc-fltmenu-submenu"
           style={{ width: `${width}px` }}
         >
           {canShowSubMenu && (

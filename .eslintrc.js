@@ -2,11 +2,14 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
+    node: true,
   },
   extends: [
     "plugin:react/recommended",
     "standard",
     "prettier",
+    "plugin:cypress/recommended",
     // "plugin:react/jsx-runtime",
   ],
   parser: "@typescript-eslint/parser",

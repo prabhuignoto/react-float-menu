@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { nanoid } from "nanoid";
-import {
+import React, {
   CSSProperties,
   FunctionComponent,
   KeyboardEvent,
@@ -51,6 +51,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     () =>
       ({
         "--menu-height": `${height}px`,
+        "--rc-fltmenu-icon-size": iconSize,
         "--rc-fltmenu-menu-bg-color": theme?.menuBackgroundColor,
         "--rc-fltmenu-menu-item-hover": theme?.menuItemHoverColor,
         "--rc-fltmenu-menu-item-hover-text": theme?.menuItemHoverTextColor,
@@ -206,7 +207,9 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
       {!disableHeader && (
         <div className={styles.toolbar}>
           <span
+            aria-label="Close"
             className={styles.close_btn}
+            data-cy="rc-fltmenu-close"
             role="button"
             tabIndex={0}
             onKeyUp={handleCloseViaKeyboard}
@@ -221,7 +224,6 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
           <MenuItem
             {...item}
             icon={item.icon}
-            iconSize={iconSize}
             index={index}
             key={item.id}
             open={open}

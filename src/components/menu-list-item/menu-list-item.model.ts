@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { MenuHeadProps } from "../../models/menu-head.model";
 import { MenuItemProps } from "../menu/menu-model";
 
 export type MenuItemViewModel = MenuItemProps & {
@@ -11,4 +10,4 @@ export type MenuItemViewModel = MenuItemProps & {
   onMouseEnter?: (id?: string) => void;
   onMouseLeave?: (id?: string) => void;
   onToggleSubMenu?: (id?: string) => void;
-} & Pick<MenuHeadProps, "iconSize">;
+};
