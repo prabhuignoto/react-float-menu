@@ -7,14 +7,17 @@ on:
     branches: [main]
 
 jobs:
-  cypress-run:
+  install:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Set up pnpm
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 7.5.0
+          version: 6.0.2
+  cypress-run:
+    runs-on: ubuntu-latest
 
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
