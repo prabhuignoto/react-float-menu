@@ -12,7 +12,9 @@ export default defineConfig({
       // implement node event listeners here
     },
   },
+  projectId: 'tpauqa',
 
   retries: 2,
   waitForAnimations: true,
+  
 });
