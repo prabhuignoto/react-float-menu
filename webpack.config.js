@@ -30,7 +30,15 @@ const config = {
           {
             loader: "babel-loader",
             options: {
-              plugins: ["@babel/plugin-transform-runtime"],
+              plugins: [
+                "@babel/plugin-transform-runtime",
+                [
+                  "babel-plugin-remove-attribute",
+                  {
+                    attributes: "data-cy",
+                  },
+                ],
+              ],
               presets: ["@babel/preset-env", "@babel/preset-react"],
             },
           },

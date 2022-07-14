@@ -22,12 +22,13 @@
     "declarationDir": "./dist",
     "outDir": "./dist",
     "noUnusedLocals": false,
+    "rootDir": "./src",
     "types": [
       "cypress"
     ]
   },
   "include": [
-    "src/react-float-menu.tsx",
+    "src/react-float-menu.ts",
     "src/components/**/*.{ts,tsx,scss}",
     "src/icons/*.tsx",
     "src/utils/*.ts",
