@@ -23,8 +23,6 @@
     "outDir": "./dist",
     "noUnusedLocals": false,
     "types": [
-      "node",
-      "jest",
       "cypress"
     ]
   },
