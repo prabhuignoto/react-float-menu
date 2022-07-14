@@ -1,10 +1,6 @@
-name: Cypress E2E
+name: Cypress Tests
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
   chrome:
@@ -15,13 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: cypress-io/github-action@v4
         with:
+          start: npm run dev
+          wait-on: 'http://localhost:5173'
+          wait-on-timeout: 120
           browser: chrome
-  firefox:
-    runs-on: ubuntu-20.04
-    # let's make sure our tests pass on Firefox browser
-    name: E2E on Firefox
-    steps:
-      - uses: actions/checkout@v2
-      - uses: cypress-io/github-action@v4
-        with:
-          browser: firefox
