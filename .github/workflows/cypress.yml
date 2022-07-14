@@ -18,8 +18,10 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
