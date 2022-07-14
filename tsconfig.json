@@ -34,7 +34,6 @@
     "src/models/*.ts",
     "./globals.d.ts",
     "./jest-setup.ts",
-    "cypress/**/*.ts",
   ],
   "exclude": [
     "node_modules",
@@ -42,6 +41,7 @@
     "vite.config.ts",
     "src/**/*.test.tsx",
     "src/**/*.test.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "cypress/**/*.ts"
   ]
 }
