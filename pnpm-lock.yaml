@@ -8,6 +8,7 @@ specifiers:
   '@babel/runtime': ^7.18.6
   '@testing-library/jest-dom': ^5.16.4
   '@testing-library/react': ^13.3.0
+  '@types/jest': ^28.1.5
   '@types/react': ^18.0.15
   '@types/react-dom': ^18.0.6
   '@typescript-eslint/eslint-plugin': ^5.30.6
@@ -71,6 +72,7 @@ devDependencies:
   '@babel/runtime': 7.18.6
   '@testing-library/jest-dom': 5.16.4
   '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
+  '@types/jest': 28.1.5
   '@types/react': 18.0.15
   '@types/react-dom': 18.0.6
   '@typescript-eslint/eslint-plugin': 5.30.6_2vt5mtrqleafs33qg2bhpmbaqm
@@ -1762,8 +1764,8 @@ packages:
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
     dev: true
 
-  /@types/jest/28.1.4:
-    resolution: {integrity: sha512-telv6G5N7zRJiLcI3Rs3o+ipZ28EnE+7EvF0pSrt2pZOMnAVI/f+6/LucDxOvcBcTeTL3JMF744BbVQAVBUQRA==}
+  /@types/jest/28.1.5:
+    resolution: {integrity: sha512-TLAC2zXxGnohSP3GxgIyJn7yrTeRPDEyVFyCY1NE2wzg392auI+69uk5EPGjUXuhkq/K208J/TWpLG7J8ebIEQ==}
     dependencies:
       jest-matcher-utils: 28.1.1
       pretty-format: 28.1.1
@@ -1830,7 +1832,7 @@ packages:
   /@types/testing-library__jest-dom/5.14.5:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
-      '@types/jest': 28.1.4
+      '@types/jest': 28.1.5
     dev: true
 
   /@types/yauzl/2.10.0:
