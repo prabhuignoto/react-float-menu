@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import {
+import React, {
   FunctionComponent,
   useContext,
   useEffect,
@@ -59,7 +59,11 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
   }, []);
 
   return (
-    <div className={menuContainerClass} style={menuContainerStyle}>
+    <div
+      className={menuContainerClass}
+      data-cy="rc-fltmenu-container"
+      style={menuContainerStyle}
+    >
       <span className={arrowClass}></span>
       <Menu
         closeImmediate={closeImmediate}

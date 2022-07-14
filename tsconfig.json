@@ -21,16 +21,22 @@
     "declaration": true,
     "declarationDir": "./dist",
     "outDir": "./dist",
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "types": [
+      "node",
+      "jest",
+      "cypress"
+    ]
   },
   "include": [
-    "src/react-float-menu.ts",
+    "src/react-float-menu.tsx",
     "src/components/**/*.{ts,tsx,scss}",
     "src/icons/*.tsx",
     "src/utils/*.ts",
     "src/models/*.ts",
     "./globals.d.ts",
-    "./jest-setup.ts"
+    "./jest-setup.ts",
+    "cypress/**/*.ts",
   ],
   "exclude": [
     "node_modules",

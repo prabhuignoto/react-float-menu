@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import {
+import React, {
   CSSProperties,
   FunctionComponent,
   useCallback,
@@ -264,13 +264,19 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       }}
     >
       <div
-        className={menuHeadClass}
+        className={classNames(menuHeadClass)}
+        data-cy="rc-fltmenu-head"
         ref={setup}
         role="button"
         style={style}
         tabIndex={0}
       >
-        <span className={styles.icon_container}>{children}</span>
+        <span
+          className={classNames(styles.icon_container)}
+          data-cy="rc-fltmenu-icon"
+        >
+          {children}
+        </span>
       </div>
       <MenuContainer
         closeImmediate={closeMenuImmediate}
