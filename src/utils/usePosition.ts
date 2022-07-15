@@ -7,19 +7,11 @@ import {
   usePositionType,
 } from "./helpers";
 
-type Settings = positionParams | null;
+type Settings = positionParams;
 
 const usePosition: usePositionType = <T extends HTMLElement>(
   settings: Settings
 ) => {
-
-  if (!settings) {
-    return {
-      ref: null,
-      setup: null,
-    }
-  }
-
   const {
     onPointerDown,
     onPointerUp,
@@ -29,6 +21,7 @@ const usePosition: usePositionType = <T extends HTMLElement>(
     dimension = 0,
     startOffset,
     onInit,
+    pin,
   } = settings;
 
   const ref = useRef<T | null>(null);
@@ -120,12 +113,14 @@ const usePosition: usePositionType = <T extends HTMLElement>(
   }, []);
 
   useEffect(() => {
-    document.addEventListener("pointermove", onPointerMove);
+    if (!pin) {
+      document.addEventListener("pointermove", onPointerMove);
 
-    // cleanup
-    return () => {
-      document.removeEventListener("pointermove", onPointerMove);
-    };
+      // cleanup
+      return () => {
+        document.removeEventListener("pointermove", onPointerMove);
+      };
+    }
   }, []);
 
   return {

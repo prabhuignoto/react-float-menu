@@ -13,6 +13,7 @@ function App() {
   return (
     <div className="App">
       <Menu
+        pin
         dimension={40}
         items={[
           { icon: <FileIcon />, name: "File" },
@@ -37,7 +38,7 @@ function App() {
           { icon: <LogoutIcon />, name: "Logout" },
         ]}
         shape="square"
-        startPosition="top left"
+        startPosition="top right"
         width={250}
         onSelect={(val) => console.log(val)}
       >

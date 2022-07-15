@@ -46,13 +46,14 @@ export type positionParams = {
   dimension?: number;
   startOffset?: number;
   onInit: (p: { left: number; top: number }) => void;
+  pin?: boolean;
 };
 
 export type usePositionType = <T extends HTMLElement>(
-  p: positionParams | null
+  p: positionParams
 ) => {
-  setup: ((node: T) => void) | null;
-  ref: RefObject<T> | null;
+  setup: (node: T) => void;
+  ref: RefObject<T>;
 };
 
 export const defaultTheme: Theme = {

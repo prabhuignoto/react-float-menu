@@ -83,15 +83,16 @@ Let's get started by creating a new floating menu with drag super power.
 | :------------------ | :------------------------------------------------------------------------------------------------------------------------ | :--------- |
 | autoFlipMenu        | Flips the menu when the button is at the bottom of the screen and there is no space to display the menu                   | true       |
 | bringMenuToFocus    | Automatically moves the menu and brings it to focus when the menu is activated from the left or right edge of the screen. | true       |
-| closeOnClickOutside | closes the menu if you touch or click outside the menu.                                                                   | true       |
+| closeOnClickOutside | Closes the menu if you touch or click outside the menu.                                                                   | true       |
 | dimension           | Sets the height and width of the button                                                                                   | 30         |
-| iconSize            | Size of the menu item icons                                                                                               | "1rem"     |
 | disableHeader       | Disables the header section of the menu.                                                                                  | false      |
-| shape               | shape of the button. can be `square` or `circle`                                                                          | `circle`   |
-| width               | Width of the menu                                                                                                         | 30         |
-| startPosition       | Starting position of the button. can be `top left`,`top right`,`bottom left`,`bottom right`                               | `top left` |
-| theme               | The Theme object is used to customize the colors of various elements.                                                     |            |
+| iconSize            | Size of the menu item icons                                                                                               | "1rem"     |
 | items               | Collection of menu items. Please refer [Menu item model](#menu-item-model)                                                | []         |
+| shape               | Shape of the button. can be `square` or `circle`                                                                          | `circle`   |
+| startPosition       | Starting position of the button. can be `top left`,`top right`,`bottom left`,`bottom right`                               | `top left` |
+| theme               | With the `theme` object, you can change the colors of different elements.                                                 |            |
+| width               | Width of the menu                                                                                                         | 30         |
+| pin                 | disables dragging and pins the menu. The button's initial placement will be determined by `startPosition`                 | 30         |
 
 ### items
 

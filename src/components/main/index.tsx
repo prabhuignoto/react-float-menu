@@ -69,47 +69,44 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
 
   const isFirstRender = useRef(true);
 
-  const { setup, ref } = usePosition<HTMLDivElement>(
-    !pin
-      ? {
-          dimension,
-          onDragEnd: ({ left, top }) => {
-            setHeadPosition({
-              x: left || 0,
-              y: (top || 0) + dimension + 10,
-            });
-            setMenuOpen(false);
-            setPressedState(false);
-            setIsDragged(false);
-          },
-          onDragStart: ({ left, top }) => {
-            setHeadPosition({
-              x: left || 0,
-              y: (top || 0) + dimension + 10,
-            });
-            setCloseMenuImmediate(true);
-            setMenuOpen(false);
-            setIsDragged(true);
-          },
-          onInit: ({ left, top }) => {
-            setHeadPosition({
-              x: left || 0,
-              y: (top || 0) + dimension + 10,
-            });
-          },
-          onPointerDown: () => {
-            setPressedState(true);
-            setCloseMenuImmediate(false);
-          },
-          onPointerUp: useCallback(() => {
-            setPressedState(false);
-            setMenuOpen((prev) => !prev);
-          }, []),
-          startOffset,
-          startPosition,
-        }
-      : null
-  );
+  const { setup, ref } = usePosition<HTMLDivElement>({
+    dimension,
+    onDragEnd: ({ left, top }) => {
+      setHeadPosition({
+        x: left || 0,
+        y: (top || 0) + dimension + 10,
+      });
+      setMenuOpen(false);
+      setPressedState(false);
+      setIsDragged(false);
+    },
+    onDragStart: ({ left, top }) => {
+      setHeadPosition({
+        x: left || 0,
+        y: (top || 0) + dimension + 10,
+      });
+      setCloseMenuImmediate(true);
+      setMenuOpen(false);
+      setIsDragged(true);
+    },
+    onInit: ({ left, top }) => {
+      setHeadPosition({
+        x: left || 0,
+        y: (top || 0) + dimension + 10,
+      });
+    },
+    onPointerDown: () => {
+      setPressedState(true);
+      setCloseMenuImmediate(false);
+    },
+    onPointerUp: useCallback(() => {
+      setPressedState(false);
+      setMenuOpen((prev) => !prev);
+    }, []),
+    pin,
+    startOffset,
+    startPosition,
+  });
 
   const style = useMemo(
     () =>
@@ -198,35 +195,60 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
   }, [menuPosition.left, menuDimension.width, bringMenuToFocus]);
 
+  const shouldAdjustMenuPosition = useMemo(
+    () =>
+      !!(
+        // openMenu &&
+        (!isFirstRender.current && bringMenuToFocus && ref?.current)
+      ),
+    [openMenu, bringMenuToFocus]
+  );
+
   useEffect(() => {
-    if (!openMenu || !bringMenuToFocus || !ref?.current) {
+    if (!shouldAdjustMenuPosition) {
+      // alert("red");
       return;
     }
 
+    const alignedTo = startPosition.split(" ")[1];
+    const { width: menuWidth } = menuDimension;
+    const { innerWidth } = window;
+    const headRef = ref.current as HTMLDivElement;
+
     if (menuHiddenTowards === "left") {
       setMenuPosition({
-        left: 10,
+        left: startOffset,
       });
-      ref.current.style!.cssText += `left: ${
-        Math.round(menuDimension.width / 2) - headHalfWidth + startOffset
+      headRef.style!.cssText += `left: ${
+        Math.round(menuWidth / 2) - headHalfWidth + startOffset
       }px;`;
     } else if (menuHiddenTowards === "right") {
       setMenuPosition({
-        left: window.innerWidth - menuDimension.width - startOffset,
+        left: innerWidth - menuWidth - startOffset,
       });
-      ref.current.style!.cssText += `left: ${
-        Math.round(window.innerWidth - menuDimension.width / 2) -
-        headHalfWidth -
-        10
+      headRef.style!.cssText += `left: ${
+        Math.round(innerWidth - menuWidth / 2) - headHalfWidth - 10
       }px;`;
+    } else if (alignedTo === "left" && headPosition.x <= startOffset && pin) {
+      headRef.style!.cssText += `left: ${startOffset}px;`;
+      setMenuPosition((prev) => ({
+        ...prev,
+        left: -menuWidth,
+      }));
+    } else if (
+      alignedTo === "right" &&
+      headPosition.x >= innerWidth - dimension - startOffset &&
+      pin
+    ) {
+      headRef.style!.cssText += `left: ${
+        innerWidth - dimension - startOffset
+      }px;`;
+      setMenuPosition((prev) => ({
+        ...prev,
+        left: innerWidth,
+      }));
     }
-  }, [
-    menuHiddenTowards,
-    openMenu,
-    menuDimension.width,
-    headHalfWidth,
-    bringMenuToFocus,
-  ]);
+  }, [openMenu, headPosition.x, shouldAdjustMenuPosition]);
 
   useEffect(() => {
     if (isFirstRender.current) {
