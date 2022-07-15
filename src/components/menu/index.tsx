@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { nanoid } from "nanoid";
-import React, {
+import {
   CSSProperties,
   FunctionComponent,
   KeyboardEvent,
@@ -113,17 +113,23 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     [_items.length, activeIndex]
   );
 
-  const handleClose = useCallback((ev?: PointerEvent) => {
-    ev?.stopPropagation();
-    activeIndex.current = -1;
-    onClose?.();
-  }, []);
-
-  const handleCloseViaKeyboard = useCallback((ev: KeyboardEvent) => {
-    if (ev.key === "Enter") {
+  const handleClose = useCallback(
+    (ev?: PointerEvent) => {
+      ev?.stopPropagation();
+      activeIndex.current = -1;
       onClose?.();
-    }
-  }, []);
+    },
+    [onClose]
+  );
+
+  const handleCloseViaKeyboard = useCallback(
+    (ev: KeyboardEvent) => {
+      if (ev.key === "Enter") {
+        onClose?.();
+      }
+    },
+    [onClose]
+  );
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -163,18 +169,15 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     });
   }, [_items.length]);
 
-  const handleSelection = useCallback(
-    (name: string, index: number, id?: string) => {
-      onSelect?.(name, index);
-      setItems((prev) =>
-        prev.map((item) => ({
-          ...item,
-          selected: item.id === id,
-        }))
-      );
-    },
-    []
-  );
+  const handleSelection = (name: string, index: number, id?: string) => {
+    onSelect?.(name, index);
+    setItems((prev) =>
+      prev.map((item) => ({
+        ...item,
+        selected: item.id === id,
+      }))
+    );
+  };
 
   const handleMouseEnter = (id?: string) => {
     setItems((prev) =>
@@ -185,23 +188,23 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
     );
   };
 
-  const onToggleSubMenu = (id?: string) => {
+  const onToggleSubMenu = useCallback((id?: string) => {
     setItems((prev) =>
       prev.map((item) => ({
         ...item,
         selected: item.id === id ? !item.selected : false,
       }))
     );
-  };
+  }, []);
 
-  const onCloseSubMenu = (id?: string) => {
+  const onCloseSubMenu = useCallback((id?: string) => {
     setItems((prev) =>
       prev.map((item) => ({
         ...item,
         selected: item.id === id ? false : item.selected,
       }))
     );
-  };
+  }, []);
 
   return (
     <div className={wrapperClass} style={style}>

@@ -1,7 +1,6 @@
 import classNames from "classnames";
-import React, {
+import {
   KeyboardEvent,
-  memo,
   PointerEvent,
   useCallback,
   useContext,
@@ -13,47 +12,50 @@ import { Menu } from "../menu";
 import { MenuItemViewModel } from "./menu-list-item.model";
 import styles from "./menu-list-item.module.scss";
 
-const MenuItem = memo(
-  (props: MenuItemViewModel) => {
-    const {
-      name,
-      icon,
-      children,
-      open,
-      onSelect,
-      index,
-      id,
-      onMouseEnter,
-      onMouseLeave,
-      onToggleSubMenu,
-      selected,
-    } = props;
+const MenuItem = (props: MenuItemViewModel) => {
+  const {
+    name,
+    icon,
+    children,
+    open,
+    onSelect,
+    index,
+    id,
+    onMouseEnter,
+    onMouseLeave,
+    onToggleSubMenu,
+    selected,
+  } = props;
 
-    const itemClass = useMemo(
-      () => classNames(styles.list_item, icon ? styles.icon : styles.no_icon),
-      [icon]
-    );
+  const itemClass = useMemo(
+    () => classNames(styles.list_item, icon ? styles.icon : styles.no_icon),
+    [icon]
+  );
 
-    const { width = 250 } = useContext(MenuContext);
+  const { width = 250 } = useContext(MenuContext);
 
-    const canShowSubMenu = useMemo(() => children && selected, [
-      children,
-      selected,
-    ]);
+  const canShowSubMenu = useMemo(() => children && selected, [
+    children,
+    selected,
+  ]);
 
-    const handleMouseEnter = useCallback((ev: PointerEvent) => {
-      if (ev.pointerType === "mouse") {
-        onMouseEnter?.(id);
-      }
-    }, []);
+  // handler for showing submenu on mouse enter
+  const handleMouseEnter = useCallback((ev: PointerEvent) => {
+    if (ev.pointerType === "mouse") {
+      onMouseEnter?.(id);
+    }
+  }, []);
 
-    const handleMouseLeave = useCallback((ev: PointerEvent) => {
-      if (ev.pointerType === "mouse") {
-        onMouseLeave?.(id);
-      }
-    }, []);
+  // handler for hiding submenu on mouse leave
+  const handleMouseLeave = useCallback((ev: PointerEvent) => {
+    if (ev.pointerType === "mouse") {
+      onMouseLeave?.(id);
+    }
+  }, []);
 
-    const handleClick = useCallback((ev: PointerEvent) => {
+  // handler for opening a submenu or selecting menu item
+  const handleClick = useCallback(
+    (ev: PointerEvent) => {
       ev.stopPropagation();
       ev.preventDefault();
 
@@ -62,9 +64,13 @@ const MenuItem = memo(
       } else {
         onToggleSubMenu?.(id);
       }
-    }, []);
+    },
+    [onSelect, onToggleSubMenu]
+  );
 
-    const handleKeyUp = useCallback((ev: KeyboardEvent) => {
+  // handler for opening submenu or selection
+  const handleKeyUp = useCallback(
+    (ev: KeyboardEvent) => {
       if (ev.key !== "Enter") {
         return;
       }
@@ -75,64 +81,62 @@ const MenuItem = memo(
       } else {
         onSelect?.(name, index, id);
       }
-    }, []);
+    },
+    [onToggleSubMenu, onSelect]
+  );
 
-    return (
-      <li
-        className={itemClass}
-        data-cy="rc-fltmenu-list-item"
-        tabIndex={0}
-        onKeyUp={handleKeyUp}
-        onPointerDown={handleClick}
-        onPointerEnter={handleMouseEnter}
-        onPointerLeave={handleMouseLeave}
-      >
-        {icon && (
-          <span className={styles.list_item_icon} role="img">
-            {icon}
-          </span>
-        )}
-        <span
-          aria-label={name}
-          className={classNames(
-            styles.list_item_name,
-            !icon ? styles.no_icon : ""
-          )}
-        >
-          {name}
+  return (
+    <li
+      className={itemClass}
+      data-cy="rc-fltmenu-list-item"
+      tabIndex={0}
+      onKeyUp={handleKeyUp}
+      onPointerDown={handleClick}
+      onPointerEnter={handleMouseEnter}
+      onPointerLeave={handleMouseLeave}
+    >
+      {icon && (
+        <span className={styles.list_item_icon} role="img">
+          {icon}
         </span>
-        {children && (
-          <span
-            aria-label="expand menu"
-            className={styles.chevron_right}
-            role="img"
-          >
-            <ChevronRight />
-          </span>
+      )}
+      <span
+        aria-label={name}
+        className={classNames(
+          styles.list_item_name,
+          !icon ? styles.no_icon : ""
         )}
-        <div
-          className={styles.child_menu_wrapper}
-          data-cy="rc-fltmenu-submenu"
-          style={{ width: `${width}px` }}
+      >
+        {name}
+      </span>
+      {children && (
+        <span
+          aria-label="expand menu"
+          className={styles.chevron_right}
+          role="img"
         >
-          {canShowSubMenu && (
-            <Menu
-              disableAnimation
-              disableHeader
-              isSubMenu
-              items={children}
-              open={open}
-              onSelect={onSelect}
-            />
-          )}
-        </div>
-      </li>
-    );
-  },
-  (prev, next) => {
-    return prev.open === next.open && prev.selected === next.selected;
-  }
-);
+          <ChevronRight />
+        </span>
+      )}
+      <div
+        className={styles.child_menu_wrapper}
+        data-cy="rc-fltmenu-submenu"
+        style={{ width: `${width}px` }}
+      >
+        {canShowSubMenu && (
+          <Menu
+            disableAnimation
+            disableHeader
+            isSubMenu
+            items={children}
+            open={open}
+            onSelect={onSelect}
+          />
+        )}
+      </div>
+    </li>
+  );
+};
 
 MenuItem.displayName = "MenuItem";
 

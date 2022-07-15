@@ -136,12 +136,14 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     );
   }, [pressedClass, isDragged]);
 
-  const handleMenuClose = useCallback(() => {
-    setMenuOpen(false);
-    setCloseMenuImmediate(false);
+  const handleMenuClose = () => {
+    if (openMenu) {
+      setMenuOpen(false);
+      setCloseMenuImmediate(false);
 
-    ref?.current?.focus();
-  }, []);
+      ref?.current?.focus();
+    }
+  };
 
   const shouldFlip = useMemo(() => {
     return (
@@ -196,17 +198,12 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   }, [menuPosition.left, menuDimension.width, bringMenuToFocus]);
 
   const shouldAdjustMenuPosition = useMemo(
-    () =>
-      !!(
-        // openMenu &&
-        (!isFirstRender.current && bringMenuToFocus && ref?.current)
-      ),
+    () => !!(!isFirstRender.current && bringMenuToFocus && ref?.current),
     [openMenu, bringMenuToFocus]
   );
 
   useEffect(() => {
     if (!shouldAdjustMenuPosition) {
-      // alert("red");
       return;
     }
 
@@ -274,12 +271,12 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         document.removeEventListener("pointerdown", handleClosure);
       };
     }
-  }, []);
+  }, [handleMenuClose]);
 
-  const handleSelection = useCallback((path: string) => {
+  const handleSelection = (path: string) => {
     onSelect?.(path);
     handleMenuClose();
-  }, []);
+  };
 
   return (
     <MenuContext.Provider
