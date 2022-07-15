@@ -18,27 +18,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "declaration": true,
-    "declarationDir": "./dist",
-    "outDir": "./dist",
     "noUnusedLocals": false,
-    "rootDir": "./src",
+    "rootDir": ".",
+    "types": [
+      "cypress"
+    ]
   },
   "include": [
-    "src/react-float-menu.ts",
-    "src/components/**/*.{ts,tsx,scss}",
-    "src/icons/*.tsx",
-    "src/utils/*.ts",
-    "src/models/*.ts",
-    "./globals.d.ts",
-    "./jest-setup.ts",
+    "../cypress/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "vite.config.ts",
-    "src/**/*.test.tsx",
-    "src/**/*.test.ts",
-    "src/**/*.d.ts",
   ]
 }

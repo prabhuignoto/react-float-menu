@@ -17,4 +17,5 @@ export default defineConfig({
   retries: 2,
   waitForAnimations: true,
   
+  
 });
