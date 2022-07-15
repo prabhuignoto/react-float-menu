@@ -31,11 +31,11 @@ jobs:
           wait-on-timeout: 120
           browser: chrome
 
-      - name: Firefox
+      - name: Edge
         uses: cypress-io/github-action@v4
         with:
           install: false
           start: pnpm dev
           wait-on: "http://localhost:5173"
           wait-on-timeout: 120
-          browser: firefox
+          browser: edge
