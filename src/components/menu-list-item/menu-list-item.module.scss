@@ -24,7 +24,7 @@
     background: var(--rc-fltmenu-menu-item-hover, #f5f5f5);
   }
 
-  & > span {
+  & > span:not(.list_item_name) {
     color: var(--rc-fltmenu-primary);
   }
 
@@ -50,6 +50,7 @@
 .list_item_name {
   display: flex;
   align-items: center;
+  color: var(--rc-fltmenu-menu-item-text, #000);
 
   &.no_icon {
     padding-left: 1rem;

@@ -49,10 +49,10 @@ export type positionParams = {
 };
 
 export type usePositionType = <T extends HTMLElement>(
-  p: positionParams
+  p: positionParams | null
 ) => {
-  setup: (node: T) => void;
-  ref: RefObject<T>;
+  setup: ((node: T) => void) | null;
+  ref: RefObject<T> | null;
 };
 
 export const defaultTheme: Theme = {

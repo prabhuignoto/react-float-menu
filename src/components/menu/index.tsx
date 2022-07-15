@@ -55,6 +55,7 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
         "--rc-fltmenu-menu-bg-color": theme?.menuBackgroundColor,
         "--rc-fltmenu-menu-item-hover": theme?.menuItemHoverColor,
         "--rc-fltmenu-menu-item-hover-text": theme?.menuItemHoverTextColor,
+        "--rc-fltmenu-menu-item-text": theme?.menuItemTextColor,
         "--rc-fltmenu-primary": theme?.primary,
         "--rc-fltmenu-secondary": theme?.secondary,
       } as CSSProperties),

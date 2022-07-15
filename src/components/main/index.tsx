@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, {
+import {
   CSSProperties,
   FunctionComponent,
   useCallback,
@@ -25,6 +25,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     menuBackgroundColor: "#FFFFFF",
     menuItemHoverColor: "#318CE7",
     menuItemHoverTextColor: "#fff",
+    menuItemTextColor: "#000",
     primary: "#318CE7",
     secondary: "#FFFFFF",
   },
@@ -36,6 +37,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   autoFlipMenu = true,
   bringMenuToFocus = true,
   iconSize = "1rem",
+  pin,
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -67,43 +69,47 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
 
   const isFirstRender = useRef(true);
 
-  const { setup, ref } = usePosition<HTMLDivElement>({
-    dimension,
-    onDragEnd: ({ left, top }) => {
-      setHeadPosition({
-        x: left || 0,
-        y: (top || 0) + dimension + 10,
-      });
-      setMenuOpen(false);
-      setPressedState(false);
-      setIsDragged(false);
-    },
-    onDragStart: ({ left, top }) => {
-      setHeadPosition({
-        x: left || 0,
-        y: (top || 0) + dimension + 10,
-      });
-      setCloseMenuImmediate(true);
-      setMenuOpen(false);
-      setIsDragged(true);
-    },
-    onInit: ({ left, top }) => {
-      setHeadPosition({
-        x: left || 0,
-        y: (top || 0) + dimension + 10,
-      });
-    },
-    onPointerDown: () => {
-      setPressedState(true);
-      setCloseMenuImmediate(false);
-    },
-    onPointerUp: useCallback(() => {
-      setPressedState(false);
-      setMenuOpen((prev) => !prev);
-    }, []),
-    startOffset,
-    startPosition,
-  });
+  const { setup, ref } = usePosition<HTMLDivElement>(
+    !pin
+      ? {
+          dimension,
+          onDragEnd: ({ left, top }) => {
+            setHeadPosition({
+              x: left || 0,
+              y: (top || 0) + dimension + 10,
+            });
+            setMenuOpen(false);
+            setPressedState(false);
+            setIsDragged(false);
+          },
+          onDragStart: ({ left, top }) => {
+            setHeadPosition({
+              x: left || 0,
+              y: (top || 0) + dimension + 10,
+            });
+            setCloseMenuImmediate(true);
+            setMenuOpen(false);
+            setIsDragged(true);
+          },
+          onInit: ({ left, top }) => {
+            setHeadPosition({
+              x: left || 0,
+              y: (top || 0) + dimension + 10,
+            });
+          },
+          onPointerDown: () => {
+            setPressedState(true);
+            setCloseMenuImmediate(false);
+          },
+          onPointerUp: useCallback(() => {
+            setPressedState(false);
+            setMenuOpen((prev) => !prev);
+          }, []),
+          startOffset,
+          startPosition,
+        }
+      : null
+  );
 
   const style = useMemo(
     () =>
@@ -136,7 +142,8 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   const handleMenuClose = useCallback(() => {
     setMenuOpen(false);
     setCloseMenuImmediate(false);
-    ref.current?.focus();
+
+    ref?.current?.focus();
   }, []);
 
   const shouldFlip = useMemo(() => {
@@ -192,21 +199,22 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   }, [menuPosition.left, menuDimension.width, bringMenuToFocus]);
 
   useEffect(() => {
-    if (!openMenu || !bringMenuToFocus) {
+    if (!openMenu || !bringMenuToFocus || !ref?.current) {
       return;
     }
+
     if (menuHiddenTowards === "left") {
       setMenuPosition({
         left: 10,
       });
-      ref.current!.style.cssText += `left: ${
+      ref.current.style!.cssText += `left: ${
         Math.round(menuDimension.width / 2) - headHalfWidth + startOffset
       }px;`;
     } else if (menuHiddenTowards === "right") {
       setMenuPosition({
         left: window.innerWidth - menuDimension.width - startOffset,
       });
-      ref.current!.style.cssText += `left: ${
+      ref.current.style!.cssText += `left: ${
         Math.round(window.innerWidth - menuDimension.width / 2) -
         headHalfWidth -
         10
@@ -230,14 +238,14 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
 
     const handleClosure = (ev: PointerEvent) => {
-      const isChild = ref.current?.contains(ev.target as Node);
+      const isChild = ref?.current?.contains(ev.target as Node);
 
       if (!isChild) {
         handleMenuClose();
       }
     };
 
-    if (ref.current) {
+    if (ref?.current) {
       document.addEventListener("pointerdown", handleClosure);
 
       return () => {

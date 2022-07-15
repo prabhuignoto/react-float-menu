@@ -7,16 +7,30 @@ import {
   usePositionType,
 } from "./helpers";
 
-const usePosition: usePositionType = function <T extends HTMLElement>({
-  onPointerDown,
-  onPointerUp,
-  onDragStart,
-  onDragEnd,
-  startPosition,
-  dimension = 0,
-  startOffset,
-  onInit,
-}: positionParams) {
+type Settings = positionParams | null;
+
+const usePosition: usePositionType = <T extends HTMLElement>(
+  settings: Settings
+) => {
+
+  if (!settings) {
+    return {
+      ref: null,
+      setup: null,
+    }
+  }
+
+  const {
+    onPointerDown,
+    onPointerUp,
+    onDragStart,
+    onDragEnd,
+    startPosition,
+    dimension = 0,
+    startOffset,
+    onInit,
+  } = settings;
+
   const ref = useRef<T | null>(null);
   const isClicked = useRef<boolean>(false);
   const isDragged = useRef<boolean>(false);
