@@ -8,6 +8,7 @@ export interface Theme {
   menuItemHoverTextColor?: string;
   primary?: string;
   secondary?: string;
+  menuItemTextColor?: string;
 }
 
 export interface MenuHeadProps {
@@ -25,4 +26,5 @@ export interface MenuHeadProps {
   theme?: Theme;
   width?: number;
   iconSize?: string;
+  pin?: boolean;
 }

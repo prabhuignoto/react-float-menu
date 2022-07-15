@@ -46,6 +46,7 @@ export type positionParams = {
   dimension?: number;
   startOffset?: number;
   onInit: (p: { left: number; top: number }) => void;
+  pin?: boolean;
 };
 
 export type usePositionType = <T extends HTMLElement>(

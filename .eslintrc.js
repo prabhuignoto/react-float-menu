@@ -31,6 +31,7 @@ module.exports = {
         shorthandFirst: true,
       },
     ],
+    "react/prop-types": "off",
     "react/react-in-jsx-scope": 0,
     "sort-keys": ["error", "asc", { caseSensitive: true, natural: true }],
     "sort-keys-fix/sort-keys-fix": "warn",

@@ -7,16 +7,23 @@ import {
   usePositionType,
 } from "./helpers";
 
-const usePosition: usePositionType = function <T extends HTMLElement>({
-  onPointerDown,
-  onPointerUp,
-  onDragStart,
-  onDragEnd,
-  startPosition,
-  dimension = 0,
-  startOffset,
-  onInit,
-}: positionParams) {
+type Settings = positionParams;
+
+const usePosition: usePositionType = <T extends HTMLElement>(
+  settings: Settings
+) => {
+  const {
+    onPointerDown,
+    onPointerUp,
+    onDragStart,
+    onDragEnd,
+    startPosition,
+    dimension = 0,
+    startOffset,
+    onInit,
+    pin,
+  } = settings;
+
   const ref = useRef<T | null>(null);
   const isClicked = useRef<boolean>(false);
   const isDragged = useRef<boolean>(false);
@@ -106,12 +113,14 @@ const usePosition: usePositionType = function <T extends HTMLElement>({
   }, []);
 
   useEffect(() => {
-    document.addEventListener("pointermove", onPointerMove);
+    if (!pin) {
+      document.addEventListener("pointermove", onPointerMove);
 
-    // cleanup
-    return () => {
-      document.removeEventListener("pointermove", onPointerMove);
-    };
+      // cleanup
+      return () => {
+        document.removeEventListener("pointermove", onPointerMove);
+      };
+    }
   }, []);
 
   return {

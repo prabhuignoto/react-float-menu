@@ -78,7 +78,9 @@ describe("Menu head", () => {
       .find("ul")
       .find("li")
       .contains("Edit")
-      .trigger("pointerdown");
+      .trigger("pointerdown", {
+        pointerId: 1,
+      });
 
     cy.get('[data-cy="rc-fltmenu-submenu"]').should("exist");
     cy.get('[data-cy="rc-fltmenu-submenu"]').should("be.visible");
@@ -93,7 +95,9 @@ describe("Menu head", () => {
     cy.get('[data-cy="rc-fltmenu-submenu"]')
       .find("li")
       .contains("Cut")
-      .trigger("pointerdown");
+      .trigger("pointerdown", {
+        pointerId: 2,
+      });
 
     // menu should be closed when clicked on the head
     cy.get('[data-cy="rc-fltmenu-head"]').click();

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, {
+import {
   CSSProperties,
   FunctionComponent,
   useCallback,
@@ -25,6 +25,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     menuBackgroundColor: "#FFFFFF",
     menuItemHoverColor: "#318CE7",
     menuItemHoverTextColor: "#fff",
+    menuItemTextColor: "#000",
     primary: "#318CE7",
     secondary: "#FFFFFF",
   },
@@ -36,6 +37,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   autoFlipMenu = true,
   bringMenuToFocus = true,
   iconSize = "1rem",
+  pin,
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -101,6 +103,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       setPressedState(false);
       setMenuOpen((prev) => !prev);
     }, []),
+    pin,
     startOffset,
     startPosition,
   });
@@ -133,11 +136,14 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     );
   }, [pressedClass, isDragged]);
 
-  const handleMenuClose = useCallback(() => {
-    setMenuOpen(false);
-    setCloseMenuImmediate(false);
-    ref.current?.focus();
-  }, []);
+  const handleMenuClose = () => {
+    if (openMenu) {
+      setMenuOpen(false);
+      setCloseMenuImmediate(false);
+
+      ref?.current?.focus();
+    }
+  };
 
   const shouldFlip = useMemo(() => {
     return (
@@ -191,34 +197,55 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
   }, [menuPosition.left, menuDimension.width, bringMenuToFocus]);
 
+  const shouldAdjustMenuPosition = useMemo(
+    () => !!(!isFirstRender.current && bringMenuToFocus && ref?.current),
+    [openMenu, bringMenuToFocus]
+  );
+
   useEffect(() => {
-    if (!openMenu || !bringMenuToFocus) {
+    if (!shouldAdjustMenuPosition) {
       return;
     }
+
+    const alignedTo = startPosition.split(" ")[1];
+    const { width: menuWidth } = menuDimension;
+    const { innerWidth } = window;
+    const headRef = ref.current as HTMLDivElement;
+
     if (menuHiddenTowards === "left") {
       setMenuPosition({
-        left: 10,
+        left: startOffset,
       });
-      ref.current!.style.cssText += `left: ${
-        Math.round(menuDimension.width / 2) - headHalfWidth + startOffset
+      headRef.style!.cssText += `left: ${
+        Math.round(menuWidth / 2) - headHalfWidth + startOffset
       }px;`;
     } else if (menuHiddenTowards === "right") {
       setMenuPosition({
-        left: window.innerWidth - menuDimension.width - startOffset,
+        left: innerWidth - menuWidth - startOffset,
       });
-      ref.current!.style.cssText += `left: ${
-        Math.round(window.innerWidth - menuDimension.width / 2) -
-        headHalfWidth -
-        10
+      headRef.style!.cssText += `left: ${
+        Math.round(innerWidth - menuWidth / 2) - headHalfWidth - 10
       }px;`;
+    } else if (alignedTo === "left" && headPosition.x <= startOffset && pin) {
+      headRef.style!.cssText += `left: ${startOffset}px;`;
+      setMenuPosition((prev) => ({
+        ...prev,
+        left: -menuWidth,
+      }));
+    } else if (
+      alignedTo === "right" &&
+      headPosition.x >= innerWidth - dimension - startOffset &&
+      pin
+    ) {
+      headRef.style!.cssText += `left: ${
+        innerWidth - dimension - startOffset
+      }px;`;
+      setMenuPosition((prev) => ({
+        ...prev,
+        left: innerWidth,
+      }));
     }
-  }, [
-    menuHiddenTowards,
-    openMenu,
-    menuDimension.width,
-    headHalfWidth,
-    bringMenuToFocus,
-  ]);
+  }, [openMenu, headPosition.x, shouldAdjustMenuPosition]);
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -230,26 +257,26 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
 
     const handleClosure = (ev: PointerEvent) => {
-      const isChild = ref.current?.contains(ev.target as Node);
+      const isChild = ref?.current?.contains(ev.target as Node);
 
       if (!isChild) {
         handleMenuClose();
       }
     };
 
-    if (ref.current) {
+    if (ref?.current) {
       document.addEventListener("pointerdown", handleClosure);
 
       return () => {
         document.removeEventListener("pointerdown", handleClosure);
       };
     }
-  }, []);
+  }, [handleMenuClose]);
 
-  const handleSelection = useCallback((path: string) => {
+  const handleSelection = (path: string) => {
     onSelect?.(path);
     handleMenuClose();
-  }, []);
+  };
 
   return (
     <MenuContext.Provider

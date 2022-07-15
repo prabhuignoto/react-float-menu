@@ -14,6 +14,7 @@ function App() {
     <div className="App">
       <Menu
         dimension={40}
+        iconSize="1.25rem"
         items={[
           { icon: <FileIcon />, name: "File" },
           {
@@ -37,7 +38,7 @@ function App() {
           { icon: <LogoutIcon />, name: "Logout" },
         ]}
         shape="square"
-        startPosition="top left"
+        startPosition="top right"
         width={250}
         onSelect={(val) => console.log(val)}
       >

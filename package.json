@@ -40,7 +40,8 @@
     "snyk:monitor": "npx snyk monitor",
     "snyk:test": "npx snyk test",
     "test": "npx vitest run -c ./vitest.config.ts",
-    "cypress:open": "npx cypress open"
+    "cypress:open": "npx cypress open",
+    "cypress:quiet": "npx cypress run --headless --quiet"
   },
   "browserslist": [
     "last 2 versions",
