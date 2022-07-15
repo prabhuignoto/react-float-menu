@@ -4,6 +4,7 @@ import {
   CSSProperties,
   FunctionComponent,
   KeyboardEvent,
+  memo,
   PointerEvent,
   useCallback,
   useContext,
@@ -18,7 +19,7 @@ import { MenuItem } from "../menu-list-item/menu-list-item";
 import { MenuItemProps, MenuProps } from "./menu-model";
 import styles from "./menu.module.scss";
 
-const Menu: FunctionComponent<MenuProps> = (props) => {
+const Menu: FunctionComponent<MenuProps> = memo((props) => {
   const {
     items = [],
     menuHeadPosition,
@@ -241,6 +242,8 @@ const Menu: FunctionComponent<MenuProps> = (props) => {
       </ul>
     </div>
   );
-};
+});
+
+Menu.displayName = "Menu";
 
 export { Menu };

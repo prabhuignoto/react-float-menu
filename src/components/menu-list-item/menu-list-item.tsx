@@ -66,7 +66,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
         onToggleSubMenu?.(id);
       }
     },
-    [onSelect, onToggleSubMenu]
+    [onSelect]
   );
 
   // handler for opening submenu or selection
