@@ -20,6 +20,7 @@
     "jsx": "react-jsx",
     "noUnusedLocals": false,
     "rootDir": ".",
+    "baseUrl": ".",
     "types": [
       "cypress"
     ]

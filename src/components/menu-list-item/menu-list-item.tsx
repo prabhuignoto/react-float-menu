@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import {
   KeyboardEvent,
+  memo,
   PointerEvent,
   useCallback,
   useContext,
@@ -12,7 +13,7 @@ import { Menu } from "../menu";
 import { MenuItemViewModel } from "./menu-list-item.model";
 import styles from "./menu-list-item.module.scss";
 
-const MenuItem = (props: MenuItemViewModel) => {
+const MenuItem = memo((props: MenuItemViewModel) => {
   const {
     name,
     icon,
@@ -82,7 +83,7 @@ const MenuItem = (props: MenuItemViewModel) => {
         onSelect?.(name, index, id);
       }
     },
-    [onToggleSubMenu, onSelect]
+    [onSelect]
   );
 
   return (
@@ -136,7 +137,7 @@ const MenuItem = (props: MenuItemViewModel) => {
       </div>
     </li>
   );
-};
+});
 
 MenuItem.displayName = "MenuItem";
 
