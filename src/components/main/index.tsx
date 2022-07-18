@@ -216,18 +216,18 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       setMenuPosition({
         left: startOffset,
       });
-      headRef.style!.cssText += `left: ${
+      headRef.style.cssText += `left: ${
         Math.round(menuWidth / 2) - headHalfWidth + startOffset
       }px;`;
     } else if (menuHiddenTowards === "right") {
       setMenuPosition({
         left: innerWidth - menuWidth - startOffset,
       });
-      headRef.style!.cssText += `left: ${
+      headRef.style.cssText += `left: ${
         Math.round(innerWidth - menuWidth / 2) - headHalfWidth - 10
       }px;`;
     } else if (alignedTo === "left" && headPosition.x <= startOffset && pin) {
-      headRef.style!.cssText += `left: ${startOffset}px;`;
+      headRef.style.cssText += `left: ${startOffset}px;`;
       setMenuPosition((prev) => ({
         ...prev,
         left: -menuWidth,
@@ -237,7 +237,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       headPosition.x >= innerWidth - dimension - startOffset &&
       pin
     ) {
-      headRef.style!.cssText += `left: ${
+      headRef.style.cssText += `left: ${
         innerWidth - dimension - startOffset
       }px;`;
       setMenuPosition((prev) => ({
