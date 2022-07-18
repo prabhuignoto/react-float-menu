@@ -1,14 +1,21 @@
 <h1>react-float-menu</h1>
 
-![minzip](https://img.shields.io/bundlephobia/minzip/react-float-menu)
-![npm](https://img.shields.io/npm/v/react-float-menu)
-![NPM](https://img.shields.io/npm/l/react-float-menu)
-![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/prabhuignoto/react-float-menu)
-![codiga](https://api.codiga.io/project/34090/score/svg)
-[![Depfu](https://badges.depfu.com/badges/f3de8a5fe036234eef1005ea21f8af17/overview.svg)](https://depfu.com/github/prabhuignoto/react-float-menu?project_id=36049)
-[![Cypress Tests](https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml/badge.svg)](https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml)
+<p align="center">
+  <a href="">
+    <img src="./logo.svg" align="center" alt="logo" />
+  </a>
+</p>
 
-<img src="./logo.png" align="center" alt="logo" />
+<p align="center">
+  <a href="https://www.npmjs.com/package/react-float-menu"><img src="https://img.shields.io/npm/v/react-float-menu" alt="minzip"></a>
+  <a href="https://img.shields.io/bundlephobia/minzip/react-float-menu"><img src="https://img.shields.io/bundlephobia/minzip/react-float-menu" alt="npm version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/react-float-menu" alt="build status"></a>
+  <a href="https://snyk.io/test/github/prabhuignoto/react-float-menu"><img src="https://img.shields.io/snyk/vulnerabilities/github/prabhuignoto/react-float-menu" alt="snyk"></a>
+  <a href="https://app.codiga.io/hub/project/34090/react-float-menu"><img src="https://api.codiga.io/project/34090/score/svg" alt="codiga"></a>
+  <a href="https://depfu.com/github/prabhuignoto/react-float-menu?project_id=36049"><img src="https://badges.depfu.com/badges/f3de8a5fe036234eef1005ea21f8af17/overview.svg" alt="depfu"></a>
+  <a href="https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml"><img src="https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml/badge.svg" alt="cypress"></a>
+</p>
+
 
 <h2>Features</h2>
 
