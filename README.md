@@ -4,8 +4,11 @@
 ![npm](https://img.shields.io/npm/v/react-float-menu)
 ![NPM](https://img.shields.io/npm/l/react-float-menu)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/prabhuignoto/react-float-menu)
+![codiga](https://api.codiga.io/project/34090/score/svg)
 [![Depfu](https://badges.depfu.com/badges/f3de8a5fe036234eef1005ea21f8af17/overview.svg)](https://depfu.com/github/prabhuignoto/react-float-menu?project_id=36049)
 [![Cypress Tests](https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml/badge.svg)](https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml)
+
+<img src="./logo.svg" align="center" alt="logo" />
 
 <h2>Features</h2>
 
