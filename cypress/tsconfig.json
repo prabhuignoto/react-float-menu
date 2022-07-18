@@ -22,7 +22,8 @@
     "rootDir": ".",
     "baseUrl": ".",
     "types": [
-      "cypress"
+      "cypress",
+      "@4tw/cypress-drag-drop"
     ]
   },
   "include": [

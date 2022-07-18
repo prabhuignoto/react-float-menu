@@ -38,7 +38,7 @@ function App() {
           { icon: <LogoutIcon />, name: "Logout" },
         ]}
         shape="square"
-        startPosition="top right"
+        startPosition="top left"
         width={250}
         onSelect={(val) => console.log(val)}
       >
