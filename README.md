@@ -8,7 +8,7 @@
 [![Depfu](https://badges.depfu.com/badges/f3de8a5fe036234eef1005ea21f8af17/overview.svg)](https://depfu.com/github/prabhuignoto/react-float-menu?project_id=36049)
 [![Cypress Tests](https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml/badge.svg)](https://github.com/prabhuignoto/react-float-menu/actions/workflows/cypress.yml)
 
-<img src="./logo.svg" align="center" alt="logo" />
+<img src="./logo.png" align="center" alt="logo" />
 
 <h2>Features</h2>
 
