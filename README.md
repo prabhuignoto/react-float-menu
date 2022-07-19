@@ -96,11 +96,12 @@ Let's get started by creating a new floating menu with drag super power.
 | disableHeader       | Disables the header section of the menu.                                                                                  | false      |
 | iconSize            | Size of the menu item icons                                                                                               | "1rem"     |
 | items               | Collection of menu items. Please refer [Menu item model](#menu-item-model)                                                | []         |
+| pin                 | Disables dragging and pins the menu. The button's initial placement will be determined by `startPosition`                 | 30         |
 | shape               | Shape of the button. can be `square` or `circle`                                                                          | `circle`   |
+| RTL                 | Renders the menu items right to left. The submenu's will open to the `left side`.                                         | False      |
 | startPosition       | Starting position of the button. can be `top left`,`top right`,`bottom left`,`bottom right`                               | `top left` |
 | theme               | With the `theme` object, you can change the colors of different elements.                                                 |            |
 | width               | Width of the menu                                                                                                         | 30         |
-| pin                 | disables dragging and pins the menu. The button's initial placement will be determined by `startPosition`                 | 30         |
 
 ### items
 
