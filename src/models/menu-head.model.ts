@@ -27,4 +27,5 @@ export interface MenuHeadProps {
   width?: number;
   iconSize?: string;
   pin?: boolean;
+  RTL?: boolean;
 }

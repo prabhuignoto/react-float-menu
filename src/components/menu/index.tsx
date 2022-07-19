@@ -26,7 +26,6 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
     open,
     onClose,
     closeImmediate,
-    flip,
     onRender,
     disableHeader = false,
     disableAnimation = false,
@@ -42,7 +41,7 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
 
   const [height, setHeight] = useState(0);
 
-  const { theme, iconSize } = useContext(MenuContext);
+  const { theme, iconSize, RTL } = useContext(MenuContext);
 
   const isFirstRender = useRef(true);
 
@@ -86,13 +85,13 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
     () =>
       classNames(
         styles.wrapper,
-        flip ? styles.flip : "",
+        RTL ? styles.flip : "",
         disableAnimation ? styles.no_animation : "",
         closeImmediate ? styles.no_animation : "",
         isSubMenu ? styles.is_sub_menu : "",
         openClass
       ),
-    [canOpen, flip, canClose]
+    [canOpen, RTL, canClose]
   );
   const listClass = useMemo(
     () => classNames(styles.list, !open ? styles.close : ""),
@@ -210,10 +209,10 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
   return (
     <div className={wrapperClass} style={style}>
       {!disableHeader && (
-        <div className={styles.toolbar}>
+        <div className={classNames(styles.toolbar, RTL ? styles.flip : "")}>
           <span
             aria-label="Close"
-            className={styles.close_btn}
+            className={classNames(styles.close_btn, RTL ? styles.flip : "")}
             data-cy="rc-fltmenu-close"
             role="button"
             tabIndex={0}

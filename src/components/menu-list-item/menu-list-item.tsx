@@ -28,12 +28,17 @@ const MenuItem = memo((props: MenuItemViewModel) => {
     selected,
   } = props;
 
+  const { width = 250, RTL } = useContext(MenuContext);
+
   const itemClass = useMemo(
-    () => classNames(styles.list_item, icon ? styles.icon : styles.no_icon),
+    () =>
+      classNames(
+        styles.list_item,
+        icon ? styles.icon : styles.no_icon,
+        RTL ? styles.rtl : ""
+      ),
     [icon]
   );
-
-  const { width = 250 } = useContext(MenuContext);
 
   const canShowSubMenu = useMemo(() => children && selected, [
     children,
@@ -105,6 +110,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
         aria-label={name}
         className={classNames(
           styles.list_item_name,
+          RTL ? styles.rtl : "",
           !icon ? styles.no_icon : ""
         )}
       >
@@ -113,14 +119,17 @@ const MenuItem = memo((props: MenuItemViewModel) => {
       {children && (
         <span
           aria-label="expand menu"
-          className={styles.chevron_right}
+          className={!RTL ? styles.chevron_right : styles.chevron_left}
           role="img"
         >
           <ChevronRight />
         </span>
       )}
       <div
-        className={styles.child_menu_wrapper}
+        className={classNames(
+          RTL ? styles.menu_flip : "",
+          styles.child_menu_wrapper
+        )}
         data-cy="rc-fltmenu-submenu"
         style={{ width: `${width}px` }}
       >
