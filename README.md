@@ -160,6 +160,8 @@ To run the tests, run the following command in the root directory of the project
 ## 🍫 CodeSandbox Examples
 
 1. [Basic](https://codesandbox.io/s/black-dawn-xzw0xd)
+2. [Pinned Menu](https://codesandbox.io/s/staging-darkness-ycfqkm)
+3. [Custom Colors](https://codesandbox.io/s/cocky-satoshi-hkm28g)
 
 ## 🤝 Contributing
 
