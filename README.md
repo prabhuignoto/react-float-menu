@@ -1,5 +1,3 @@
-<h1>react-float-menu</h1>
-
 <p align="center">
   <a href="">
     <img src="./logo.svg" align="center" alt="logo" />
