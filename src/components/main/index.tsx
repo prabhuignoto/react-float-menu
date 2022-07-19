@@ -38,6 +38,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   bringMenuToFocus = true,
   iconSize = "1rem",
   pin,
+  RTL = false,
 }) => {
   const [pressedState, setPressedState] = useState(false);
   const [openMenu, setMenuOpen] = useState<boolean | null>(null);
@@ -285,6 +286,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   return (
     <MenuContext.Provider
       value={{
+        RTL,
         dimension,
         disableHeader,
         iconSize,

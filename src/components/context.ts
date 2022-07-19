@@ -10,6 +10,7 @@ type ContextModel = Pick<
   | "disableHeader"
   | "width"
   | "iconSize"
+  | "RTL"
 >;
 
 export const MenuContext = React.createContext<ContextModel>({});
