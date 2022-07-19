@@ -180,27 +180,67 @@ describe("Menu head", () => {
     cy.get('[data-cy="rc-fltmenu-container"]').should("be.visible");
   });
 
-  // drag and drop the menu head to a random place and check if the menu is visible
-  it("should drag and drop the menu head to a random place", () => {
+  // drag and drop the menu head to a random place 10 times and check if the menu is visible
+  it("should drag and drop the menu head to a random place 10 times", () => {
     cy.get('[data-cy="rc-fltmenu-head"]').click();
 
-    cy.get('[data-cy="rc-fltmenu-head"]')
-      .trigger("pointerdown", {
-        pointerId: 1,
-      })
-      .trigger("pointermove", {
-        clientX: Math.floor(Math.random() * Cypress.config("viewportWidth")),
-        clientY: Math.floor(Math.random() * Cypress.config("viewportHeight")),
-        pointerId: 1,
-      })
-      .trigger("pointerup", {
-        pointerId: 1,
-      });
+    for (let i = 0; i < 10; i++) {
+      cy.get('[data-cy="rc-fltmenu-head"]')
+        .trigger("pointerdown", {
+          pointerId: 1,
+        })
+        .trigger("pointermove", {
+          clientX: Math.floor(Math.random() * Cypress.config("viewportWidth")),
+          clientY: Math.floor(Math.random() * Cypress.config("viewportHeight")),
+          pointerId: 1,
+        })
+        .trigger("pointerup", {
+          pointerId: 1,
+        });
+      // open the menu
+      cy.get('[data-cy="rc-fltmenu-head"]').click();
 
-    // open the menu
-    cy.get('[data-cy="rc-fltmenu-head"]').click();
+      // check if the menu is opened at the right position
+      cy.get('[data-cy="rc-fltmenu-container"]').should("be.visible");
+    }
+  });
 
-    // check if the menu is opened at the right position
+  // open the menu head by triggering the pointer down event on menu head
+  it("should open the menu head by triggering the pointer down event on menu head", () => {
+    // focus menu head
+    cy.get('[data-cy="rc-fltmenu-head"]').focus();
+
+    cy.get('[data-cy="rc-fltmenu-head"]').trigger("pointerup", {
+      pointerId: 1,
+    });
+
+    // check if the menu is opened
     cy.get('[data-cy="rc-fltmenu-container"]').should("be.visible");
+
+    cy.get('[data-cy="rc-fltmenu-head"]').trigger("pointerup", {
+      pointerId: 1,
+    });
+
+    // check if the menu is opened
+    cy.get('[data-cy="rc-fltmenu-container"]').should("not.be.visible");
+  });
+
+  it("Should close the menu when pressing Escape", () => {
+    // focus menu head
+    cy.get('[data-cy="rc-fltmenu-head"]').focus();
+
+    cy.get('[data-cy="rc-fltmenu-head"]').trigger("pointerup", {
+      pointerId: 1,
+    });
+
+    // check if the menu is opened
+    cy.get('[data-cy="rc-fltmenu-container"]').should("be.visible");
+
+    cy.get('[data-cy="rc-fltmenu-head"]').trigger("keyup", {
+      key: "Escape",
+    });
+
+    // check if the menu is opened
+    cy.get('[data-cy="rc-fltmenu-container"]').should("not.be.visible");
   });
 });

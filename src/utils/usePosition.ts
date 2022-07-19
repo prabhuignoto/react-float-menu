@@ -22,6 +22,7 @@ const usePosition: usePositionType = <T extends HTMLElement>(
     startOffset,
     onInit,
     pin,
+    onClosed,
   } = settings;
 
   const ref = useRef<T | null>(null);
@@ -43,6 +44,10 @@ const usePosition: usePositionType = <T extends HTMLElement>(
       ele.setPointerCapture(ev.pointerId);
     } else if (ev instanceof KeyboardEvent) {
       keyPressed.current = true;
+
+      if (ev.key === "Escape") {
+        onClosed();
+      }
 
       if (ev.key !== "Enter") {
         return;
@@ -113,12 +118,18 @@ const usePosition: usePositionType = <T extends HTMLElement>(
   }, []);
 
   useEffect(() => {
+    // attach drag handlers if not pinned
     if (!pin) {
       document.addEventListener("pointermove", onPointerMove);
 
       // cleanup
       return () => {
         document.removeEventListener("pointermove", onPointerMove);
+
+        ref.current?.removeEventListener("pointerdown", handlePointerDown);
+        ref.current?.removeEventListener("keydown", handlePointerDown);
+        ref.current?.removeEventListener("pointerup", handlePointerUp);
+        ref.current?.removeEventListener("keyup", handlePointerUp);
       };
     }
   }, []);

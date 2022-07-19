@@ -42,6 +42,7 @@ export type positionParams = {
   onPointerUp: () => void;
   onDragStart: (p: { left: number; top: number }) => void;
   onDragEnd: (p: { left: number; top: number }) => void;
+  onClosed: () => void;
   startPosition: Position;
   dimension?: number;
   startOffset?: number;
