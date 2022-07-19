@@ -125,11 +125,6 @@ const usePosition: usePositionType = <T extends HTMLElement>(
       // cleanup
       return () => {
         document.removeEventListener("pointermove", onPointerMove);
-
-        ref.current?.removeEventListener("pointerdown", handlePointerDown);
-        ref.current?.removeEventListener("keydown", handlePointerDown);
-        ref.current?.removeEventListener("pointerup", handlePointerUp);
-        ref.current?.removeEventListener("keyup", handlePointerUp);
       };
     }
   }, []);
