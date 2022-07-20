@@ -1,7 +1,7 @@
 import { MenuHeadProps } from "../../models/menu-head.model";
 
 export type MenuContainerProps = Pick<MenuHeadProps, "disableHeader"> & {
-  shouldFlip: boolean;
+  shouldFlipVertical: boolean;
   menuPosition: {
     left: number;
     top?: number;

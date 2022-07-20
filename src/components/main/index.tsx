@@ -150,7 +150,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
   };
 
-  const shouldFlip = useMemo(() => {
+  const shouldFlipVertical = useMemo(() => {
     return (
       autoFlipMenu &&
       headPosition.y + dimension + menuDimension.height > window.innerHeight
@@ -174,12 +174,12 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       left: Math.round(
         headPosition.x - (Math.round(menuDimension.width / 2) - headHalfWidth)
       ),
-      [shouldFlip ? "bottom" : "top"]: !shouldFlip
+      [shouldFlipVertical ? "bottom" : "top"]: !shouldFlipVertical
         ? headPosition.y + 10
         : Math.abs(window.innerHeight - headPosition.y) + dimension + 20,
     });
   }, [
-    shouldFlip,
+    shouldFlipVertical,
     headPosition.x,
     headPosition.y,
     menuDimension.width,
@@ -317,7 +317,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
         headPosition={headPosition}
         menuPosition={menuPosition}
         open={openMenu}
-        shouldFlip={shouldFlip}
+        shouldFlipVertical={shouldFlipVertical}
         onClose={handleMenuClose}
         onMenuRender={onMenuRender}
         onSelect={handleSelection}
