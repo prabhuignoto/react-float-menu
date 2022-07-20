@@ -14,7 +14,7 @@ import styles from "./menu-container.module.scss";
 
 const MenuContainer: FunctionComponent<MenuContainerProps> = memo(
   ({
-    shouldFlip,
+    shouldFlipVertical,
     menuPosition,
     headPosition,
     open,
@@ -34,19 +34,28 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = memo(
       return {
         "--rc-fltmenu-menu-bg-color": theme?.menuBackgroundColor,
         "--rc-fltmenu-width": `${width}px`,
-        [shouldFlip ? "bottom" : "top"]: `${shouldFlip ? bottom : top}px`,
+        [shouldFlipVertical ? "bottom" : "top"]: `${
+          shouldFlipVertical ? bottom : top
+        }px`,
         left: `${left}px`,
       };
-    }, [shouldFlip, width, left, top, bottom, theme?.menuBackgroundColor]);
+    }, [
+      shouldFlipVertical,
+      width,
+      left,
+      top,
+      bottom,
+      theme?.menuBackgroundColor,
+    ]);
 
     const arrowClass = useMemo(
       () =>
         classNames(
           styles.menu_arrow,
           open ? styles.menu_open : styles.menu_close,
-          shouldFlip ? styles.flip : ""
+          shouldFlipVertical ? styles.flip : ""
         ),
-      [open, shouldFlip]
+      [open, shouldFlipVertical]
     );
 
     const menuContainerClass = useMemo(
@@ -71,7 +80,6 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = memo(
         <Menu
           closeImmediate={closeImmediate}
           disableHeader={disableHeader}
-          flip={shouldFlip}
           items={items}
           menuHeadPosition={headPosition}
           open={open}

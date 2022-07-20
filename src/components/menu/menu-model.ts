@@ -18,7 +18,6 @@ export type MenuProps = Pick<MenuHeadProps, "items" | "disableHeader"> & {
   open?: boolean | null;
   onClose?: () => void;
   closeImmediate?: boolean;
-  flip?: boolean;
   onRender?: (height: number, width: number) => void;
   isSubMenu?: boolean;
   disableAnimation?: boolean;
