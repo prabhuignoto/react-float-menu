@@ -1,9 +1,9 @@
 import { RefObject, useEffect } from "react";
 
-function useCloseOnClick(ref: RefObject<HTMLElement>, onClose: () => void) {
+function useCloseOnClick(ref: RefObject<HTMLElement>, menuOpen: boolean | null, onClose: () => void) {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
+      if (ref.current && !ref.current.contains(e.target as Node) && menuOpen) {
         onClose();
       }
     };
@@ -13,7 +13,7 @@ function useCloseOnClick(ref: RefObject<HTMLElement>, onClose: () => void) {
     return () => {
       document.removeEventListener("pointerdown", handleClick);
     };
-  }, [ref, onClose]);
+  }, [ref, onClose, menuOpen]);
 }
 
 export { useCloseOnClick };
