@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { MenuHeadProps } from "../../models/menu-head.model";
-import { defaultTheme } from "../../utils/helpers";
+import { defaultTheme } from "../../utils/theme-default";
 import { useCloseOnClick } from "../../utils/useCloseOnClick";
 import { useMenuHidden } from "../../utils/useMenuHidden";
 import { usePosition } from "../../utils/usePosition";
@@ -108,7 +108,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     startPosition,
   });
 
-  useCloseOnClick(ref, () => {
+  useCloseOnClick(ref, openMenu, () => {
     if (closeOnClickOutside) {
       setMenuOpen(false);
     }

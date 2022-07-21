@@ -1,4 +1,4 @@
-export default {
+export const defaultTheme = {
   menuBackgroundColor: "#FFFFFF",
   menuItemHoverColor: "#318CE7",
   menuItemHoverTextColor: "#fff",
