@@ -184,7 +184,7 @@ describe("Menu head", () => {
   it("should drag and drop the menu head to a random place 10 times", () => {
     cy.get('[data-cy="rc-fltmenu-head"]').click();
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 30; i++) {
       cy.get('[data-cy="rc-fltmenu-head"]')
         .trigger("pointerdown", {
           pointerId: 1,
