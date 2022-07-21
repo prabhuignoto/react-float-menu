@@ -10,6 +10,8 @@ import {
 } from "react";
 import { MenuHeadProps } from "../../models/menu-head.model";
 import { defaultTheme } from "../../utils/helpers";
+import { useCloseOnClick } from "../../utils/useCloseOnClick";
+import { useMenuHidden } from "../../utils/useMenuHidden";
 import { usePosition } from "../../utils/usePosition";
 import { MenuContext } from "../context";
 import { MenuContainer } from "../menu-container/menu-container";
@@ -21,14 +23,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
   shape = "circle",
   items = [],
   startPosition = "top left",
-  theme = {
-    menuBackgroundColor: "#FFFFFF",
-    menuItemHoverColor: "#318CE7",
-    menuItemHoverTextColor: "#fff",
-    menuItemTextColor: "#000",
-    primary: "#318CE7",
-    secondary: "#FFFFFF",
-  },
+  theme = defaultTheme,
   disableHeader = false,
   width = 250,
   onSelect,
@@ -113,6 +108,16 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     startPosition,
   });
 
+  useCloseOnClick(ref, () => {
+    if (closeOnClickOutside) {
+      setMenuOpen(false);
+    }
+  });
+
+  useMenuHidden(menuPosition.left, menuDimension.width, (dir) => {
+    setMenuHiddenTowards(dir);
+  });
+
   const style = useMemo(
     () =>
       ({
@@ -186,22 +191,6 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     headHalfWidth,
   ]);
 
-  useEffect(() => {
-    if (!bringMenuToFocus) {
-      return;
-    }
-
-    const { left } = menuPosition;
-    const { width: menuWidth } = menuDimension;
-    if (left < 0) {
-      setMenuHiddenTowards("left");
-    } else if (left + menuWidth > window.innerWidth) {
-      setMenuHiddenTowards("right");
-    } else {
-      setMenuHiddenTowards(null);
-    }
-  }, [menuPosition.left, menuDimension.width, bringMenuToFocus]);
-
   const shouldAdjustMenuPosition = useMemo(
     () => !!(!isFirstRender.current && bringMenuToFocus && ref?.current),
     [openMenu, bringMenuToFocus]
@@ -256,27 +245,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     if (isFirstRender.current) {
       isFirstRender.current = false;
     }
-
-    if (!closeOnClickOutside) {
-      return;
-    }
-
-    const handleClosure = (ev: PointerEvent) => {
-      const isChild = ref?.current?.contains(ev.target as Node);
-
-      if (!isChild) {
-        handleMenuClose();
-      }
-    };
-
-    if (ref?.current) {
-      document.addEventListener("pointerdown", handleClosure);
-
-      return () => {
-        document.removeEventListener("pointerdown", handleClosure);
-      };
-    }
-  }, [handleMenuClose]);
+  }, []);
 
   const handleSelection = (path: string) => {
     onSelect?.(path);
