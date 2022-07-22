@@ -1,8 +1,8 @@
 import { RefObject, useEffect } from "react";
 
-function useCloseOnClick(
-  ref: RefObject<HTMLElement>,
-  menuOpen: boolean | null,
+function useCloseOnClick<T extends HTMLElement>(
+  ref: RefObject<T>,
+  menuOpen: boolean | undefined | null,
   onClose: () => void
 ) {
   useEffect(() => {
