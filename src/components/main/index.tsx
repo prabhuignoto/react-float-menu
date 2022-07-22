@@ -247,6 +247,7 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     <MenuContext.Provider
       value={{
         RTL,
+        closeOnClickOutside,
         dimension,
         disableHeader,
         iconSize,

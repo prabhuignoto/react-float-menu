@@ -44,15 +44,17 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
 
   const [height, setHeight] = useState(0);
 
-  const { theme, iconSize, RTL } = useContext(MenuContext);
+  const { theme, iconSize, RTL, closeOnClickOutside } = useContext(MenuContext);
 
   useCloseOnEscape<HTMLUListElement>(listRef, () => {
     handleClose();
   });
 
-  useCloseOnClick<HTMLDivElement>(outerRef, open, () => {
-    handleClose();
-  });
+  if (closeOnClickOutside) {
+    useCloseOnClick<HTMLDivElement>(outerRef, open, () => {
+      handleClose();
+    });
+  }
 
   useKeyboardNav(listRef, _items, (index) => {
     const elementToFocus = listRef.current?.querySelectorAll(
