@@ -1,6 +1,6 @@
 <p align="center">
   <a href="">
-    <img src="./logo.svg" align="center" alt="logo" />
+    <img src="./logo.svg" align="center" alt="logo" width="500" height="350" />
   </a>
 </p>
 
@@ -19,6 +19,7 @@
 
 - ⚡ Configurable and smart floating menu for react
 - ⚙️ Comes with a lot of options to customize the  behavior of the menu
+- 💡 Auto detects edges of the screen and places the menu accordingly
 - 🎨 Customize colors with ease
 - 📱 Seamless support for mobile and desktop
 - 💪 Built with Typescript
