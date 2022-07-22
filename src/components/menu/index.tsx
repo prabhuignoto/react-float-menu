@@ -8,11 +8,13 @@ import {
   PointerEvent,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { useCloseOnClick } from "../../effects/useCloseOnClick";
+import { useCloseOnEscape } from "../../effects/useCloseOnEscape";
+import { useKeyboardNav } from "../../effects/useKeyboardNav";
 import { CloseIcon } from "../../icons";
 import { MenuContext } from "../context";
 import { MenuItem } from "../menu-list-item/menu-list-item";
@@ -37,13 +39,30 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
     items.map((item) => ({ ...item, id: nanoid(), selected: false }))
   );
 
-  const wrapperRef = useRef<HTMLUListElement>();
+  const listRef = useRef<HTMLUListElement>();
+  const outerRef = useRef<HTMLDivElement>(null);
 
   const [height, setHeight] = useState(0);
 
-  const { theme, iconSize, RTL } = useContext(MenuContext);
+  const { theme, iconSize, RTL, closeOnClickOutside } = useContext(MenuContext);
 
-  const isFirstRender = useRef(true);
+  useCloseOnEscape<HTMLUListElement>(listRef, () => {
+    handleClose();
+  });
+
+  if (closeOnClickOutside) {
+    useCloseOnClick<HTMLDivElement>(outerRef, open, () => {
+      handleClose();
+    });
+  }
+
+  useKeyboardNav(listRef, _items, (index) => {
+    const elementToFocus = listRef.current?.querySelectorAll(
+      `li:nth-of-type(${index + 1})`
+    )[0] as HTMLElement;
+
+    elementToFocus?.focus();
+  });
 
   const activeIndex = useRef<number>(0);
 
@@ -101,7 +120,7 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
   const onWrapperInit = useCallback(
     (node: HTMLUListElement) => {
       if (node) {
-        wrapperRef.current = node;
+        listRef.current = node;
 
         setTimeout(() => {
           const wrapperHeight = node.clientHeight + 40;
@@ -116,7 +135,7 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
   const handleClose = useCallback(
     (ev?: PointerEvent) => {
       ev?.stopPropagation();
-      activeIndex.current = -1;
+      // activeIndex.current = -1;
       onClose?.();
     },
     [onClose]
@@ -130,44 +149,6 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
     },
     [onClose]
   );
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    }
-
-    wrapperRef.current?.addEventListener("keyup", (ev) => {
-      if (
-        ev.key !== "ArrowDown" &&
-        ev.key !== "ArrowUp" &&
-        ev.key !== "Escape"
-      ) {
-        return;
-      }
-
-      ev.stopPropagation();
-
-      if (ev.key === "Escape") {
-        handleClose();
-      } else if (ev.key === "ArrowDown" || ev.key === "ArrowUp") {
-        let nextIndex = activeIndex.current + (ev.key === "ArrowDown" ? 1 : -1);
-
-        if (nextIndex < 0) {
-          nextIndex = _items.length - 1;
-        } else if (nextIndex > _items.length - 1) {
-          nextIndex = 0;
-        }
-
-        const elementToFocus = wrapperRef.current?.querySelectorAll(
-          `li:nth-of-type(${nextIndex + 1})`
-        )[0] as HTMLElement;
-
-        elementToFocus?.focus();
-
-        activeIndex.current = nextIndex;
-      }
-    });
-  }, [_items.length]);
 
   const handleSelection = (name: string, index: number, id?: string) => {
     onSelect?.(name, index);
@@ -207,7 +188,7 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
   }, []);
 
   return (
-    <div className={wrapperClass} style={style}>
+    <div className={wrapperClass} ref={outerRef} style={style}>
       {!disableHeader && (
         <div className={classNames(styles.toolbar, RTL ? styles.flip : "")}>
           <span

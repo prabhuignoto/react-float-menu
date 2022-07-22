@@ -11,6 +11,7 @@ type ContextModel = Pick<
   | "width"
   | "iconSize"
   | "RTL"
+  | "closeOnClickOutside"
 >;
 
 export const MenuContext = React.createContext<ContextModel>({});

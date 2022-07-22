@@ -8,11 +8,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { useMenuHidden } from "../../effects/useMenuHidden";
+import { usePosition } from "../../effects/usePosition";
 import { MenuHeadProps } from "../../models/menu-head.model";
 import { defaultTheme } from "../../utils/theme-default";
-import { useCloseOnClick } from "../../utils/useCloseOnClick";
-import { useMenuHidden } from "../../utils/useMenuHidden";
-import { usePosition } from "../../utils/usePosition";
 import { MenuContext } from "../context";
 import { MenuContainer } from "../menu-container/menu-container";
 import styles from "./main.module.scss";
@@ -108,12 +107,6 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     startPosition,
   });
 
-  useCloseOnClick(ref, openMenu, () => {
-    if (closeOnClickOutside) {
-      setMenuOpen(false);
-    }
-  });
-
   useMenuHidden(menuPosition.left, menuDimension.width, (dir) => {
     setMenuHiddenTowards(dir);
   });
@@ -146,14 +139,12 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     );
   }, [pressedClass, isDragged]);
 
-  const handleMenuClose = () => {
-    if (openMenu) {
-      setMenuOpen(false);
-      setCloseMenuImmediate(false);
+  const handleMenuClose = useCallback(() => {
+    setMenuOpen(false);
+    setCloseMenuImmediate(false);
 
-      ref?.current?.focus();
-    }
-  };
+    ref?.current?.focus();
+  }, []);
 
   const shouldFlipVertical = useMemo(() => {
     return (
@@ -247,15 +238,16 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
   }, []);
 
-  const handleSelection = (path: string) => {
+  const handleSelection = useCallback((path: string) => {
     onSelect?.(path);
     handleMenuClose();
-  };
+  }, []);
 
   return (
     <MenuContext.Provider
       value={{
         RTL,
+        closeOnClickOutside,
         dimension,
         disableHeader,
         iconSize,
