@@ -238,10 +238,10 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
     }
   }, []);
 
-  const handleSelection = (path: string) => {
+  const handleSelection = useCallback((path: string) => {
     onSelect?.(path);
     handleMenuClose();
-  };
+  }, []);
 
   return (
     <MenuContext.Provider
