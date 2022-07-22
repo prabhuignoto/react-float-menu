@@ -8,11 +8,12 @@ import {
   PointerEvent,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { useCloseOnEscape } from "../../effects/useCloseOnEscape";
+import { useKeyboardNav } from "../../effects/useKeyboardNav";
 import { CloseIcon } from "../../icons";
 import { MenuContext } from "../context";
 import { MenuItem } from "../menu-list-item/menu-list-item";
@@ -43,7 +44,17 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
 
   const { theme, iconSize, RTL } = useContext(MenuContext);
 
-  const isFirstRender = useRef(true);
+  useCloseOnEscape<HTMLUListElement>(wrapperRef, () => {
+    handleClose();
+  });
+
+  useKeyboardNav(wrapperRef, _items, (index) => {
+    const elementToFocus = wrapperRef.current?.querySelectorAll(
+      `li:nth-of-type(${index + 1})`
+    )[0] as HTMLElement;
+
+    elementToFocus?.focus();
+  });
 
   const activeIndex = useRef<number>(0);
 
@@ -130,44 +141,6 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
     },
     [onClose]
   );
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    }
-
-    wrapperRef.current?.addEventListener("keyup", (ev) => {
-      if (
-        ev.key !== "ArrowDown" &&
-        ev.key !== "ArrowUp" &&
-        ev.key !== "Escape"
-      ) {
-        return;
-      }
-
-      ev.stopPropagation();
-
-      if (ev.key === "Escape") {
-        handleClose();
-      } else if (ev.key === "ArrowDown" || ev.key === "ArrowUp") {
-        let nextIndex = activeIndex.current + (ev.key === "ArrowDown" ? 1 : -1);
-
-        if (nextIndex < 0) {
-          nextIndex = _items.length - 1;
-        } else if (nextIndex > _items.length - 1) {
-          nextIndex = 0;
-        }
-
-        const elementToFocus = wrapperRef.current?.querySelectorAll(
-          `li:nth-of-type(${nextIndex + 1})`
-        )[0] as HTMLElement;
-
-        elementToFocus?.focus();
-
-        activeIndex.current = nextIndex;
-      }
-    });
-  }, [_items.length]);
 
   const handleSelection = (name: string, index: number, id?: string) => {
     onSelect?.(name, index);

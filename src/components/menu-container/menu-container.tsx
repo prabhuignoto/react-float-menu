@@ -1,32 +1,24 @@
 import classNames from "classnames";
-import {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import { FunctionComponent, useContext, useMemo } from "react";
 import { MenuContext } from "../context";
 import { Menu } from "../menu";
 import { MenuContainerProps } from "./menu-container.model";
 import styles from "./menu-container.module.scss";
 
 const MenuContainer: FunctionComponent<MenuContainerProps> = ({
-  shouldFlipVertical,
-  menuPosition,
+  closeImmediate,
+  disableHeader,
   headPosition,
-  open,
+  menuPosition,
   onClose,
   onMenuRender,
-  closeImmediate,
   onSelect,
-  disableHeader,
+  open,
+  shouldFlipVertical,
 }) => {
   const { left, top, bottom } = menuPosition;
 
   const { items, width, theme } = useContext(MenuContext);
-
-  const isFirstRender = useRef(true);
 
   const menuContainerStyle = useMemo(() => {
     return {
@@ -60,12 +52,6 @@ const MenuContainer: FunctionComponent<MenuContainerProps> = ({
     () => classNames(styles.menu_container, open ? styles.open : styles.close),
     [open]
   );
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    }
-  }, []);
 
   return (
     <div

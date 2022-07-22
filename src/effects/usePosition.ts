@@ -5,7 +5,7 @@ import {
   getTop,
   positionParams,
   usePositionType,
-} from "./helpers";
+} from "../utils/helpers";
 
 type Settings = positionParams;
 

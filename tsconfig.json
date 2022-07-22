@@ -31,7 +31,7 @@
     "src/utils/*.ts",
     "src/models/*.ts",
     "./globals.d.ts",
-    "./jest-setup.ts",
+    "./jest-setup.ts", "src/effects/useCloseOnClick.ts",
   ],
   "exclude": [
     "node_modules",
