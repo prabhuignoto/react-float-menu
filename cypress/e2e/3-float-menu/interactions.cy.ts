@@ -57,7 +57,9 @@ describe("Menu head", () => {
   it("should close the menu on clicking outside the menu", () => {
     cy.get('[data-cy="rc-fltmenu-head"]').click();
 
-    cy.get('[data-cy="rc-fltmenu-container"]').click().should("not.be.visible");
+    cy.get("body").click(50, 50, { force: true });
+
+    cy.get('[data-cy="rc-fltmenu-container"]').should("not.be.visible");
   });
 
   // should have exactly 6 menu items when the menu is opened
@@ -100,7 +102,10 @@ describe("Menu head", () => {
       });
 
     // menu should be closed when clicked on the head
-    cy.get('[data-cy="rc-fltmenu-head"]').click();
+    // cy.get('[data-cy="rc-fltmenu-head"]').click();
+
+    // menu should be closed when clicked on the body
+    cy.get("body").click(50, 50, { force: true });
 
     cy.get('[data-cy="rc-fltmenu-container"]').should("not.be.visible");
   });
