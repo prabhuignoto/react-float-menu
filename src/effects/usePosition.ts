@@ -38,6 +38,7 @@ const usePosition: usePositionType = <T extends HTMLElement>(
   const handlePointerDown = (ev: PointerEvent | KeyboardEvent) => {
     isClicked.current = true;
     const ele = ev.target as HTMLElement;
+    ev.stopPropagation();
 
     if (ev instanceof PointerEvent) {
       keyPressed.current = false;
