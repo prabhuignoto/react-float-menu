@@ -98,10 +98,10 @@ const MenuHead: FunctionComponent<MenuHeadProps> = ({
       setPressedState(true);
       setCloseMenuImmediate(false);
     },
-    onPointerUp: () => {
+    onPointerUp: useCallback(() => {
       setPressedState(false);
       setMenuOpen((prev) => !prev);
-    },
+    }, []),
     pin,
     startOffset,
     startPosition,
