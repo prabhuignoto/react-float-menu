@@ -21,5 +21,5 @@ export type MenuProps = Pick<MenuHeadProps, "items" | "disableHeader"> & {
   onRender?: (height: number, width: number) => void;
   isSubMenu?: boolean;
   disableAnimation?: boolean;
-  onSelect?: (path: string, index: number) => void;
+  onSelect?: (path: string, index?: number) => void;
 };

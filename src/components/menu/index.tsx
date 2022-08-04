@@ -150,7 +150,7 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
     [onClose]
   );
 
-  const handleSelection = (name: string, index: number, id?: string) => {
+  const handleSelection = (name: string, index?: number, id?: string) => {
     onSelect?.(name, index);
     setItems((prev) =>
       prev.map((item) => ({

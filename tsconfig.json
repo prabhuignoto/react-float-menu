@@ -22,7 +22,7 @@
     "declarationDir": "./dist",
     "outDir": "./dist",
     "noUnusedLocals": false,
-    "rootDir": "./src",
+    "rootDir": ".",
     "types": [
       "node",
       "jest",
