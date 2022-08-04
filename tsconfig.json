@@ -23,6 +23,13 @@
     "outDir": "./dist",
     "noUnusedLocals": false,
     "rootDir": "./src",
+    "types": [
+      "node",
+      "jest",
+      "react",
+      "react-dom",
+      "@testing-library/jest-dom"
+    ]
   },
   "include": [
     "src/react-float-menu.ts",
@@ -31,14 +38,13 @@
     "src/utils/*.ts",
     "src/models/*.ts",
     "./globals.d.ts",
-    "./jest-setup.ts", "src/effects/useCloseOnClick.ts",
+    "./jest-setup.ts",
+    "src/**/*test.tsx"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "vite.config.ts",
-    "src/**/*.test.tsx",
-    "src/**/*.test.ts",
     "src/**/*.d.ts",
   ]
 }

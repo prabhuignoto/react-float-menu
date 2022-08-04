@@ -5,7 +5,7 @@ export interface MenuItemProps {
   name: string;
   id?: string;
   onSelected?: (id: string, name: string) => void;
-  children?: MenuItemProps[];
+  items?: MenuItemProps[];
   selected?: boolean;
   icon?: ReactNode;
 }

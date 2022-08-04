@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import {
   KeyboardEvent,
-  memo,
   PointerEvent,
   useCallback,
   useContext,
@@ -13,11 +12,11 @@ import { Menu } from "../menu";
 import { MenuItemViewModel } from "./menu-list-item.model";
 import styles from "./menu-list-item.module.scss";
 
-const MenuItem = memo((props: MenuItemViewModel) => {
+const MenuItem = (props: MenuItemViewModel) => {
   const {
     name,
     icon,
-    children,
+    items = [],
     open,
     onSelect,
     index,
@@ -40,8 +39,8 @@ const MenuItem = memo((props: MenuItemViewModel) => {
     [icon]
   );
 
-  const canShowSubMenu = useMemo(() => children && selected, [
-    children,
+  const canShowSubMenu = useMemo(() => items.length > 0 && selected, [
+    items.length,
     selected,
   ]);
 
@@ -65,7 +64,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
       ev.stopPropagation();
       ev.preventDefault();
 
-      if (!children) {
+      if (items.length <= 0) {
         onSelect?.(name, index, id);
       } else {
         onToggleSubMenu?.(id);
@@ -82,7 +81,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
       }
       ev.stopPropagation();
 
-      if (children) {
+      if (items.length > 0) {
         onToggleSubMenu?.(id);
       } else {
         onSelect?.(name, index, id);
@@ -95,6 +94,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
     <li
       className={itemClass}
       data-cy="rc-fltmenu-list-item"
+      role="listitem"
       tabIndex={0}
       onKeyUp={handleKeyUp}
       onPointerDown={handleClick}
@@ -116,7 +116,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
       >
         {name}
       </span>
-      {children && (
+      {items.length > 0 ? (
         <span
           aria-label="expand menu"
           className={!RTL ? styles.chevron_right : styles.chevron_left}
@@ -124,7 +124,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
         >
           <ChevronRight />
         </span>
-      )}
+      ) : null}
       <div
         className={classNames(
           RTL ? styles.menu_flip : "",
@@ -138,7 +138,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
             disableAnimation
             disableHeader
             isSubMenu
-            items={children}
+            items={items}
             open={open}
             onSelect={onSelect}
           />
@@ -146,7 +146,7 @@ const MenuItem = memo((props: MenuItemViewModel) => {
       </div>
     </li>
   );
-});
+};
 
 MenuItem.displayName = "MenuItem";
 

@@ -210,6 +210,7 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
             {...item}
             icon={item.icon}
             index={index}
+            items={item.items}
             key={item.id}
             open={open}
             onCloseSubMenu={onCloseSubMenu}
