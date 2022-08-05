@@ -5,7 +5,7 @@ export interface MenuItemProps {
   name: string;
   id?: string;
   onSelected?: (id: string, name: string) => void;
-  children?: MenuItemProps[];
+  items?: MenuItemProps[];
   selected?: boolean;
   icon?: ReactNode;
 }
@@ -21,5 +21,5 @@ export type MenuProps = Pick<MenuHeadProps, "items" | "disableHeader"> & {
   onRender?: (height: number, width: number) => void;
   isSubMenu?: boolean;
   disableAnimation?: boolean;
-  onSelect?: (path: string, index: number) => void;
+  onSelect?: (path: string, index?: number) => void;
 };

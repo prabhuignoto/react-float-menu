@@ -18,20 +18,20 @@ function App() {
         items={[
           { icon: <FileIcon />, name: "File" },
           {
-            children: [
-              { children: [{ name: "Cut 1" }, { name: "Cut 2" }], name: "Cut" },
+            icon: <EditIcon />,
+            items: [
+              { items: [{ name: "Cut 1" }, { name: "Cut 2" }], name: "Cut" },
               { name: "Select All" },
             ],
-            icon: <EditIcon />,
             name: "Edit",
           },
           { icon: <PlusIcon />, name: "Add" },
           {
-            children: [
+            icon: <CopyIcon />,
+            items: [
               { icon: <CopyIcon />, name: "Copy from clipboard" },
               { icon: <CopyIcon />, name: "Copy selection" },
             ],
-            icon: <CopyIcon />,
             name: "Copy",
           },
           { icon: <SaveIcon />, name: "Save" },

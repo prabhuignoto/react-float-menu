@@ -2,20 +2,26 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react],
   clearScreen: true,
+  plugins: [react],
   test: {
+    cache: {
+      dir: "./vitest_cache",
+    },
     coverage: {
       enabled: true,
       reporter: ["text", "json", "html", "lcov", "clover"],
       reportsDirectory: "./coverage",
     },
-    setupFiles: "./jest-setup.ts",
     environment: "jsdom",
+    globals: true,
+    include: ["src/**/*test.tsx"],
+    maxThreads: 10,
+    minThreads: 2,
+    setupFiles: "./jest-setup.ts",
+    silent: true,
+    threads: true,
     update: true,
     watch: true,
-    threads: true,
-    silent: true,
-    globals: true,
   },
 });
