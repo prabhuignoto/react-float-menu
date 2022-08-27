@@ -82,6 +82,7 @@
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "@vitejs/plugin-react": "^2.0.1",
+    "@vitest/coverage-c8": "^0.22.1",
     "autoprefixer": "^10.4.8",
     "babel-loader": "^8.2.5",
     "babel-plugin-remove-attribute": "^1.0.0",
