@@ -37,24 +37,30 @@ describe("MenuHead", () => {
 
   // should menu head have the attribute --dimension
   it("should have the attribute --dimension", () => {
-    const { getByRole } = render(<MenuHead dimension={40} />);
+    const { container } = render(<MenuHead dimension={40} />);
 
-    expect(getByRole("button")).toBeInTheDocument();
-    expect(getByRole("button")).toHaveStyle("--dimension: 40px");
+    const ele = container.querySelector("[data-cy='rc-fltmenu-head']");
+
+    expect(ele).toHaveAttribute("role", "button");
+    expect(ele).toHaveStyle("--dimension: 40px");
   });
 
   // menu head should have the square shape
   it("should have the square shape", () => {
-    const { getByRole } = render(<MenuHead shape="square" />);
+    const { container } = render(<MenuHead shape="square" />);
 
-    expect(getByRole("button")).toBeInTheDocument();
-    expect(getByRole("button")).toHaveClass(styles.square);
+    const ele = container.querySelector("[data-cy='rc-fltmenu-head']");
+
+    expect(ele).toBeInTheDocument();
+    expect(ele).toHaveClass(styles.square);
   });
 
   // menu should be pinned to the top left of the screen
   it("should be pinned to the top left of the screen", () => {
-    const { getByRole } = render(<MenuHead pin startPosition="top left" />);
+    const { container } = render(<MenuHead pin startPosition="top left" />);
 
-    expect(getByRole("button")).toBeInTheDocument();
+    const ele = container.querySelector("[data-cy='rc-fltmenu-head']");
+
+    expect(ele).toBeInTheDocument();
   });
 });

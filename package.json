@@ -39,7 +39,7 @@
     "format": "prettier --write src/**/*.{tsx,scss}",
     "snyk:monitor": "pnpm dlx snyk monitor",
     "snyk:test": "pnpm dlx snyk test",
-    "test": "pnpm dlx vitest run -c ./vitest.config.ts",
+    "test": "pnpm vitest run -c ./vitest.config.ts",
     "cypress:open": "pnpm dlx cypress open",
     "cypress:quiet": "pnpm exec cypress run --headless --quiet --browser chrome",
     "test:dev": "vitest watch -c ./vitest.config.ts --silent",
