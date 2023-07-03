@@ -9,8 +9,16 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.2
         with:
@@ -23,19 +31,19 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Chrome
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           install: false
           start: pnpm dev
-          wait-on: "http://localhost:5173"
-          wait-on-timeout: 120
+          wait-on: "http://[::1]:5173"
+          wait-on-timeout: 200
           browser: chrome
 
       - name: Edge
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           install: false
           start: pnpm dev
-          wait-on: "http://localhost:5173"
-          wait-on-timeout: 120
+          wait-on: "http://[::1]:5173"
+          wait-on-timeout: 200
           browser: edge
