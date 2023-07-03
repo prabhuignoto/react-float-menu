@@ -39,10 +39,10 @@ const MenuItem = (props: MenuItemViewModel) => {
     [icon]
   );
 
-  const canShowSubMenu = useMemo(() => items.length > 0 && selected, [
-    items.length,
-    selected,
-  ]);
+  const canShowSubMenu = useMemo(
+    () => items.length > 0 && selected,
+    [items.length, selected]
+  );
 
   // handler for showing submenu on mouse enter
   const handleMouseEnter = useCallback((ev: PointerEvent) => {

@@ -81,10 +81,10 @@ const Menu: FunctionComponent<MenuProps> = memo((props) => {
     [height, JSON.stringify(menuHeadPosition)]
   );
 
-  const canOpen = useMemo(() => open && !closeImmediate && !disableAnimation, [
-    open,
-    closeImmediate,
-  ]);
+  const canOpen = useMemo(
+    () => open && !closeImmediate && !disableAnimation,
+    [open, closeImmediate]
+  );
 
   const canClose = useMemo(() => !closeImmediate && open !== null, [open]);
 
