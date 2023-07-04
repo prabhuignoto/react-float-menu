@@ -3,13 +3,14 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   clearScreen: true,
-  plugins: [react],
+  plugins: [react()],
   test: {
     cache: {
       dir: "./vitest_cache",
     },
     coverage: {
       enabled: true,
+      provider: "v8",
       reporter: ["text", "json", "html", "lcov", "clover"],
       reportsDirectory: "./coverage",
     },

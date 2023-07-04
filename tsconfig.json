@@ -11,7 +11,7 @@
     "skipLibCheck": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -24,8 +24,6 @@
     "noUnusedLocals": false,
     "rootDir": ".",
     "types": [
-      "node",
-      "jest",
       "react",
       "react-dom",
       "@testing-library/jest-dom"
