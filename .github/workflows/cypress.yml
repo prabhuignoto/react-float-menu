@@ -22,7 +22,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
         with:
-          version: 6.0.2
+          version: 8.6.4
 
       - name: Checkout
         uses: actions/checkout@v2
