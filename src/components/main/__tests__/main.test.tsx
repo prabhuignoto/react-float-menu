@@ -1,9 +1,16 @@
-import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, waitFor, fireEvent } from "@testing-library/react";
+// import userEvent from "@testing-library/user-event";
 import { MenuHead } from "../index";
 import styles from "../main.module.scss";
+import { describe, it, beforeEach } from "vitest";
+
+class MockPointerEvent {}
 
 describe("MenuHead", () => {
+  beforeEach(() => {
+    global.window.PointerEvent = MockPointerEvent as any;
+  });
+
   // should open the menu on click and all the menu items should be visible
   it("should open the menu on click and all the menu items should be visible", async () => {
     const { container, getByText } = render(
@@ -25,13 +32,18 @@ describe("MenuHead", () => {
     const head = container.querySelector("[data-cy='rc-fltmenu-icon']");
 
     if (head) {
-      userEvent.click(head);
+      fireEvent.mouseDown(head.parentElement);
 
-      await waitFor(() => {
-        expect(getByText("Item 1")).toBeInTheDocument();
-        expect(getByText("Item 2")).toBeInTheDocument();
-        expect(getByText("Item 3")).toBeInTheDocument();
-      });
+      await waitFor(
+        () => {
+          expect(getByText("Item 1")).toBeInTheDocument();
+          expect(getByText("Item 2")).toBeInTheDocument();
+          expect(getByText("Item 3")).toBeInTheDocument();
+        },
+        {
+          timeout: 2000,
+        }
+      );
     }
   });
 

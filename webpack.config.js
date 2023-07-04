@@ -10,6 +10,7 @@ const pkg = require("./package.json");
 const CopyPlugin = require("copy-webpack-plugin");
 const { BannerPlugin } = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const stylesHandler = MiniCssExtractPlugin.loader;
 
@@ -39,10 +40,20 @@ const config = {
                   },
                 ],
               ],
-              presets: ["@babel/preset-env", "@babel/preset-react"],
+              presets: [
+                "@babel/preset-env",
+                "@babel/preset-react",
+                "@babel/preset-typescript",
+              ],
             },
           },
-          "ts-loader",
+          {
+            loader: "ts-loader",
+            options: {
+              configFile: "tsconfig.json",
+              transpileOnly: true,
+            },
+          },
         ],
       },
       {
@@ -98,6 +109,7 @@ const config = {
     new BannerPlugin({
       banner: `${pkg.name} v${pkg.version} | ${pkg.license} | ${pkg.homepage} | ${pkg.author}`,
     }),
+    new ForkTsCheckerWebpackPlugin(),
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
   ],
