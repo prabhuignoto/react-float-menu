@@ -20,7 +20,7 @@ export default defineConfig({
     maxThreads: 10,
     minThreads: 2,
     setupFiles: "./jest-setup.ts",
-    silent: true,
+    // silent: true,
     threads: true,
     update: true,
     watch: true,

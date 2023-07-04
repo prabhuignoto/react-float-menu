@@ -24,9 +24,11 @@
     "noUnusedLocals": false,
     "rootDir": ".",
     "types": [
+      "@types/node",
       "react",
       "react-dom",
-      "@testing-library/jest-dom"
+      // "@testing-library/jest-dom",
+      "@types/testing-library__jest-dom"
     ]
   },
   "include": [
