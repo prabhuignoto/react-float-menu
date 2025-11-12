@@ -1,7 +1,6 @@
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import { readFileSync } from "fs";
 import { resolve } from "path";
 
 // https://vitejs.dev/config/
