@@ -67,11 +67,12 @@ Menu items support hierarchical structure with `children` for submenus. Each ite
 - **Vite** (`vite.config.ts`) - Primary build tool for both development and library distribution
   - Entry: `src/react-float-menu.ts`
   - Output formats: ESM (`react-float-menu.esm.js`), CJS (`react-float-menu.cjs`), UMD (`react-float-menu.umd.js`)
-  - Type declarations: Generated automatically with `vite-plugin-dts` → `dist/index.d.ts`
+  - Type declarations: Generated automatically with `vite-plugin-dts` → `dist/index.d.ts` (rolled up from all source files)
+  - Important: `globals.d.ts` must be included in vite-plugin-dts config for SCSS module type declarations
   - Externals: React/ReactDOM are peer dependencies (not bundled)
   - Development: Uses SWC compiler (@vitejs/plugin-react-swc) for fast transpilation and HMR
   - Production: Minification with Terser, source maps enabled, CSS code-split
-  - Package exports configured for proper ESM/CJS resolution
+  - Package exports configured for proper ESM/CJS resolution with conditional exports
 - **PostCSS** (`postcss.config.js`) - Modern plugin stack
   - postcss-preset-env (stage 2) - Modern CSS syntax support
   - autoprefixer - Vendor prefixing
@@ -85,6 +86,19 @@ Menu items support hierarchical structure with `children` for submenus. Each ite
 - CSS variables for theming (primary color, dimensions, width)
 - Modern CSS syntax (nesting, custom properties) via PostCSS
 - Dart Sass compiler (v1.81+) for fast SCSS processing
+- **Type declarations**: `globals.d.ts` provides TypeScript declarations for `*.module.scss` imports
+
+### Type System
+- `globals.d.ts` - Global type declarations for CSS/SCSS modules
+- `jest-setup.d.ts` - Test environment type declarations
+- TypeScript configured with `moduleResolution: "bundler"` for modern tooling compatibility
+- `skipLibCheck: true` to avoid conflicts with external package type definitions
+
+### Build Notes
+- API Extractor may show an informational message about TypeScript version mismatch - this is harmless and doesn't affect build output
+- All three output formats (ESM, CJS, UMD) are tested and verified to work correctly
+- CSS is extracted into a single `react-float-menu.css` file
+- Source maps are generated for all output formats for easier debugging
 
 ## Key Features Implementation
 
