@@ -1,11 +1,11 @@
 {
-  "extends": [
-    "stylelint-config-standard",
-    "stylelint-config-prettier",
-    "stylelint-config-standard-scss"
+  "overrides": [
+    {
+      "files": ["**/*.scss"],
+      "customSyntax": "postcss-scss"
+    }
   ],
   "rules": {
-    "selector-class-pattern": "^([a-z][a-z0-9]*)(_[a-z0-9]+)*$",
     "property-no-unknown": [
       true,
       {

@@ -19,13 +19,13 @@ describe("MenuListItem", () => {
   });
 
   // should call onSelect when clicked
-  it.concurrent("should call onSelect when clicked", () => {
+  it("should call onSelect when clicked", () => {
     const onSelect = vi.fn();
-    const { getByText } = render(
+    const { getByRole } = render(
       <MenuItem name="menu item" onSelect={onSelect} />
     );
 
-    fireEvent.pointerDown(getByText("menu item"));
+    fireEvent.pointerDown(getByRole("listitem"));
 
     expect(onSelect).toBeCalled();
   });
