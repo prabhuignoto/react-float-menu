@@ -16,25 +16,20 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      include: ["src"],
-      exclude: ["src/**/*.test.tsx"],
+      include: ["src", "globals.d.ts"],
+      exclude: ["src/**/*.test.tsx", "src/**/*.scss"],
       rollupTypes: true,
+      tsconfigPath: "./tsconfig.json",
+      logLevel: "error",
+      compilerOptions: {
+        skipLibCheck: true,
+      },
     }),
   ],
   build: {
     lib: {
       entry: resolve(__dirname, "src/react-float-menu.ts"),
       name: "ReactFloatMenu",
-      formats: ["es", "cjs", "umd"],
-      fileName: (format) => {
-        if (format === "es") {
-          return "react-float-menu.esm.js";
-        } else if (format === "cjs") {
-          return "react-float-menu.cjs";
-        } else {
-          return "react-float-menu.umd.js";
-        }
-      },
     },
     rollupOptions: {
       external: ["react", "react-dom"],

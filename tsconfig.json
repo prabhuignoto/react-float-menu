@@ -8,7 +8,7 @@
       "ESNext"
     ],
     "allowJs": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": false,
@@ -32,14 +32,9 @@
     ]
   },
   "include": [
-    "src/react-float-menu.ts",
-    "src/components/**/*.{ts,tsx,scss}",
-    "src/icons/*.tsx",
-    "src/utils/*.ts",
-    "src/models/*.ts",
+    "src/**/*",
     "./globals.d.ts",
-    "./jest-setup.ts",
-    "src/**/*test.tsx"
+    "./jest-setup.ts"
   ],
   "exclude": [
     "node_modules",
